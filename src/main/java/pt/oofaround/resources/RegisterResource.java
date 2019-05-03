@@ -88,7 +88,7 @@ public class RegisterResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doRegisterBackOffice(RegisterData data) throws InterruptedException, ExecutionException {
 
-		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "empytForNow", data.expirationDate)) {
+		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doRegisterBackOffice", data.expirationDate)) {
 		CollectionReference users = db.collection("users");
 		Query query = users.whereEqualTo("email", data.email);
 
@@ -129,7 +129,7 @@ public class RegisterResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doRegisterAuser(RegisterData data) throws InterruptedException, ExecutionException {
 
-		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "empytForNow", data.expirationDate)) {
+		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doRegisterAuser", data.expirationDate)) {
 			CollectionReference users = db.collection("users");
 			Query query = users.whereEqualTo("email", data.email);
 

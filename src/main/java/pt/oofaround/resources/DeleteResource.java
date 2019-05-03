@@ -44,7 +44,7 @@ public class DeleteResource {
 
 		LOG.fine("Delete attempted by " + data.username);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "emptyForNow",
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doSudoku",
 				data.expirationDate)) {
 			try {
 				ApiFuture<WriteResult> orderSixtySix = db.collection("users").document(data.username).delete();
@@ -59,11 +59,11 @@ public class DeleteResource {
 	@POST
 	@Path("/user")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response doDelete(DeleteData data) throws InterruptedException, ExecutionException {
+	public Response doDeleteOther(DeleteData data) throws InterruptedException, ExecutionException {
 
 		LOG.fine("Delete attempted by " + data.username);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "emptyForNow",
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doDeleteOther",
 				data.expirationDate)) {
 			try {
 				ApiFuture<WriteResult> orderSixtySix = db.collection("users").document(data.username).delete();

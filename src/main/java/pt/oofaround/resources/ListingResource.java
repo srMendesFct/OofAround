@@ -2,6 +2,7 @@ package pt.oofaround.resources;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
@@ -31,7 +32,7 @@ public class ListingResource {
 
 	private final Gson g = new Gson();
 
-	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("solo-project-apdc")
+	private FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("solo-project-apdc")
 			.build();
 	private final Firestore db = firestore.getService();
 
@@ -40,27 +41,56 @@ public class ListingResource {
 
 	@GET
 	@Path("/users")
-	public Response getUsers(TokenData data) {
+	public Response getAllUsers(TokenData data) throws InterruptedException, ExecutionException {
 		LOG.fine("Listing users");
 
-		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "EmptyForNow", data.expirationDate)) {
-		CollectionReference users = db.collection("users");
-		try {
-			Query query = users;
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-			List<String> usersL = new ArrayList<String>();
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllUsers",
+				data.expirationDate)) {
+			CollectionReference users = db.collection("users");
+			try {
+				Query query = users;
+				ApiFuture<QuerySnapshot> querySnapshot = query.get();
+				List<String> usersL = new ArrayList<String>();
 
-			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				usersL.add(document.getString("username"));
+				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					usersL.add(document.getString("username"));
+				}
+
+				String json = new Gson().toJson(usersL);
+
+				return Response.status(Status.OK).entity(json).build();
+			} catch (Exception e) {
+				return Response.status(Status.FORBIDDEN).entity("Failed get").build();
 			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
 
-			String json = new Gson().toJson(usersL);
+	@GET
+	@Path("/publicusers")
+	public Response getPublicUsers(TokenData data) throws InterruptedException, ExecutionException {
+		LOG.fine("Listing users");
 
-			return Response.status(Status.OK).entity(json).build();
-		} catch (Exception e) {
-			return Response.status(Status.FORBIDDEN).entity("Failed get").build();
-		}
-	}else
-		return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicUsers",
+				data.expirationDate)) {
+			CollectionReference users = db.collection("users");
+			try {
+				Query query = users;
+				ApiFuture<QuerySnapshot> querySnapshot = query.get();
+				List<String> usersL = new ArrayList<String>();
+
+				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					if (!(boolean) document.get("privacy"))
+						usersL.add(document.getString("username"));
+				}
+
+				String json = new Gson().toJson(usersL);
+
+				return Response.status(Status.OK).entity(json).build();
+			} catch (Exception e) {
+				return Response.status(Status.FORBIDDEN).entity("Failed get").build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 }
