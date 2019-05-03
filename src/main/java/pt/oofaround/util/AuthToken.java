@@ -37,7 +37,7 @@ public class AuthToken {
 	public AuthToken(String username, String role, long expirationDate) {
 		this.username = username;
 		this.creationDate = System.currentTimeMillis();
-		this.expirationDate = this.creationDate + AuthToken.EXPIRATION_TIME;
+		this.expirationDate = expirationDate;
 		this.role = role;
 		this.payload = Base64.encodeAsString(username) + Base64.encodeAsString(Long.toString(expirationDate))
 				+ Base64.encodeAsString(role);

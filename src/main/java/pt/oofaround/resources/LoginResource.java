@@ -22,6 +22,7 @@ import com.google.common.hash.Hashing;
 import com.google.cloud.firestore.Query;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.LoginData;
@@ -34,8 +35,7 @@ public class LoginResource {
 
 	private final Gson g = new Gson();
 
-	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
-			.build();
+	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 	private final Firestore db = firestore.getService();
 
 	public LoginResource() {
@@ -47,7 +47,51 @@ public class LoginResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doLogin(LoginData data) throws InterruptedException, ExecutionException {
 
-		LOG.fine("Login attemped by" + data.username);
+		CollectionReference users = db.collection("users");
+		Query query = users.whereEqualTo("username", data.username);
+
+		ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
+			if (passEnc.equals(document.get("password"))) {
+				AuthToken at = new AuthToken(document.get("username").toString(), document.get("role").toString());
+				JsonObject token = new JsonObject();
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("expirationDate", at.expirationDate);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(token)).build();
+			}
+		}
+		
+		query = users.whereEqualTo("email", data.username);
+
+		querySnapshot = query.get();
+
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
+			if (passEnc.equals(document.get("password"))) {
+				AuthToken at = new AuthToken(document.get("username").toString(), document.get("role").toString());
+				JsonObject token = new JsonObject();
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("expirationDate", at.expirationDate);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(token)).build();
+			}
+		}
+		/*
+
+		query = users.whereEqualTo("username", data.username);
+
+		querySnapshot = query.get();
+
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			return Response.status(Status.FOUND).entity("Username already in use.").build();
+		}
+
+		String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
 
 		CollectionReference users = db.collection("users");
 		try {
@@ -69,7 +113,7 @@ public class LoginResource {
 			}
 		} catch (Exception e) {
 			return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
-		}
+		}*/
 
 		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
 

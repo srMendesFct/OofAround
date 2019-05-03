@@ -26,6 +26,7 @@ import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 
 import pt.oofaround.util.AuthToken;
+import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.RegisterData;
 
 @Path("/register")
@@ -43,7 +44,7 @@ public class RegisterResource {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	@POST
 	@Path("/user")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -53,13 +54,10 @@ public class RegisterResource {
 		Query query = users.whereEqualTo("email", data.email);
 
 		ApiFuture<QuerySnapshot> querySnapshot = query.get();
-		// DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
 
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 			return Response.status(Status.FOUND).entity("Email already in use.").build();
 		}
-		// if (document.exists())
-		// return Response.status(Status.FOUND).entity("Email already in use.").build();
 
 		query = users.whereEqualTo("username", data.username);
 
@@ -68,9 +66,6 @@ public class RegisterResource {
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 			return Response.status(Status.FOUND).entity("Username already in use.").build();
 		}
-		// if (document.exists())
-		// return Response.status(Status.FOUND).entity("Username already in
-		// use.").build();
 
 		String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
 
@@ -93,31 +88,39 @@ public class RegisterResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doRegisterBackOffice(RegisterData data) throws InterruptedException, ExecutionException {
 
+		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "empytForNow", data.expirationDate)) {
 		CollectionReference users = db.collection("users");
-		try {
-			Query query = users.whereEqualTo("username", data.username);
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
+		Query query = users.whereEqualTo("email", data.email);
 
-			if (querySnapshot != null) {
-				Map<String, Object> docData = new HashMap();
-				docData.put("username", data.username);
-				docData.put("password", passEnc);
-				docData.put("email", data.email);
-				docData.put("role", "bo");
-				docData.put("address", data.country);
-				docData.put("cellphone", data.cellphone);
-				docData.put("privacy", data.privacy);
+		ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-				ApiFuture<WriteResult> newUser = users.document(data.username).set(docData);
-				return Response.ok().build();
-			}
-		} catch (Exception e) {
-			return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			return Response.status(Status.FOUND).entity("Email already in use.").build();
 		}
 
-		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
+		query = users.whereEqualTo("username", data.username);
 
+		querySnapshot = query.get();
+
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			return Response.status(Status.FOUND).entity("Username already in use.").build();
+		}
+
+		String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
+
+		Map<String, Object> docData = new HashMap();
+		docData.put("username", data.username);
+		docData.put("password", passEnc);
+		docData.put("email", data.email);
+		docData.put("role", "bo");
+		docData.put("country", data.country);
+		docData.put("cellphone", data.cellphone);
+		docData.put("privacy", data.privacy);
+
+		ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
+		return Response.ok().entity("User created successfully.").build();
+	}else
+		return Response.status(Status.FORBIDDEN).build();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -126,31 +129,39 @@ public class RegisterResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doRegisterAuser(RegisterData data) throws InterruptedException, ExecutionException {
 
-		CollectionReference users = db.collection("users");
-		try {
-			Query query = users.whereEqualTo("username", data.username);
+		if(AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "empytForNow", data.expirationDate)) {
+			CollectionReference users = db.collection("users");
+			Query query = users.whereEqualTo("email", data.email);
+
 			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				return Response.status(Status.FOUND).entity("Email already in use.").build();
+			}
+
+			query = users.whereEqualTo("username", data.username);
+
+			querySnapshot = query.get();
+
+			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				return Response.status(Status.FOUND).entity("Username already in use.").build();
+			}
+
 			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
 
-			if (querySnapshot != null) {
-				Map<String, Object> docData = new HashMap();
-				docData.put("username", data.username);
-				docData.put("password", passEnc);
-				docData.put("email", data.email);
-				docData.put("role", "auser");
-				docData.put("address", data.country);
-				docData.put("cellphone", data.cellphone);
-				docData.put("privacy", data.privacy);
+			Map<String, Object> docData = new HashMap();
+			docData.put("username", data.username);
+			docData.put("password", passEnc);
+			docData.put("email", data.email);
+			docData.put("role", "bo");
+			docData.put("country", data.country);
+			docData.put("cellphone", data.cellphone);
+			docData.put("privacy", data.privacy);
 
-				ApiFuture<WriteResult> newUser = users.document(data.username).set(docData);
-				return Response.ok().build();
-			}
-		} catch (Exception e) {
-			return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
-		}
-
-		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
-
+			ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
+			return Response.ok().entity("User created successfully.").build();
+		}else
+			return Response.status(Status.FORBIDDEN).build();
 	}
 
 }

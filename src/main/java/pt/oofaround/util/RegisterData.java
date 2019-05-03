@@ -7,8 +7,11 @@ public class RegisterData {
 	public String email;
 	public String country;
 	public String cellphone;
-	public String role;
 	public boolean privacy;
+	public String tokenID;
+	public String role;
+	public String usernameR;
+	public long expirationDate;
 
 	public RegisterData() {
 	}
@@ -20,6 +23,25 @@ public class RegisterData {
 		this.email = email;
 		this.country = country;
 		this.cellphone = cellphone;
+		if (privacy.equals("true")) {
+			this.privacy = true;
+		} else {
+			this.privacy = false;
+		}
+	}
+
+	public RegisterData(String username, String password, String email, String country, String cellphone,
+			String privacy, String tokenID, String role, String usernameR, long expirationDate) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.country = country;
+		this.cellphone = cellphone;
+		this.tokenID = tokenID;
+		this.role = role;
+		this.usernameR = usernameR;
+		this.expirationDate = expirationDate;
 		if (privacy.equals("true")) {
 			this.privacy = true;
 		} else {
