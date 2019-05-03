@@ -16,7 +16,9 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.DeleteData;
 
@@ -29,8 +31,7 @@ public class DeleteResource {
 
 	private final Gson g = new Gson();
 
-	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("solo-project-apdc")
-			.build();
+	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 	private final Firestore db = firestore.getService();
 
 	public DeleteResource() {
@@ -44,8 +45,7 @@ public class DeleteResource {
 
 		LOG.fine("Delete attempted by " + data.username);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doSudoku",
-				data.expirationDate)) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doSudoku", data.expirationDate)) {
 			try {
 				ApiFuture<WriteResult> orderSixtySix = db.collection("users").document(data.username).delete();
 				return Response.ok().build();
@@ -67,7 +67,13 @@ public class DeleteResource {
 				data.expirationDate)) {
 			try {
 				ApiFuture<WriteResult> orderSixtySix = db.collection("users").document(data.username).delete();
-				return Response.ok().build();
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JsonObject token = new JsonObject();
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("expirationDate", at.expirationDate);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(token)).build();
 			} catch (Exception e) {
 				return Response.status(Status.NOT_FOUND).entity("User doesn't exist.").build();
 			}

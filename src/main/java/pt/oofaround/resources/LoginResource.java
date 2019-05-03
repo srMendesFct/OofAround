@@ -4,9 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,10 +17,9 @@ import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.common.hash.Hashing;
-import com.google.cloud.firestore.Query;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -64,7 +63,7 @@ public class LoginResource {
 				return Response.ok(g.toJson(token)).build();
 			}
 		}
-		
+
 		query = users.whereEqualTo("email", data.username);
 
 		querySnapshot = query.get();
@@ -82,38 +81,33 @@ public class LoginResource {
 			}
 		}
 		/*
-
-		query = users.whereEqualTo("username", data.username);
-
-		querySnapshot = query.get();
-
-		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-			return Response.status(Status.FOUND).entity("Username already in use.").build();
-		}
-
-		String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
-
-		CollectionReference users = db.collection("users");
-		try {
-			Query query;
-			if (data.username.indexOf('a') == -1)
-				query = users.whereEqualTo("username", data.username);
-			else
-				query = users.whereEqualTo("email", data.username);
-
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-			DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
-			if (document.exists()) {
-				String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
-
-				if (document.get("username") != null && document.get("password").equals(passEnc)) {
-					AuthToken at = new AuthToken(data.username, document.get("role").toString());
-					return Response.ok(g.toJson(at)).build();
-				}
-			}
-		} catch (Exception e) {
-			return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
-		}*/
+		 * 
+		 * query = users.whereEqualTo("username", data.username);
+		 * 
+		 * querySnapshot = query.get();
+		 * 
+		 * for (DocumentSnapshot document : querySnapshot.get().getDocuments()) { return
+		 * Response.status(Status.FOUND).entity("Username already in use.").build(); }
+		 * 
+		 * String passEnc = Hashing.sha512().hashString(data.password,
+		 * StandardCharsets.UTF_8).toString();
+		 * 
+		 * CollectionReference users = db.collection("users"); try { Query query; if
+		 * (data.username.indexOf('a') == -1) query = users.whereEqualTo("username",
+		 * data.username); else query = users.whereEqualTo("email", data.username);
+		 * 
+		 * ApiFuture<QuerySnapshot> querySnapshot = query.get(); DocumentSnapshot
+		 * document = querySnapshot.get().getDocuments().get(0); if (document.exists())
+		 * { String passEnc = Hashing.sha512().hashString(data.password,
+		 * StandardCharsets.UTF_8).toString();
+		 * 
+		 * if (document.get("username") != null &&
+		 * document.get("password").equals(passEnc)) { AuthToken at = new
+		 * AuthToken(data.username, document.get("role").toString()); return
+		 * Response.ok(g.toJson(at)).build(); } } } catch (Exception e) { return
+		 * Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").
+		 * build(); }
+		 */
 
 		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
 

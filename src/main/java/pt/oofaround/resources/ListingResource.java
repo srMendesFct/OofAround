@@ -1,7 +1,5 @@
 package pt.oofaround.resources;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -20,11 +18,12 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.TokenData;
 
-@SuppressWarnings("unused")
 @Path("/list")
 @Produces(MediaType.APPLICATION_JSON)
 public class ListingResource {
@@ -32,7 +31,7 @@ public class ListingResource {
 
 	private final Gson g = new Gson();
 
-	private FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("solo-project-apdc")
+	private FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
 			.build();
 	private final Firestore db = firestore.getService();
 
@@ -50,17 +49,21 @@ public class ListingResource {
 			try {
 				Query query = users;
 				ApiFuture<QuerySnapshot> querySnapshot = query.get();
-				List<String> usersL = new ArrayList<String>();
-
+				JsonObject res = new JsonObject();
+				int i = 0;
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-					usersL.add(document.getString("username"));
+					res.addProperty("user" + i++, document.getString("username"));
 				}
 
-				String json = new Gson().toJson(usersL);
-
-				return Response.status(Status.OK).entity(json).build();
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JsonObject token = new JsonObject();
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("expirationDate", at.expirationDate);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(token)).build();
 			} catch (Exception e) {
-				return Response.status(Status.FORBIDDEN).entity("Failed get").build();
+				return Response.status(Status.FORBIDDEN).entity(e.toString()).build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
@@ -77,16 +80,19 @@ public class ListingResource {
 			try {
 				Query query = users;
 				ApiFuture<QuerySnapshot> querySnapshot = query.get();
-				List<String> usersL = new ArrayList<String>();
-
+				JsonObject res = new JsonObject();
+				int i = 0;
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-					if (!(boolean) document.get("privacy"))
-						usersL.add(document.getString("username"));
+					res.addProperty("user" + i++, document.getString("username"));
 				}
 
-				String json = new Gson().toJson(usersL);
-
-				return Response.status(Status.OK).entity(json).build();
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JsonObject token = new JsonObject();
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("expirationDate", at.expirationDate);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(token)).build();
 			} catch (Exception e) {
 				return Response.status(Status.FORBIDDEN).entity("Failed get").build();
 			}
