@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.RegisterData;
-
+@SuppressWarnings("unused")
 @Path("/register")
 @Produces(MediaType.APPLICATION_JSON)
 public class RegisterResource {
@@ -44,7 +44,7 @@ public class RegisterResource {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
+	@SuppressWarnings({ "rawtypes", "unchecked"})
 	@POST
 	@Path("/user")
 	@Consumes(MediaType.APPLICATION_JSON)

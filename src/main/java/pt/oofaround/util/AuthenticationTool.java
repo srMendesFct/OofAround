@@ -2,13 +2,6 @@ package pt.oofaround.util;
 
 public class AuthenticationTool {
 
-	/*
-	public String tokenID;
-	public String username;
-	public String role;
-	public String action;
-	public long expirationDate;*/
-
 	public AuthenticationTool() {
 	}
 	
