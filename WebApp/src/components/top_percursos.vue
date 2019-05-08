@@ -24,7 +24,7 @@
             </b-container>
         </div>
         <div>
-            perguntar ao mimoso o que vem a seguir disto e antes do about us
+            perguntar ao mimoso o que vem a seguir disto e antes do about us. mudar o ver mais para ver menos na tabela.
         </div>
     </div>
 </template>

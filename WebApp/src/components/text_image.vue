@@ -9,8 +9,5 @@
             </b-card>
         </div>
         </b-container>
-        <div>
-            asdads
-        </div>
     </div>
 </template>

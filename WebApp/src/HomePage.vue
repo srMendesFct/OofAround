@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import carousel from './components/carrocel.vue'
-  import navBar from './components/navebar.vue'
+  import carousel from './components/carousel.vue'
+  import navBar from './components/navbar.vue'
   import textImage from './components/text_image.vue'
   import topPercursos from './components/top_percursos.vue'
   import aboutUs from './components/about_us_sc.vue'
