@@ -31,8 +31,7 @@
 
 <style>
    .carousel{
-       height: 555px;
-       margin-top: 3px;
+       height: 570px;
     }
     .div {
         height: 570px;

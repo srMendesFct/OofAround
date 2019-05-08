@@ -15,7 +15,7 @@
                     <b-col align="center">
                         <h1>Percursos Recomendados</h1>
                         <b-table hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"></b-table>
-                        <b-button v-b-toggle.collapse-1 variant="primary">Ver mais</b-button>
+                        <b-button v-b-toggle.collapse-1 variant="primary">{{msg}}</b-button>
                         <b-collapse id="collapse-1" class="mt-2">
                             <b-table hover :items="items2" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"></b-table>
                         </b-collapse>
@@ -31,6 +31,12 @@
 
 <script>
     export default {
+        props: {
+            msg : String,
+        },
+        methods: {
+            
+        },
         data() {
             return {
                 sortBy: 'Posição',
