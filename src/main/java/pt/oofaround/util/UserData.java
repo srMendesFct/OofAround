@@ -15,6 +15,7 @@ public class UserData {
 		this.role = role;
 		this.action = action;
 		this.expirationDate = expirationDate;
+		this.usernameR = username;
 	}
 
 	public UserData(String username, String tokenID, String usernameR, String role, String action,
