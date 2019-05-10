@@ -1,0 +1,51 @@
+window.onload = function() {
+    var token = localStorage.getItem('expiration');
+    var date = new Date();
+    var longday = date.getTime();
+    if(longday > token) {
+            window.location.href = "https://aerial-rarity-233809.appspot.com/login.html";
+    }
+    else {
+        var frms = $('form[name="change_pass"]');
+        frms[0].onsubmit = captureData;
+            setupCallback();
+
+    }
+};
+
+captureData = function(event) {
+    var values = {};
+    values["username"] = localStorage.getItem('username');
+    $.each($('form[name="change_pass"]').serializeArray(), function (i, field) {
+        values[field.name] = field.value;
+    });
+    console.log(JSON.stringify(values));    
+    $.ajax({
+        type:"PUT",
+        url:"https://aerial-rarity-233809.appspot.com/rest/changepassword/vf",
+        contentType:"application/json;charset=utf-8",
+        dataType:'json', // data type        
+        crossDomain:true,
+        success:function(Response) {
+        },
+        error: function (Response) {
+            console.log(Response);
+            if(Response.status == 200) {
+                alert("Password changed with success.");
+                window.location.href = "https://aerial-rarity-233809.appspot.com/main_USER.html";
+            }
+            else {
+                alert("Password change failed.");
+            }
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+    event.preventDefault();
+};
+
+function setupCallback() {
+
+    document.getElementById("Get_Back").addEventListener("click", function(e){
+            window.location.href = "https://aerial-rarity-233809.appspot.com/main_USER.html";
+    });
+}
