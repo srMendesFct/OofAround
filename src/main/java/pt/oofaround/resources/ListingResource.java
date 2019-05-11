@@ -1,9 +1,13 @@
 package pt.oofaround.resources;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -16,12 +20,15 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.Query.Direction;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
+import pt.oofaround.util.RankingData;
 import pt.oofaround.util.TokenData;
 
 @Path("/list")
@@ -38,13 +45,13 @@ public class ListingResource {
 	public ListingResource() {
 	}
 
-	@GET
+	@POST
 	@Path("/users")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getAllUsers(TokenData data) throws InterruptedException, ExecutionException {
 		LOG.fine("Listing users");
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllUsers",
-				data.expirationDate)) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllUsers")) {
 			CollectionReference users = db.collection("users");
 			try {
 				Query query = users;
@@ -56,12 +63,10 @@ public class ListingResource {
 				}
 
 				AuthToken at = new AuthToken(data.usernameR, data.role);
-				JsonObject token = new JsonObject();
-				token.addProperty("username", at.username);
-				token.addProperty("role", at.role);
-				token.addProperty("expirationDate", at.expirationDate);
-				token.addProperty("tokenID", at.tokenID);
-				return Response.ok(g.toJson(token)).build();
+				res.addProperty("username", at.username);
+				res.addProperty("role", at.role);
+				res.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(res)).build();
 			} catch (Exception e) {
 				return Response.status(Status.FORBIDDEN).entity(e.toString()).build();
 			}
@@ -69,13 +74,13 @@ public class ListingResource {
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
-	@GET
+	@POST
 	@Path("/publicusers")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getPublicUsers(TokenData data) throws InterruptedException, ExecutionException {
 		LOG.fine("Listing users");
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicUsers",
-				data.expirationDate)) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicUsers")) {
 			CollectionReference users = db.collection("users");
 			try {
 				Query query = users;
@@ -87,14 +92,74 @@ public class ListingResource {
 				}
 
 				AuthToken at = new AuthToken(data.usernameR, data.role);
-				JsonObject token = new JsonObject();
-				token.addProperty("username", at.username);
-				token.addProperty("role", at.role);
-				token.addProperty("expirationDate", at.expirationDate);
-				token.addProperty("tokenID", at.tokenID);
-				return Response.ok(g.toJson(token)).build();
+				res.addProperty("usernameR", at.username);
+				res.addProperty("role", at.role);
+				res.addProperty("expirationDate", at.expirationDate);
+				res.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(res)).build();
 			} catch (Exception e) {
 				return Response.status(Status.FORBIDDEN).entity("Failed get").build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
+
+	@POST
+	@Path("/publicranking")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getPublicRankings(RankingData data)
+			throws InterruptedException, ExecutionException, TimeoutException {
+		LOG.fine("Listing users");
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicRankings")) {
+			CollectionReference users = db.collection("users");
+			Query query = users.whereEqualTo("username", data.username).whereGreaterThan("score", 0);
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+			JsonObject res = new JsonObject();
+			for (QueryDocumentSnapshot document : querySnapshot.get(5, TimeUnit.SECONDS).getDocuments()) {
+				res.addProperty("ownScore", document.get("score").toString());
+			}
+			// DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
+			// res.addProperty("username", document.getString("username"));
+
+			try {
+				Query sortedUsers;
+				ApiFuture<QuerySnapshot> queryRes;
+				List<QueryDocumentSnapshot> docs;
+
+				if (data.lastRequest == 0) {
+					sortedUsers = users.orderBy("score", Direction.DESCENDING).whereEqualTo("privacy", false).limit(data.limit);
+					queryRes = sortedUsers.get();
+					docs = queryRes.get(5, TimeUnit.SECONDS).getDocuments();
+					for (QueryDocumentSnapshot document1 : docs) {
+						res.addProperty(document1.getString("username"), document1.get("score").toString());
+					}
+				} else {
+					sortedUsers = users.whereEqualTo("username", data.lastUsername);
+					queryRes = sortedUsers.get();
+					docs = queryRes.get(5, TimeUnit.SECONDS).getDocuments();
+					QueryDocumentSnapshot lastDoc = docs.get(0);
+					sortedUsers = users.orderBy("score", Direction.DESCENDING).whereEqualTo("privacy", false).startAfter(lastDoc).limit(data.limit);
+					queryRes = sortedUsers.get();
+					docs = queryRes.get(5, TimeUnit.SECONDS).getDocuments();
+					for (QueryDocumentSnapshot document1 : docs) {
+						res.addProperty(document1.getString("username"), document1.get("score").toString());
+					}
+				}
+
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.addProperty("usernameR", at.username);
+				res.addProperty("role", at.role);
+				res.addProperty("tokenID", at.tokenID);
+
+				return Response.ok(g.toJson(res)).build();
+			} catch (Exception e) {
+				String s = "";
+				for (StackTraceElement ss : e.getStackTrace()) {
+					s += "   " + ss.toString();
+				}
+				return Response.status(Status.FORBIDDEN).entity(s).build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();

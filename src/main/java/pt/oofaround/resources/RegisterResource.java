@@ -79,6 +79,7 @@ public class RegisterResource {
 		docData.put("country", data.country);
 		docData.put("cellphone", data.cellphone);
 		docData.put("privacy", data.privacy);
+		docData.put("score", 0);
 
 		ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
 		return Response.ok().build();
@@ -90,8 +91,7 @@ public class RegisterResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doRegisterBackOffice(RegisterData data) throws InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doRegisterBackOffice",
-				data.expirationDate)) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doRegisterBackOffice")) {
 			CollectionReference users = db.collection("users");
 			Query query = users.whereEqualTo("email", data.email);
 
@@ -125,51 +125,8 @@ public class RegisterResource {
 			JsonObject token = new JsonObject();
 			token.addProperty("username", at.username);
 			token.addProperty("role", at.role);
-			token.addProperty("expirationDate", at.expirationDate);
 			token.addProperty("tokenID", at.tokenID);
 			return Response.ok(g.toJson(token)).build();
-		} else
-			return Response.status(Status.FORBIDDEN).build();
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@POST
-	@Path("/auser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response doRegisterAuser(RegisterData data) throws InterruptedException, ExecutionException {
-
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doRegisterAuser",
-				data.expirationDate)) {
-			CollectionReference users = db.collection("users");
-			Query query = users.whereEqualTo("email", data.email);
-
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-
-			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				return Response.status(Status.FOUND).entity("Email already in use.").build();
-			}
-
-			query = users.whereEqualTo("username", data.username);
-
-			querySnapshot = query.get();
-
-			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				return Response.status(Status.FOUND).entity("Username already in use.").build();
-			}
-
-			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
-
-			Map<String, Object> docData = new HashMap();
-			docData.put("username", data.username);
-			docData.put("password", passEnc);
-			docData.put("email", data.email);
-			docData.put("role", "bo");
-			docData.put("country", data.country);
-			docData.put("cellphone", data.cellphone);
-			docData.put("privacy", data.privacy);
-
-			ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
-			return Response.ok().entity("User created successfully.").build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}

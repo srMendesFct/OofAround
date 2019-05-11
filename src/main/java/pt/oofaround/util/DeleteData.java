@@ -5,17 +5,15 @@ public class DeleteData {
 	public String tokenID;
 	public String role;
 	public String usernameR;
-	public long expirationDate;
 
 	public DeleteData() {
 	}
 
-	public DeleteData(String username, String tokenID, String role, String usernameR, long expirationDate) {
+	public DeleteData(String username, String tokenID, String role, String usernameR) {
 		this.username = username;
 		this.tokenID = tokenID;
 		this.role = role;
 		this.usernameR = usernameR;
-		this.expirationDate = expirationDate;
 	}
 
 }

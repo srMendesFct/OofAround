@@ -6,7 +6,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -15,6 +14,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.StorageOptions;
 
 import pt.oofaround.util.UploadImageData;
@@ -25,6 +25,7 @@ public class ImageResource {
 
 	private final Storage storage = StorageOptions.getDefaultInstance().getService();
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(ImageResource.class.getName());
 
 	private static final String BUCKET = "oofaround.appspot.com";
@@ -58,8 +59,10 @@ public class ImageResource {
 	@GET
 	@Path("/logo")
 	public Response downloadImage() {
-		Blob blob = storage.get(BlobId.of(BUCKET, "logo_equipa.jpg"));
-		return Response.ok().entity(blob.getSize()).build();
+		//Blob blob = storage.get(BlobId.of(BUCKET, "logo_equipa.jpg"));
+	    Blob blob = storage.get(BUCKET, "logo_equipa.jpg", BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+	    String s = blob.getMediaLink();
+	    return Response.ok(s).build();
 	}
 
 }

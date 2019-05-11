@@ -30,6 +30,7 @@ import pt.oofaround.util.LoginData;
 @Produces(MediaType.APPLICATION_JSON)
 public class LoginResource {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(LoginResource.class.getName());
 
 	private final Gson g = new Gson();
@@ -58,7 +59,6 @@ public class LoginResource {
 				JsonObject token = new JsonObject();
 				token.addProperty("username", at.username);
 				token.addProperty("role", at.role);
-				token.addProperty("expirationDate", at.expirationDate);
 				token.addProperty("tokenID", at.tokenID);
 				return Response.ok(g.toJson(token)).build();
 			}
@@ -75,7 +75,6 @@ public class LoginResource {
 				JsonObject token = new JsonObject();
 				token.addProperty("username", at.username);
 				token.addProperty("role", at.role);
-				token.addProperty("expirationDate", at.expirationDate);
 				token.addProperty("tokenID", at.tokenID);
 				return Response.ok(g.toJson(token)).build();
 			}
