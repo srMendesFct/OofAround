@@ -27,8 +27,7 @@ public class AuthToken {
 		this.creationDate = System.currentTimeMillis();
 		this.expirationDate = this.creationDate + AuthToken.EXPIRATION_TIME;
 		this.role = role;
-		this.payload = Base64.encodeAsString(username) + Base64.encodeAsString(Long.toString(expirationDate))
-				+ Base64.encodeAsString(role);
+		this.payload = Base64.encodeAsString(username) + Base64.encodeAsString(role);
 		this.hashedKey = Hashing.hmacSha512(SECRET.getBytes()).hashString(payload, StandardCharsets.UTF_8).toString();
 		this.tokenID = this.payload + "." + Base64.encodeAsString(this.hashedKey);
 	}
