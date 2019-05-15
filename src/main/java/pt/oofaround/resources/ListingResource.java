@@ -121,8 +121,6 @@ public class ListingResource {
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				res.addProperty("ownScore", document.get("score").toString());
 			}
-			// DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
-			// res.addProperty("username", document.getString("username"));
 
 			try {
 				Query sortedUsers;
@@ -130,11 +128,13 @@ public class ListingResource {
 				List<QueryDocumentSnapshot> docs;
 				JsonArray scores = new JsonArray();
 				JsonObject jsObj;
-				
+
 				if (data.lastRequest == 0) {
 					sortedUsers = users.orderBy("score", Direction.DESCENDING).limit(data.limit);
 					queryRes = sortedUsers.get();
 					docs = queryRes.get().getDocuments();
+					if (docs.isEmpty())
+						return Response.status(404).build();
 					for (QueryDocumentSnapshot document1 : docs) {
 						jsObj = new JsonObject();
 						jsObj.addProperty("username", document1.getString("username"));
@@ -150,6 +150,8 @@ public class ListingResource {
 					sortedUsers = users.orderBy("score", Direction.DESCENDING).startAfter(lastDoc).limit(data.limit);
 					queryRes = sortedUsers.get();
 					docs = queryRes.get().getDocuments();
+					if (docs.isEmpty())
+						return Response.status(404).build();
 					for (QueryDocumentSnapshot document1 : docs) {
 						jsObj = new JsonObject();
 						jsObj.addProperty("username", document1.getString("username"));
@@ -188,8 +190,6 @@ public class ListingResource {
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				res.addProperty("ownScore", document.get("score").toString());
 			}
-			// DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
-			// res.addProperty("username", document.getString("username"));
 
 			try {
 				Query sortedUsers;
@@ -232,30 +232,4 @@ public class ListingResource {
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
-
-	/*
-	 * @POST
-	 * 
-	 * @Path("/userinfo")
-	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON) public Response getUserInfo(UserData
-	 * data) throws InterruptedException, ExecutionException {
-	 * LOG.fine("Listing users");
-	 * 
-	 * if (AuthenticationTool.authenticate(data.tokenID, data.username, data.role,
-	 * "getPublicRankings")) { CollectionReference users = db.collection("users");
-	 * Query query = users.whereEqualTo("username", data.username);
-	 * ApiFuture<QuerySnapshot> querySnapshot = query.get();
-	 * 
-	 * JsonObject res = new JsonObject(); for (QueryDocumentSnapshot document :
-	 * querySnapshot.get().getDocuments()) { res.addProperty("score",
-	 * document.get("score").toString()); res.addProperty("username",
-	 * document.getString("username")); res.addProperty("email",
-	 * document.getString("email")); res.addProperty("country",
-	 * document.getString("country")); res.addProperty("cellphone",
-	 * document.getString("cellphone")); if (document.getBoolean("privacy"))
-	 * res.addProperty("privacy", "private"); else res.addProperty("privacy",
-	 * "public"); } return Response.ok(g.toJson(res)).build(); } else return
-	 * Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build(); }
-	 */
 }

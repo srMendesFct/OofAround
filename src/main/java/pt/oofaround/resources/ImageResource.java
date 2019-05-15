@@ -43,14 +43,21 @@ public class ImageResource {
 	@Path("/upload")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadImage(UploadImageData upload) {
-		BlobId blobId = BlobId.of(BUCKET, upload.name);
-		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER))))
-				.setContentType("image/jpeg").build();
 
-		Blob blob = db.create(blobInfo, upload.image);
+		Blob blob = db.get(BlobId.of(BUCKET, upload.name));
 
-		return Response.ok().build();
+		if (blob != null) {
+
+			BlobId blobId = BlobId.of(BUCKET, upload.name);
+			BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+					.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER))))
+					.setContentType("image/jpeg").build();
+
+			blob = db.create(blobInfo, upload.image);
+
+			return Response.ok().build();
+		} else
+			return Response.status(420).build(); // blob found
 	}
 
 	/*

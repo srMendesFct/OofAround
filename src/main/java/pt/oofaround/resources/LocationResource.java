@@ -82,7 +82,7 @@ public class LocationResource {
 
 		LOG.fine("Getting location" + data.name);
 		
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createLocation")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
 			CollectionReference locations = db.collection("locations");
 			Query query = locations.whereEqualTo("name", data.name);
 
