@@ -23,12 +23,4 @@ public class RankingData {
 		this.limit = Integer.parseInt(limit);
 		this.lastUsername = lastUsername;
 	}
-
-	public RankingData(String lastRequest, String limit, String username, String lastUsername) {
-		this.lastRequest = Integer.parseInt(lastRequest);
-		this.limit = Integer.parseInt(limit);
-		this.username = username;
-		this.lastUsername = lastUsername;
-	}
-
 }
