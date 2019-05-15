@@ -62,7 +62,7 @@ public class LocationResource {
 			Map<String, Object> docData = new HashMap();
 			docData.put("name", data.name);
 			docData.put("description", data.description);
-			docData.put("adress", data.address);
+			docData.put("address", data.address);
 			docData.put("coordinates", new GeoPoint(data.latitude, data.longitude));
 			docData.put("category", data.category);
 

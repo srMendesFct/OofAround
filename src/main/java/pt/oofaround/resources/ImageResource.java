@@ -38,6 +38,7 @@ public class ImageResource {
 	public ImageResource() {
 	}
 
+	@SuppressWarnings("unused")
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.APPLICATION_JSON)
