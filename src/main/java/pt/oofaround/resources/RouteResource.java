@@ -1,6 +1,8 @@
 package pt.oofaround.resources;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
@@ -24,8 +26,10 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
+import pt.oofaround.util.LocationData;
 import pt.oofaround.util.RouteData;
 
 @Path("/route")
@@ -39,7 +43,6 @@ public class RouteResource {
 	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 	private final Firestore db = firestore.getService();
 
-	
 	public RouteResource() {
 	}
 
@@ -48,9 +51,9 @@ public class RouteResource {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createRoute(RouteData data) throws InterruptedException, ExecutionException {
-		
+
 		LOG.fine("Creating route named " + data.name);
-		
+
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRoute")) {
 			CollectionReference routes = db.collection("routes");
 			Query query = routes.whereEqualTo("name", data.name);
@@ -63,21 +66,74 @@ public class RouteResource {
 
 			JsonObject res = new JsonObject();
 			Map<String, Object> docData = new HashMap();
-			String[] cat = {"lixo", "maisLixo"};
-			
+			String[] cat = { "lixo", "maisLixo" };
+			List<String> cats = new LinkedList<String>();
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("creatorUsername", data.creatorUsername);
 			docData.put("locationsNames", data.locationNames);
+
+			CollectionReference locations = db.collection("locations");
+			Query locationQuery;
+			ApiFuture<QuerySnapshot> locationQuerySnapshot;
+			String category;
+
+			for (String s : data.locationNames) {
+				locationQuery = routes.whereEqualTo("name", s);
+				locationQuerySnapshot = query.get();
+				for (DocumentSnapshot document : locationQuerySnapshot.get().getDocuments()) {
+					category = document.getString("category");
+					if (!cats.contains(category))
+						cats.add(category);
+				}
+			}
+
+			cats.sort(null);
+
 			docData.put("categories", cat);
-			docData.put("rating", (float) 0);
+			docData.put("rating", (double) 0);
 			docData.put("numberRates", 0);
 			docData.put("status", "ok");
-			
+
 			ApiFuture<WriteResult> newUser = routes.document(data.name).set(docData);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			
+
 			res.addProperty("tokenID", at.tokenID);
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@SuppressWarnings("unchecked")
+	@POST
+	@Path("/get")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getLocation(LocationData data) throws InterruptedException, ExecutionException {
+
+		LOG.fine("Getting location" + data.name);
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
+			CollectionReference locations = db.collection("locations");
+			Query query = locations.whereEqualTo("name", data.name);
+
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			JsonObject res = new JsonObject();
+			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				res.addProperty("name", document.getString("name"));
+				res.addProperty("description", document.getString("description"));
+				res.addProperty("creatorUsername", document.getString("creatorUsername"));
+
+				res.add("locationNames", JsonArraySupport.createOnePropArrayFromFirestoreArray(
+						(List<String>) document.get("locationNames"), "locationNames"));
+				// res.addProperty("locationNames", document.get("locationNames"));
+				res.add("categories", JsonArraySupport
+						.createOnePropArrayFromFirestoreArray((List<String>) document.get("categories"), "categories"));
+				res.addProperty("rating", document.getDouble("rating"));
+				res.addProperty("status", document.getString("status"));
+			}
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();

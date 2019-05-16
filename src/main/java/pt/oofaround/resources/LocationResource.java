@@ -1,6 +1,7 @@
 package pt.oofaround.resources;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
@@ -18,13 +19,15 @@ import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
-import com.google.cloud.firestore.GeoPoint;
 import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import pt.oofaround.support.JsonArraySupport;
+import pt.oofaround.support.MediaSupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.LocationData;
@@ -63,13 +66,17 @@ public class LocationResource {
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("address", data.address);
-			docData.put("coordinates", new GeoPoint(data.latitude, data.longitude));
+			docData.put("latitude", data.latitude);
+			docData.put("longitude", data.longitude);
 			docData.put("category", data.category);
+			docData.put("link", "https://storage.googleapis.com/oofaround.appspot.com/" + data.name);
 
 			ApiFuture<WriteResult> newLocation = locations.document(data.name).set(docData);
+			MediaSupport.uploadImage(data.name, data.image);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			JsonObject token = new JsonObject();
 			token.addProperty("tokenID", at.tokenID);
+
 			return Response.ok(g.toJson(token)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
@@ -81,7 +88,7 @@ public class LocationResource {
 	public Response getLocation(LocationData data) throws InterruptedException, ExecutionException {
 
 		LOG.fine("Getting location" + data.name);
-		
+
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
 			CollectionReference locations = db.collection("locations");
 			Query query = locations.whereEqualTo("name", data.name);
@@ -91,14 +98,37 @@ public class LocationResource {
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				res.addProperty("name", document.getString("name"));
 				res.addProperty("description", document.getString("description"));
-				res.addProperty("address", document.getString("description"));
-				res.addProperty("latitude", document.getGeoPoint("coordinates").getLatitude());
-				res.addProperty("longitude", document.getGeoPoint("coordinates").getLongitude());
+				res.addProperty("address", document.getString("address"));
+				res.addProperty("latitude", document.getString("latitude"));
+				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
 			}
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
-			
+
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/getCategory")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getLocationsByCat(LocationData data) throws InterruptedException, ExecutionException {
+
+		LOG.fine("Getting location" + data.name);
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCat")) {
+			CollectionReference locations = db.collection("locations");
+			Query query = locations.whereEqualTo("category", data.name);
+
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
+			JsonObject res = new JsonObject();
+			res.add("names", JsonArraySupport.createOnePropArray(docs, "name"));
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
