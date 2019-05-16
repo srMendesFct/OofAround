@@ -119,36 +119,32 @@ public class LocationResource {
 	public Response getLocationsByCat(LocationData data) throws InterruptedException, ExecutionException {
 
 		LOG.fine("Getting category" + data.name);
-		
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicRankings")) {
-			CollectionReference users = db.collection("users");
-			Query query = users.whereEqualTo("category", data.category);
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicRankings")) {
+			CollectionReference locations = db.collection("locations");
+			Query query;
+			ApiFuture<QuerySnapshot> querySnapshot;
+			List<QueryDocumentSnapshot> docs;
 			JsonObject res = new JsonObject();
-			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				res.addProperty("ownScore", document.get("score").toString());
-			}
 
 			try {
-				Query sortedUsers;
-				ApiFuture<QuerySnapshot> queryRes;
-				List<QueryDocumentSnapshot> docs;
 
 				if (data.lastRequest == 0) {
-					sortedUsers = users.orderBy("score", Direction.DESCENDING).limit(data.limit);
-					queryRes = sortedUsers.get();
-					docs = queryRes.get().getDocuments();
-					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link", "address", "latitude", "longitude"));
+					query = locations.whereEqualTo("category", data.category);
+					querySnapshot = query.get();
+					docs = querySnapshot.get().getDocuments();
+					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link",
+							"address", "latitude", "longitude"));
 				} else {
-					sortedUsers = users.whereEqualTo("username", data.lastName);
-					queryRes = sortedUsers.get();
-					docs = queryRes.get().getDocuments();
+					query = locations.whereEqualTo("username", data.lastName);
+					querySnapshot = query.get();
+					docs = querySnapshot.get().getDocuments();
 					QueryDocumentSnapshot lastDoc = docs.get(0);
-					sortedUsers = users.orderBy("score", Direction.DESCENDING).startAfter(lastDoc).limit(data.limit);
-					queryRes = sortedUsers.get();
-					docs = queryRes.get().getDocuments();
-					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link", "address", "latitude", "longitude"));
+					query = locations.orderBy("score", Direction.DESCENDING).startAfter(lastDoc).limit(data.limit);
+					querySnapshot = query.get();
+					docs = querySnapshot.get().getDocuments();
+					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link",
+							"address", "latitude", "longitude"));
 				}
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.addProperty("tokenID", at.tokenID);
@@ -164,20 +160,21 @@ public class LocationResource {
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 
-		/*if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCat")) {
-			CollectionReference locations = db.collection("locations");
-			Query query = locations.whereEqualTo("category", data.name);
-
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
-			JsonObject res = new JsonObject();
-			res.add("names", JsonArraySupport.createOnePropArray(docs, "name"));
-			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.addProperty("tokenID", at.tokenID);
-
-			return Response.ok(g.toJson(res)).build();
-		} else
-			return Response.status(Status.FORBIDDEN).build();*/
+		/*
+		 * if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role,
+		 * "getLocationsByCat")) { CollectionReference locations =
+		 * db.collection("locations"); Query query = locations.whereEqualTo("category",
+		 * data.name);
+		 * 
+		 * ApiFuture<QuerySnapshot> querySnapshot = query.get();
+		 * List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
+		 * JsonObject res = new JsonObject(); res.add("names",
+		 * JsonArraySupport.createOnePropArray(docs, "name")); AuthToken at = new
+		 * AuthToken(data.usernameR, data.role); res.addProperty("tokenID", at.tokenID);
+		 * 
+		 * return Response.ok(g.toJson(res)).build(); } else return
+		 * Response.status(Status.FORBIDDEN).build();
+		 */
 	}
 
 }
