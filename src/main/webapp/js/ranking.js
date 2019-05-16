@@ -22,7 +22,7 @@ captureDataR = function (values) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            alert("aaaa");
+            console.log(Response);
             var listDiv = document.getElementById('ranking');
             var ul = document.createElement('ul');
             for (var i = 0; i < values.length; ++i) {
@@ -31,7 +31,7 @@ captureDataR = function (values) {
                 ul.appendChild(li);
             }
             listDiv.appendChild(ul);
-            last = values[request - 1];
+            last = "";
             lastRequest = lastRequest + request;
             console.log(last);
             console.log(lastRequest);
