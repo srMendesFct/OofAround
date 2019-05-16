@@ -20,7 +20,6 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.Query.Direction;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
@@ -70,6 +69,7 @@ public class LocationResource {
 			docData.put("latitude", data.latitude);
 			docData.put("longitude", data.longitude);
 			docData.put("category", data.category);
+			docData.put("region", data.region);
 			docData.put("link", "https://storage.googleapis.com/oofaround.appspot.com/" + data.name);
 
 			ApiFuture<WriteResult> newLocation = locations.document(data.name).set(docData);
@@ -104,6 +104,7 @@ public class LocationResource {
 				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
 				res.addProperty("link", document.getString("link"));
+				res.addProperty("region", document.getString("region"));
 			}
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
@@ -120,7 +121,7 @@ public class LocationResource {
 
 		LOG.fine("Getting category" + data.name);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicRankings")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCat")) {
 			CollectionReference locations = db.collection("locations");
 			Query query;
 			ApiFuture<QuerySnapshot> querySnapshot;
@@ -129,7 +130,7 @@ public class LocationResource {
 
 			try {
 
-				if (data.lastRequest == 0) {
+				if (data.lastName.equalsIgnoreCase("")) {
 					query = locations.whereEqualTo("category", data.category);
 					querySnapshot = query.get();
 					docs = querySnapshot.get().getDocuments();
@@ -140,7 +141,7 @@ public class LocationResource {
 					querySnapshot = query.get();
 					docs = querySnapshot.get().getDocuments();
 					QueryDocumentSnapshot lastDoc = docs.get(0);
-					query = locations.orderBy("score", Direction.DESCENDING).startAfter(lastDoc).limit(data.limit);
+					query = locations.whereEqualTo("category", data.category).startAfter(lastDoc).limit(data.limit);
 					querySnapshot = query.get();
 					docs = querySnapshot.get().getDocuments();
 					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link",
@@ -159,22 +160,55 @@ public class LocationResource {
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
 
-		/*
-		 * if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role,
-		 * "getLocationsByCat")) { CollectionReference locations =
-		 * db.collection("locations"); Query query = locations.whereEqualTo("category",
-		 * data.name);
-		 * 
-		 * ApiFuture<QuerySnapshot> querySnapshot = query.get();
-		 * List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
-		 * JsonObject res = new JsonObject(); res.add("names",
-		 * JsonArraySupport.createOnePropArray(docs, "name")); AuthToken at = new
-		 * AuthToken(data.usernameR, data.role); res.addProperty("tokenID", at.tokenID);
-		 * 
-		 * return Response.ok(g.toJson(res)).build(); } else return
-		 * Response.status(Status.FORBIDDEN).build();
-		 */
+	@POST
+	@Path("/getCategoryRegion")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getLocationsByCatAndRegion(LocationData data) throws InterruptedException, ExecutionException {
+
+		LOG.fine("Getting category" + data.name);
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
+			CollectionReference locations = db.collection("locations");
+			Query query;
+			ApiFuture<QuerySnapshot> querySnapshot;
+			List<QueryDocumentSnapshot> docs;
+			JsonObject res = new JsonObject();
+
+			try {
+
+				if (data.lastName.equalsIgnoreCase("")) {
+					query = locations.whereEqualTo("category", data.category).whereEqualTo("region", data.region);
+					querySnapshot = query.get();
+					docs = querySnapshot.get().getDocuments();
+					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link",
+							"address", "latitude", "longitude"));
+				} else {
+					query = locations.whereEqualTo("username", data.lastName);
+					querySnapshot = query.get();
+					docs = querySnapshot.get().getDocuments();
+					QueryDocumentSnapshot lastDoc = docs.get(0);
+					query = locations.whereEqualTo("category", data.category).whereEqualTo("region", data.region)
+							.startAfter(lastDoc).limit(data.limit);
+					querySnapshot = query.get();
+					docs = querySnapshot.get().getDocuments();
+					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link",
+							"address", "latitude", "longitude"));
+				}
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.addProperty("tokenID", at.tokenID);
+
+				return Response.ok(g.toJson(res)).build();
+			} catch (Exception e) {
+				String s = "";
+				for (StackTraceElement ss : e.getStackTrace()) {
+					s += "   " + ss.toString();
+				}
+				return Response.status(Status.FORBIDDEN).entity(s).build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
 }
