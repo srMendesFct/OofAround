@@ -12,12 +12,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.cloud.storage.Acl;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Acl.Role;
+import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import com.google.cloud.storage.Acl.Role;
-import com.google.cloud.storage.Acl.User;
 
 import pt.oofaround.support.MediaSupport;
 import pt.oofaround.util.UploadImageData;
@@ -54,6 +55,8 @@ public class ImageResource {
 		BlobId blobId = BlobId.of(BUCKET, "BBB/");
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
+		
+		Blob blob = db.create(blobInfo);
 
 		return Response.ok().build();
 	}
