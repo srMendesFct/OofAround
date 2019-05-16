@@ -25,13 +25,13 @@ captureDataR = function (values) {
             alert("aaaa");
             var listDiv = document.getElementById('ranking');
             var ul = document.createElement('ul');
-            for (var i = 0; i < data.length; ++i) {
+            for (var i = 0; i < values.length; ++i) {
                 var li = document.createElement('li');
-                li.innerHTML = data[i];
+                li.innerHTML = values[i];
                 ul.appendChild(li);
             }
             listDiv.appendChild(ul);
-            last = data[request - 1];
+            last = values[request - 1];
             lastRequest = lastRequest + request;
             console.log(last);
             console.log(lastRequest);
