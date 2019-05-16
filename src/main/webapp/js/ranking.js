@@ -41,7 +41,7 @@ captureDataR = function (values) {
     });
 };
 
-window.onload = function captureDataR(values) {
+window.onload = function() {
     var token = localStorage.getItem('expiration');
     var date = new Date();
     var longday = date.getTime();
@@ -49,12 +49,13 @@ window.onload = function captureDataR(values) {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
-        setupCallback();
+        captureDataR(values);
+        setupCallback(values);
     }
 };
 
 setupCallback = function (values) {
     document.getElementById("vermais").addEventListener("click", function () {
-        captureDatar(values);
+        captureDataR(values);
     });
 };
