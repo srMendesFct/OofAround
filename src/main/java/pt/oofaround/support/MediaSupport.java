@@ -20,7 +20,7 @@ public class MediaSupport {
 	
 
 	@SuppressWarnings("unused")
-	private static final Logger LOG = Logger.getLogger(ImageResource.class.getName());
+	private static final Logger LOG = Logger.getLogger(MediaSupport.class.getName());
 
 	private static final String BUCKET = "oofaround.appspot.com";
 
