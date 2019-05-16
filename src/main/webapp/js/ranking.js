@@ -1,18 +1,18 @@
 var request = "5";
 var lastRequest = "0";
 var last = "";
+var values = {
+    tokenID: localStorage.getItem('token'),
+    usernameR: localStorage.getItem('username'),
+    role: localStorage.getItem('role'),
+    username: localStorage.getItem('username'),
+    lastRequest: lastRequest,
+    limit: request,
+    lastUsername: last
+}
 
-
-captureDataR = function () {
-    var values = {
-        tokenID: localStorage.getItem('token'),
-        usernameR: localStorage.getItem('username'),
-        role: localStorage.getItem('role'),
-        username: localStorage.getItem('username'),
-        lastRequest: request,
-        limit: lastRequest,
-        lastUsername: last
-    }
+captureDataR = function (values) {
+    
     console.log(JSON.stringify(values));
 
     $.ajax({
@@ -23,7 +23,7 @@ captureDataR = function () {
         crossDomain: true,
         success: function (Response) {},
         error: function (Response) {
-            console.log(Response.status);
+            console.log(Response);
             if (Response.status == 200) {
                 listDiv = document.getElementById('ranking');
                 var ul = document.createElement('ul');
@@ -44,4 +44,4 @@ captureDataR = function () {
     });
 };
 
-window.onload = captureDataR();
+window.onload = captureDataR(values);
