@@ -20,6 +20,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.Query.Direction;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
@@ -102,6 +103,7 @@ public class LocationResource {
 				res.addProperty("latitude", document.getString("latitude"));
 				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
+				res.addProperty("link", document.getString("link"));
 			}
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
@@ -116,9 +118,53 @@ public class LocationResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getLocationsByCat(LocationData data) throws InterruptedException, ExecutionException {
 
-		LOG.fine("Getting location" + data.name);
+		LOG.fine("Getting category" + data.name);
+		
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicRankings")) {
+			CollectionReference users = db.collection("users");
+			Query query = users.whereEqualTo("category", data.category);
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCat")) {
+			JsonObject res = new JsonObject();
+			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				res.addProperty("ownScore", document.get("score").toString());
+			}
+
+			try {
+				Query sortedUsers;
+				ApiFuture<QuerySnapshot> queryRes;
+				List<QueryDocumentSnapshot> docs;
+
+				if (data.lastRequest == 0) {
+					sortedUsers = users.orderBy("score", Direction.DESCENDING).limit(data.limit);
+					queryRes = sortedUsers.get();
+					docs = queryRes.get().getDocuments();
+					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link", "address", "latitude", "longitude"));
+				} else {
+					sortedUsers = users.whereEqualTo("username", data.lastName);
+					queryRes = sortedUsers.get();
+					docs = queryRes.get().getDocuments();
+					QueryDocumentSnapshot lastDoc = docs.get(0);
+					sortedUsers = users.orderBy("score", Direction.DESCENDING).startAfter(lastDoc).limit(data.limit);
+					queryRes = sortedUsers.get();
+					docs = queryRes.get().getDocuments();
+					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description", "link", "address", "latitude", "longitude"));
+				}
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.addProperty("tokenID", at.tokenID);
+
+				return Response.ok(g.toJson(res)).build();
+			} catch (Exception e) {
+				String s = "";
+				for (StackTraceElement ss : e.getStackTrace()) {
+					s += "   " + ss.toString();
+				}
+				return Response.status(Status.FORBIDDEN).entity(s).build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+
+		/*if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCat")) {
 			CollectionReference locations = db.collection("locations");
 			Query query = locations.whereEqualTo("category", data.name);
 
@@ -131,7 +177,7 @@ public class LocationResource {
 
 			return Response.ok(g.toJson(res)).build();
 		} else
-			return Response.status(Status.FORBIDDEN).build();
+			return Response.status(Status.FORBIDDEN).build();*/
 	}
 
 }
