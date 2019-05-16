@@ -11,7 +11,7 @@ var values = {
     lastUsername: last
 }
 
-captureDataR = function (values) {
+captureDataR = function (values)  {
 
     console.log(JSON.stringify(values));
 
