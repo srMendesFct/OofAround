@@ -11,7 +11,7 @@ var values = {
     lastUsername: last
 }
 
-captureDataR = function (values)  {
+captureDataR = function (values) {
 
     console.log(JSON.stringify(values));
 
@@ -31,9 +31,6 @@ captureDataR = function (values)  {
                 ul.appendChild(li);
             }
             listDiv.appendChild(ul);
-            var vermais = document.createElement('button');
-            vermais.setAttribute("id", "vermais");
-            listDiv.appendChild(vermais);
             last = data[request - 1];
             lastRequest = lastRequest + request;
             console.log(last);

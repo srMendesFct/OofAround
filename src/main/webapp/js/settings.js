@@ -2,7 +2,7 @@ window.onload = function () {
     var token = localStorage.getItem('expiration');
     var date = new Date();
     var longday = date.getTime();
-    if (longday > token ) {
+    if (longday > token) {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
@@ -17,7 +17,7 @@ captureDataD = function (values) {
         role: localStorage.getItem('role'),
         username: localStorage.getItem('username'),
     };
-    
+
     console.log(JSON.stringify(values));
 
     $.ajax({
