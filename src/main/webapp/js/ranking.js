@@ -27,11 +27,11 @@ captureDataR = function (values) {
             var ul = document.createElement('ul');
             for (var i = 0; i < values.length; ++i) {
                 var li = document.createElement('li');
-                li.innerHTML = values[i];
+                li.innerHTML = Response.scores[i].username + ": " + Response.scores[i].scores;
                 ul.appendChild(li);
             }
             listDiv.appendChild(ul);
-            last = "";
+            last = Response.scores[request - 1].username;
             lastRequest = lastRequest + request;
             console.log(last);
             console.log(lastRequest);
