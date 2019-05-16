@@ -1,3 +1,5 @@
+var user = localStorage.getItem('username');
+
 window.onload = function () {
     var token = localStorage.getItem('expiration');
     var date = new Date();
@@ -40,6 +42,12 @@ captureDataD = function (values) {
 setupCallback = function () {
     document.getElementById("delete").addEventListener("click", function () {
         captureDataD();
+        window.location.href = "https://oofaround.appspot.com/";
+    });
+
+    document.getElementById("logout").addEventListener("click", function () {
+        localStorage.clear();
+        alert("Sessão terminada.")
         window.location.href = "https://oofaround.appspot.com/";
     });
 };
