@@ -24,7 +24,7 @@
          success: function (Response) {
              var listDiv = document.getElementById('ranking');
              var ul = document.createElement('ul');
-             for (var i = 0; i < request; ++i) {
+             for (var i = 0; i < Response.scores.length; ++i) {
                  var li = document.createElement('li');
                  var a = document.createElement('a');
                  a.innerHTML = Response.scores[i].username + ": " + Response.scores[i].score;
