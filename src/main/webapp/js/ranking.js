@@ -13,8 +13,6 @@
         limit: request,
         lastUsername: last
     }
-     console.log(JSON.stringify(values));
-
      $.ajax({
          type: "POST",
          url: "https://oofaround.appspot.com/rest/list/publicranking",
@@ -34,9 +32,6 @@
              listDiv.appendChild(ul);
              last = Response.scores[request - 1].username;
              lastRequest = lastRequest + request;
-             console.log(last);
-             console.log(lastRequest);
-
          },
          error: function (Response) {},
          data: JSON.stringify(values) // post data || get data
