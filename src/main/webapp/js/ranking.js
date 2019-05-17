@@ -1,18 +1,18 @@
  var request = 5;
  var lastRequest = 0;
  var last = "";
- var values = {
-     tokenID: localStorage.getItem('token'),
-     usernameR: localStorage.getItem('username'),
-     role: localStorage.getItem('role'),
-     username: localStorage.getItem('username'),
-     lastRequest: lastRequest,
-     limit: request,
-     lastUsername: last
- }
+ 
 
- captureDataR = function (values) {
-
+ captureDataR = function () {
+    var values = {
+        tokenID: localStorage.getItem('token'),
+        usernameR: localStorage.getItem('username'),
+        role: localStorage.getItem('role'),
+        username: localStorage.getItem('username'),
+        lastRequest: lastRequest,
+        limit: request,
+        lastUsername: last
+    }
      console.log(JSON.stringify(values));
 
      $.ajax({
@@ -22,14 +22,11 @@
          dataType: 'json', // data type        
          crossDomain: true,
          success: function (Response) {
-             console.log(Response);
              var listDiv = document.getElementById('ranking');
              var ul = document.createElement('ul');
              for (var i = 0; i < request; ++i) {
                  var li = document.createElement('li');
                  var a = document.createElement('a');
-                 console.log(Response.scores[i].score);
-                 console.log(Response.scores[i].username);
                  a.innerHTML = Response.scores[i].username + ": " + Response.scores[i].score;
                  li.appendChild(a);
                  ul.appendChild(li);
@@ -54,13 +51,13 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
-         captureDataR(values);
-         setupCallback(values);
+         captureDataR();
+         setupCallback();
      }
  };
 
- setupCallback = function (values) {
+ setupCallback = function () {
      document.getElementById("vermais").addEventListener("click", function () {
-         captureDataR(values);
+         captureDataR();
      });
  };
