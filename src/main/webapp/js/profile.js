@@ -1,7 +1,12 @@
+var fileReader = new FileReader();
+var file = document.getElementById("fileid").file;
+
+
 captureDataR = function () {
+    fileReader.readAsArrayBuffer(file);
     var values = {
-        name: "",
-        image: ""
+        name: localStorage.getItem('username') + "_perfil",
+        image: fileReader.result
     }
     $.ajax({
         type: "POST",
@@ -38,6 +43,6 @@ window.onload = function () {
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
-        document.getElementById('fileid').click();
+        captureDataR();
     });
 };
