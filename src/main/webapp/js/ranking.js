@@ -25,11 +25,13 @@
              console.log(Response);
              var listDiv = document.getElementById('ranking');
              var ul = document.createElement('ul');
-             for (var i = 0; i < values.length; ++i) {
-                 var li = document.createElement('li'); 
+             for (var i = 0; i < request; ++i) {
+                 var li = document.createElement('li');
+                 var a = document.createElement('a');
                  console.log(Response.scores[i].score);
                  console.log(Response.scores[i].username);
-                 li.innerHTML = Response.scores[i].username + ": " + Response.scores[i].score;
+                 a.innerHTML = Response.scores[i].username + ": " + Response.scores[i].score;
+                 li.appendChild(a);
                  ul.appendChild(li);
              }
              listDiv.appendChild(ul);
