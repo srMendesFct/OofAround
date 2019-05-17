@@ -37,8 +37,10 @@
          data: JSON.stringify(values) // post data || get data
      });
  };
+ var user = localStorage.getItem('username');
 
  window.onload = function () {
+    document.getElementById("user").innerHTML = user;
      var token = localStorage.getItem('expiration');
      var date = new Date();
      var longday = date.getTime();

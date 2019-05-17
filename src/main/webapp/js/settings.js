@@ -1,17 +1,5 @@
 var user = localStorage.getItem('username');
 
-window.onload = function () {
-    var token = localStorage.getItem('expiration');
-    var date = new Date();
-    var longday = date.getTime();
-    if (longday > token) {
-        localStorage.clear();
-        window.location.href = "https://oofaround.appspot.com/";
-    } else {
-        setupCallback();
-    }
-};
-
 captureDataD = function (values) {
     var values = {
         tokenID: localStorage.getItem('token'),
@@ -37,6 +25,20 @@ captureDataD = function (values) {
         },
         data: JSON.stringify(values) // post data || get data
     });
+};
+var user = localStorage.getItem('username');
+
+window.onload = function () {
+    document.getElementById("user").innerHTML = user;
+    var token = localStorage.getItem('expiration');
+    var date = new Date();
+    var longday = date.getTime();
+    if (longday > token) {
+        localStorage.clear();
+        window.location.href = "https://oofaround.appspot.com/";
+    } else {
+        setupCallback();
+    }
 };
 
 setupCallback = function () {
