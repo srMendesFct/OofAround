@@ -5,7 +5,7 @@ captureDataR = function () {
     fileReader.readAsArrayBuffer(file);
     fileReader.onload = function () {
         s = fileReader.result;
-        var send = window.btoa(s);
+        var send = window.atob(s);
         var values = {
             name: localStorage.getItem('username') + "_perfil",
             image: send
@@ -17,10 +17,12 @@ captureDataR = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
+                
+            },
+            error: function (Response) {
                 alert('Imagem alterada');
                 window.location.href ="https://oofaround.appspot.com/profile.html";
             },
-            error: function (Response) {},
             data: JSON.stringify(values) // post data || get data
         });
     } 
