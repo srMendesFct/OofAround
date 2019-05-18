@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.api.gax.paging.Page;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.storage.Acl;
@@ -21,6 +22,8 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
+import com.google.cloud.storage.Storage.BlobListOption;
 import com.google.cloud.storage.StorageOptions;
 
 import pt.oofaround.support.MediaSupport;
@@ -92,7 +95,20 @@ public class ImageResource {
 
 		Blob blob = db.create(blobInfo, data.image);
 		
-		//List<String> list = db.lis
+		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
+
+		return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/get")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response get(FolderData data) {
+		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+		Storage db = storage.getService();
+		
+		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
 
 		return Response.ok().build();
 	}
