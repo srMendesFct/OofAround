@@ -2,6 +2,7 @@ package pt.oofaround.resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -11,6 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
@@ -27,7 +30,7 @@ import pt.oofaround.util.UploadImageData;
 @Path("/images")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImageResource {
-	
+
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(ImageResource.class.getName());
 
@@ -61,11 +64,16 @@ public class ImageResource {
 
 		Blob blob = db.create(blobInfo);
 
-		blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
-		blobInfo = BlobInfo.newBuilder(blobId)
-				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
+		MediaSupport.uploadImage(data.username + "/" + data.photoName, data.image);
 
-		blob = db.create(blobInfo, data.image);
+		/*
+		 * blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName); blobInfo =
+		 * BlobInfo.newBuilder(blobId) .setAcl(new
+		 * ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(),
+		 * Role.READER)))).content.build();
+		 * 
+		 * blob = db.create(blobInfo, data.image);
+		 */
 
 		return Response.ok().build();
 	}
@@ -83,7 +91,10 @@ public class ImageResource {
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
 		Blob blob = db.create(blobInfo, data.image);
+		
+		//List<String> list = db.lis
 
 		return Response.ok().build();
 	}
+	
 }
