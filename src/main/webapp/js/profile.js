@@ -37,13 +37,13 @@ window.onload = function () {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
-        var fileReader = new FileReader();
         setupCallback();
     }
 };
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
+        var fileReader = new FileReader();
         var file = document.getElementById("fileID").files[0];
         console.log(file);
         fileReader.readAsArrayBuffer(file);
