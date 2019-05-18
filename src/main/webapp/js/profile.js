@@ -1,12 +1,12 @@
 captureDataR = function () {
     var fileReader = new FileReader();
-    var file = document.getElementById("fileID").files[0];
-    console.log(file);
-    fileReader.readAsArrayBuffer(file);
-    console.log(fileReader.result);
+    var file = document.getElementById("fileID");
+    var send = fileReader.result;
+    fileReader.readAsArrayBuffer(file.files[0]);
+    console.log(send);
     var values = {
         name: localStorage.getItem('username') + "_perfil",
-        image: fileReader.result
+        image: send
     }
     $.ajax({
         type: "POST",
