@@ -1,5 +1,8 @@
 captureDataR = function () {
-
+    var fileReader = new FileReader();
+    var file = document.getElementById("fileID").files[0];
+    console.log(file);
+    fileReader.readAsArrayBuffer(file);
     var values = {
         name: localStorage.getItem('username') + "_perfil",
         image: fileReader.result
@@ -43,10 +46,7 @@ window.onload = function () {
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
-        var fileReader = new FileReader();
-        var file = document.getElementById("fileID").files[0];
-        console.log(file);
-        fileReader.readAsArrayBuffer(file);
+
         captureDataR();
     });
 };
