@@ -38,7 +38,6 @@ window.onload = function () {
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         var fileReader = new FileReader();
-        console.log(file);
         setupCallback();
     }
 };
