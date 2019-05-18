@@ -39,7 +39,6 @@ window.onload = function () {
     } else {
         var fileReader = new FileReader();
         var file = document.getElementById("fileID").files[0];
-        fileReader.readAsArrayBuffer(file);
         console.log(file);
         setupCallback();
     }
@@ -47,6 +46,7 @@ window.onload = function () {
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
+        fileReader.readAsArrayBuffer(file);
         captureDataR();
     });
 };
