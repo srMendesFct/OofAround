@@ -38,7 +38,6 @@ window.onload = function () {
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         var fileReader = new FileReader();
-        var file = document.getElementById("fileID").files[0];
         console.log(file);
         setupCallback();
     }
@@ -46,6 +45,8 @@ window.onload = function () {
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
+        var file = document.getElementById("fileID").files[0];
+        console.log(file);
         fileReader.readAsArrayBuffer(file);
         captureDataR();
     });
