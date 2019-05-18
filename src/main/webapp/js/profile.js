@@ -25,7 +25,8 @@ captureDataR = function () {
     });
 };
 
-var fileReader = new FileReader();
+
+
 var user = localStorage.getItem('username');
 window.onload = function () {
     document.getElementById("user").innerHTML = user;
@@ -36,14 +37,16 @@ window.onload = function () {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
+        var fileReader = new FileReader();
+        var file = document.getElementById("fileID").files[0];
+        fileReader.readAsArrayBuffer(file);
+        console.log(file);
         setupCallback();
     }
 };
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
-        var file = document.getElementById("fileID").files[0];
-        fileReader.readAsArrayBuffer(file);
         captureDataR();
     });
 };
