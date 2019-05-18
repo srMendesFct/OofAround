@@ -1,6 +1,5 @@
 package pt.oofaround.resources;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -12,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.appengine.repackaged.com.google.common.hash.Hashing;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
@@ -29,10 +27,7 @@ import pt.oofaround.util.UploadImageData;
 @Path("/images")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImageResource {
-
-	private static final String SECRETUSER = "99999999527";
-	private static final String SECRETPIC = "99999997841";
-
+	
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(ImageResource.class.getName());
 
@@ -55,26 +50,39 @@ public class ImageResource {
 	@POST
 	@Path("/folder")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response uploadToProfileFolder(FolderData data) {
+	public Response uploadToProfileNewFolder(FolderData data) {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 		Storage db = storage.getService();
 
-		BlobId blobId = BlobId.of(BUCKET,
-				Hashing.hmacSha256(SECRETUSER.getBytes()).hashString(data.username, StandardCharsets.UTF_8).toString());
+		BlobId blobId = BlobId.of(BUCKET, data.username + "/");
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
 		Blob blob = db.create(blobInfo);
 
-		/*blobId = BlobId.of(BUCKET,
-				Hashing.hmacSha256(SECRETUSER.getBytes()).hashString(data.username, StandardCharsets.UTF_8).toString()
-						+ "/" + Hashing.hmacSha256(SECRETPIC.getBytes())
-								.hashString(data.photoName, StandardCharsets.UTF_8).toString());
+		blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
 		blobInfo = BlobInfo.newBuilder(blobId)
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
-		blob = db.create(blobInfo, data.image);*/
+		blob = db.create(blobInfo, data.image);
+
+		return Response.ok().build();
+	}
+
+	@POST
+	@Path("/profilepic")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response uploadToProfileFolder(FolderData data) {
+		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+		Storage db = storage.getService();
+
+		BlobId blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
+		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
+
+		Blob blob = db.create(blobInfo, data.image);
 
 		return Response.ok().build();
 	}
