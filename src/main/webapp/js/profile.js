@@ -1,10 +1,13 @@
 captureDataR = function () {
     var fileReader = new FileReader();
     var file = document.getElementById("fileID").files[0];
+    var send;
+    var s;
     console.log(file);
     fileReader.readAsArrayBuffer(file);
     fileReader.onload = function () {
-        var send = fileReader.result;
+        s = fileReader.result;
+        send = btoa(s);
         console.log(send);
     } 
     var values = {
