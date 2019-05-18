@@ -2,9 +2,11 @@ captureDataR = function () {
     var fileReader = new FileReader();
     var file = document.getElementById("fileID").files[0];
     console.log(file);
-    var send = fileReader.result;
     fileReader.readAsArrayBuffer(file);
-    console.log(send);
+    fileReader.onload = function () {
+        var send = fileReader.result;
+        console.log(send);
+    } 
     var values = {
         name: localStorage.getItem('username') + "_perfil",
         image: send
