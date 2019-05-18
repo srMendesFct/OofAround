@@ -11,7 +11,7 @@
         username: localStorage.getItem('username'),
         lastRequest: lastRequest,
         limit: request,
-        lastUsername: last
+        lastUsername: last 
     }
      $.ajax({
          type: "POST",
