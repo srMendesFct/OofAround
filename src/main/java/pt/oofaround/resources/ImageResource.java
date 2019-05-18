@@ -1,17 +1,18 @@
 package pt.oofaround.resources;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.appengine.repackaged.com.google.common.hash.Hashing;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
@@ -19,7 +20,6 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.StorageOptions;
 
 import pt.oofaround.support.MediaSupport;
@@ -29,6 +29,9 @@ import pt.oofaround.util.UploadImageData;
 @Path("/images")
 @Produces(MediaType.APPLICATION_JSON)
 public class ImageResource {
+
+	private static final String SECRETUSER = "99999999527";
+	private static final String SECRETPIC = "99999997841";
 
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(ImageResource.class.getName());
@@ -57,24 +60,22 @@ public class ImageResource {
 
 		Storage db = storage.getService();
 
-		BlobId blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
+		BlobId blobId = BlobId.of(BUCKET,
+				Hashing.hmacSha256(SECRETUSER.getBytes()).hashString(data.username, StandardCharsets.UTF_8).toString());
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
-		Blob blob = db.create(blobInfo, data.image);
+		Blob blob = db.create(blobInfo);
+
+		/*blobId = BlobId.of(BUCKET,
+				Hashing.hmacSha256(SECRETUSER.getBytes()).hashString(data.username, StandardCharsets.UTF_8).toString()
+						+ "/" + Hashing.hmacSha256(SECRETPIC.getBytes())
+								.hashString(data.photoName, StandardCharsets.UTF_8).toString());
+		blobInfo = BlobInfo.newBuilder(blobId)
+				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
+
+		blob = db.create(blobInfo, data.image);*/
 
 		return Response.ok().build();
-	}
-
-	@GET
-	@Path("/get")
-	public Response getInfo() {
-		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
-
-		Storage db = storage.getService();
-		
-		Blob blob = db.get(BUCKET, "easy",  BlobGetOption.fields(Storage.BlobField.values()));
-		
-		return Response.ok().entity(blob.getMediaLink() + "  ||   " + blob.getSelfLink()).build();
 	}
 }
