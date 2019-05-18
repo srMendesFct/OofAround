@@ -29,6 +29,7 @@ captureDataD = function (values) {
 var user = localStorage.getItem('username');
 
 window.onload = function () {
+    document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
     document.getElementById("user").innerHTML = user;
     var token = localStorage.getItem('expiration');
     var date = new Date();

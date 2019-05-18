@@ -17,19 +17,22 @@ captureDataR = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
-                
+
             },
             error: function (Response) {
                 alert('Imagem alterada');
-                window.location.href ="https://oofaround.appspot.com/profile.html";
+                window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             data: JSON.stringify(values) // post data || get data
         });
-    } 
+    }
 };
 
 var user = localStorage.getItem('username');
 window.onload = function () {
+    var $ANSWER = 'cat';
+    document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
+    console.log(document.getElementById('profilePic').src);
     document.getElementById("user").innerHTML = user;
     var token = localStorage.getItem('expiration');
     var date = new Date();

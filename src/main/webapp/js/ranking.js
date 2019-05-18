@@ -41,6 +41,7 @@
 
  window.onload = function () {
     document.getElementById("user").innerHTML = user;
+    document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
      var token = localStorage.getItem('expiration');
      var date = new Date();
      var longday = date.getTime();
