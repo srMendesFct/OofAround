@@ -108,9 +108,11 @@ public class ImageResource {
 
 		Storage db = storage.getService();
 		
-		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
+		//Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
 
-		return Response.ok().build();
+		Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+		
+		return Response.ok().entity(blob).build();
 	}
 	
 }
