@@ -31,8 +31,8 @@ captureDataR = function () {
 var user = localStorage.getItem('username');
 window.onload = function () {
     var $ANSWER = 'cat';
-    document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
-    console.log(document.getElementById('profilePic').src);
+    //document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
+    document.getElementById("profilePic").src = "https://oofaround.appspot.com/img/silhouette-profile-pic-profile-user-silhouette-318-40557.jpg"
     document.getElementById("user").innerHTML = user;
     var token = localStorage.getItem('expiration');
     var date = new Date();
