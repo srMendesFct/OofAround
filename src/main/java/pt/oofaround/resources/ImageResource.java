@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,6 +19,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.StorageOptions;
 
 import pt.oofaround.support.MediaSupport;
@@ -62,5 +64,17 @@ public class ImageResource {
 		Blob blob = db.create(blobInfo, data.image);
 
 		return Response.ok().build();
+	}
+
+	@GET
+	@Path("/get")
+	public Response getInfo() {
+		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+		Storage db = storage.getService();
+		
+		Blob blob = db.get(BUCKET, "easy",  BlobGetOption.fields(Storage.BlobField.values()));
+		
+		return Response.ok().entity(blob.getMediaLink() + "  ||   " + blob.getSelfLink()).build();
 	}
 }
