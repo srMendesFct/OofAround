@@ -1,8 +1,6 @@
-var fileReader = new FileReader();
-var file = document.getElementById("fileid").files;
-
-
 captureDataR = function () {
+    var fileReader = new FileReader();
+    var file = document.getElementById("fileID").files[0];
     fileReader.readAsArrayBuffer(file);
     var values = {
         name: localStorage.getItem('username') + "_perfil",
@@ -28,8 +26,8 @@ captureDataR = function () {
         data: JSON.stringify(values) // post data || get data
     });
 };
-var user = localStorage.getItem('username');
 
+var user = localStorage.getItem('username');
 window.onload = function () {
     document.getElementById("user").innerHTML = user;
     var token = localStorage.getItem('expiration');
