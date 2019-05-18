@@ -2,6 +2,8 @@ package pt.oofaround.resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -13,8 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.api.gax.paging.Page;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
@@ -22,7 +22,6 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.Storage.BlobListOption;
 import com.google.cloud.storage.StorageOptions;
 
@@ -108,11 +107,17 @@ public class ImageResource {
 
 		Storage db = storage.getService();
 		
-		//Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
-
-		Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
+		Iterator<Blob> it = list.iterateAll().iterator();
+		List<String> blobs = new LinkedList<String>();
+		it.next();
+		while(it.hasNext())
+			blobs.add(it.next().getName());
 		
-		return Response.ok().entity(blob).build();
+
+		//Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+		
+		return Response.ok().entity(blobs).build();
 	}
 	
 }
