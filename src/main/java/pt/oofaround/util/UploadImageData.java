@@ -2,14 +2,22 @@ package pt.oofaround.util;
 
 public class UploadImageData {
 
-	public String name;
+	public String username;
 	public byte[] image;
-	
-	public UploadImageData(){
+	public String photoName;
+
+	public UploadImageData() {
 	}
 
-	public UploadImageData(String name, byte[] image) {
-		this.name = name;
+	public UploadImageData(String username, byte[] image) {
+		this.username = username;
 		this.image = image;
 	}
+
+	public UploadImageData(String username, byte[] image, String photoName) {
+		this.username = username;
+		this.image = image;
+		this.photoName = photoName;
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -27,7 +28,6 @@ import com.google.cloud.storage.Storage.BlobListOption;
 import com.google.cloud.storage.StorageOptions;
 
 import pt.oofaround.support.MediaSupport;
-import pt.oofaround.util.FolderData;
 import pt.oofaround.util.UploadImageData;
 
 @Path("/images")
@@ -47,7 +47,7 @@ public class ImageResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadImage(UploadImageData upload) {
 
-		MediaSupport.uploadImage(upload.name, upload.image);
+		MediaSupport.uploadImage(upload.username + "_profile", upload.image);
 
 		return Response.ok().build();
 	}
@@ -56,7 +56,7 @@ public class ImageResource {
 	@POST
 	@Path("/folder")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response uploadToProfileNewFolder(FolderData data) {
+	public Response uploadToProfileNewFolder(UploadImageData data) throws InterruptedException, ExecutionException {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 		Storage db = storage.getService();
@@ -67,7 +67,9 @@ public class ImageResource {
 
 		Blob blob = db.create(blobInfo);
 
-		MediaSupport.uploadImage(data.username + "/" + data.photoName, data.image);
+		int nbrPics = MediaSupport.getNumberPhotos(data.username);
+
+		MediaSupport.uploadImage(data.username + "/" + nbrPics, data.image);
 
 		/*
 		 * blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName); blobInfo =
@@ -84,18 +86,11 @@ public class ImageResource {
 	@POST
 	@Path("/picfolder")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response uploadToProfileFolder(FolderData data) {
-		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+	public Response uploadToProfileFolder(UploadImageData data) throws InterruptedException, ExecutionException {
 
-		Storage db = storage.getService();
+		int nbrPics = MediaSupport.getNumberPhotos(data.username);
 
-		BlobId blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
-		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
-
-		Blob blob = db.create(blobInfo, data.image);
-
-		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
+		MediaSupport.uploadImage(data.username + "/" + nbrPics, data.image);
 
 		return Response.ok().build();
 	}
@@ -103,7 +98,7 @@ public class ImageResource {
 	@POST
 	@Path("/getList")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getList(FolderData data) {
+	public Response getList(UploadImageData data) {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 		Storage db = storage.getService();
@@ -123,7 +118,7 @@ public class ImageResource {
 	@POST
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response get(FolderData data) {
+	public Response get(UploadImageData data) {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 		Storage db = storage.getService();
