@@ -22,6 +22,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.Storage.BlobListOption;
 import com.google.cloud.storage.StorageOptions;
 
@@ -81,7 +82,7 @@ public class ImageResource {
 	}
 
 	@POST
-	@Path("/profilepic")
+	@Path("/picfolder")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadToProfileFolder(FolderData data) {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
@@ -93,12 +94,32 @@ public class ImageResource {
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
 		Blob blob = db.create(blobInfo, data.image);
-		
+
 		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
 
 		return Response.ok().build();
 	}
-	
+
+	@POST
+	@Path("/getList")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getList(FolderData data) {
+		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+		Storage db = storage.getService();
+
+		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
+		Iterator<Blob> it = list.iterateAll().iterator();
+		List<String> blobs = new LinkedList<String>();
+		it.next();
+		while (it.hasNext())
+			blobs.add(it.next().getName());
+
+		// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+
+		return Response.ok().entity(blobs).build();
+	}
+
 	@POST
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -106,18 +127,14 @@ public class ImageResource {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 		Storage db = storage.getService();
-		
-		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
-		Iterator<Blob> it = list.iterateAll().iterator();
-		List<String> blobs = new LinkedList<String>();
-		it.next();
-		while(it.hasNext())
-			blobs.add(it.next().getName());
-		
 
-		//Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
-		
-		return Response.ok().entity(blobs).build();
+		BlobId blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
+
+		Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+		// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+
+		return Response.ok().entity(blob.getMediaLink()).build();
 	}
-	
+
 }
