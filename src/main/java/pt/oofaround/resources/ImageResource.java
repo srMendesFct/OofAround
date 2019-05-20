@@ -113,7 +113,7 @@ public class ImageResource {
 		List<String> blobs = new LinkedList<String>();
 		it.next();
 		while (it.hasNext())
-			blobs.add(it.next().getName());
+			blobs.add(it.next().getMediaLink());
 
 		// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
 
