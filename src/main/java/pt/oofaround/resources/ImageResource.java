@@ -43,11 +43,11 @@ public class ImageResource {
 	}
 
 	@POST
-	@Path("/upload")
+	@Path("/uploadprofile")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadImage(UploadImageData upload) {
 
-		MediaSupport.uploadImage(upload.username + "_profile", upload.image);
+		MediaSupport.uploadImage(upload.name + "_profile", upload.image);
 
 		return Response.ok().build();
 	}
@@ -61,36 +61,27 @@ public class ImageResource {
 
 		Storage db = storage.getService();
 
-		BlobId blobId = BlobId.of(BUCKET, data.username + "/");
+		BlobId blobId = BlobId.of(BUCKET, data.name + "/");
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
 		Blob blob = db.create(blobInfo);
 
-		int nbrPics = MediaSupport.getNumberPhotos(data.username);
+		int nbrPics = MediaSupport.getNumberPhotos(data.name);
 
-		MediaSupport.uploadImage(data.username + "/" + nbrPics, data.image);
-
-		/*
-		 * blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName); blobInfo =
-		 * BlobInfo.newBuilder(blobId) .setAcl(new
-		 * ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(),
-		 * Role.READER)))).content.build();
-		 * 
-		 * blob = db.create(blobInfo, data.image);
-		 */
+		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
 
 		return Response.ok().build();
 	}
 
 	@POST
-	@Path("/picfolder")
+	@Path("/uploadfoto")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadToProfileFolder(UploadImageData data) throws InterruptedException, ExecutionException {
 
-		int nbrPics = MediaSupport.getNumberPhotos(data.username);
+		int nbrPics = MediaSupport.getNumberPhotos(data.name);
 
-		MediaSupport.uploadImage(data.username + "/" + nbrPics, data.image);
+		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
 
 		return Response.ok().build();
 	}
@@ -103,7 +94,7 @@ public class ImageResource {
 
 		Storage db = storage.getService();
 
-		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.username + "/"));
+		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.name + "/"));
 		Iterator<Blob> it = list.iterateAll().iterator();
 		List<String> blobs = new LinkedList<String>();
 		it.next();
@@ -123,7 +114,7 @@ public class ImageResource {
 
 		Storage db = storage.getService();
 
-		BlobId blobId = BlobId.of(BUCKET, data.username + "/" + data.photoName);
+		BlobId blobId = BlobId.of(BUCKET, data.name);
 
 		Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
