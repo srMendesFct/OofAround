@@ -7,12 +7,12 @@ captureDataR = function () {
         s = fileReader.result;
         var send = window.btoa(s);
         var values = {
-            name: localStorage.getItem('username') + "_perfil",
+            name: localStorage.getItem('username'),
             image: send
         }
         $.ajax({
             type: "POST",
-            url: "https://oofaround.appspot.com/rest/images/upload",
+            url: "https://oofaround.appspot.com/rest/images/uploadprofile",
             contentType: "application/json;charset=utf-8",
             dataType: 'json', // data type        
             crossDomain: true,

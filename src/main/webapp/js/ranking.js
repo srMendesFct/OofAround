@@ -26,12 +26,12 @@
              for (var i = 0; i < Response.scores.length; ++i) {
                  var li = document.createElement('li');
                  li.className = "list-group-item d-flex align-items-center";
-                 li.setAttribute("style", "background-color:#ff4d4d");
+                 li.setAttribute("style", "background-color:#ffcccc");
                  var a = document.createElement('a');
                  var user = Response.scores[i].username;
                  var score = Response.scores[i].score;
-                 score.setAttribute("style", "color:red");
-                 a.innerHTML = user + "                                                      " + score;
+                 a.setAttribute("align", "center");
+                 a.innerHTML = i + " " + user + " " + score;
                  li.appendChild(a);
                  ul.appendChild(li);
              }
