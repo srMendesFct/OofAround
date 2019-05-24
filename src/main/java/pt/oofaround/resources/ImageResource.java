@@ -57,7 +57,7 @@ public class ImageResource {
 	@Path("/uploadprofile")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadImage(UploadImageData data) throws InterruptedException, ExecutionException {
-		if (AuthenticationTool.authenticate(data.tokenId, data.usernameR, data.role, "uploadImage")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "uploadImage")) {
 
 			MediaSupport.uploadImage(data.name + "_profile", data.image);
 
@@ -76,7 +76,7 @@ public class ImageResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response uploadToProfileFolder(UploadImageData data) throws InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenId, data.usernameR, data.role, "uploadToProfileFolder")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "uploadToProfileFolder")) {
 			FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
 					.build();
 			Firestore db = firestore.getService();
@@ -108,7 +108,7 @@ public class ImageResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getList(UploadImageData data) throws InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenId, data.usernameR, data.role, "getList")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getList")) {
 			StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 			Storage db = storage.getService();
@@ -123,7 +123,7 @@ public class ImageResource {
 			// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			JsonObject token = new JsonObject();
-			token.add("name", JsonArraySupport.createOnePropArrayFromFirestoreArray(blobs, "name"));
+			token.add("names", JsonArraySupport.createOnePropArrayFromFirestoreArray(blobs, "name"));
 			token.addProperty("username", at.username);
 			token.addProperty("role", at.role);
 			token.addProperty("tokenID", at.tokenID);
@@ -137,7 +137,7 @@ public class ImageResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getImage(UploadImageData data) throws InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenId, data.usernameR, data.role, "getImage")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getImage")) {
 
 			StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
