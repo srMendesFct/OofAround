@@ -23,6 +23,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
@@ -74,6 +75,8 @@ public class ImageResource {
 		long nbrPics = 0;
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 			nbrPics = (long) document.get("numberPhotos");
+			ApiFuture<WriteResult> future = document.getReference().update("numberPhotos", nbrPics++);
+			//future.get();
 		}
 		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
 
