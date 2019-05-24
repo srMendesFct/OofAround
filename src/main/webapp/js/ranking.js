@@ -19,25 +19,22 @@
          contentType: "application/json;charset=utf-8",
          dataType: 'json', // data type        
          crossDomain: true,
-         success: function (response) {
-        	 console.log(response);
+         success: function (Response) {
              var listDiv = document.getElementById('ranking');
              var ul = document.createElement('ul');
-             ul.className = "container table table-danger";
-             for (var i = 0; i < response.scores.length; ++i) {
+             ul.className = "list-group list-group-flush";
+             for (var i = 0; i < Response.scores.length; ++i) {
                  var li = document.createElement('li');
-                 li.className = "row";
+                 li.className = "list-group-item d-flex align-items-center";
                  var a = document.createElement('a');
-                 var user = response.scores[i].username;
-                 user.className = "col-xs-12 col-sm-6";
-                 var score = response.scores[i].score;
-                 score.className = "col-xs-12 col-sm-6";
+                 var user = Response.scores[i].username;
+                 var score = Response.scores[i].score;
                  a.innerHTML = user + "    " + score;
                  li.appendChild(a);
                  ul.appendChild(li);
              }
              listDiv.appendChild(ul);
-             last = response.scores[request - 1].username;
+             last = Response.scores[request - 1].username;
              lastRequest = lastRequest + request;
          },
          error: function (response) {},
