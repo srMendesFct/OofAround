@@ -1,7 +1,5 @@
 package pt.oofaround.support;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -12,9 +10,6 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.storage.Acl;
-import com.google.cloud.storage.Acl.Role;
-import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
@@ -38,9 +33,7 @@ public class MediaSupport {
 		Storage db = storage.getService();
 
 		BlobId blobId = BlobId.of(BUCKET, name);
-		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER))))
-				.setContentType("image/jpeg").build();
+		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
 
 		Blob blob = db.create(blobInfo, image);
 	}

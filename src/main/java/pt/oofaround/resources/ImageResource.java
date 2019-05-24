@@ -75,8 +75,8 @@ public class ImageResource {
 		long nbrPics = 0;
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 			nbrPics = (long) document.get("numberPhotos");
-			ApiFuture<WriteResult> future = document.getReference().update("numberPhotos", nbrPics++);
-			//future.get();
+			ApiFuture<WriteResult> future = document.getReference().update("numberPhotos", nbrPics+1);
+			future.get();
 		}
 		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
 
