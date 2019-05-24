@@ -23,7 +23,6 @@ import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Blob.BlobSourceOption;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobGetOption;
@@ -112,7 +111,7 @@ public class ImageResource {
 
 		// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
 
-		return Response.ok().entity(blob.getContent(BlobSourceOption.generationMatch())).build();
+		return Response.ok().entity(blob.getContent()).build();
 	}
 
 }
