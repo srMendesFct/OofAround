@@ -22,11 +22,12 @@
          success: function (Response) {
              var listDiv = document.getElementById('ranking');
              var ul = document.createElement('ul');
-             ul.className = "list-group list-group-flush";
+             ul.className = "container table table-bordered";
              for (var i = 0; i < Response.scores.length; ++i) {
                  var li = document.createElement('li');
-                 li.className = "list-group-item d-flex align-items-center";
+                 li.className = "row";
                  var a = document.createElement('a');
+                 a.className = "col-xs-12 col-sm-6";
                  var user = Response.scores[i].username;
                  var score = Response.scores[i].score;
                  a.innerHTML = user + "    " + score;
