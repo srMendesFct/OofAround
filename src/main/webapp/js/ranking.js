@@ -30,7 +30,7 @@
                  var a = document.createElement('a');
                  var user = Response.scores[i].username;
                  var score = Response.scores[i].score;
-                 score.setAttribute("style", "color:red")
+                 score.setAttribute("style", "color:red");
                  a.innerHTML = user + "                                                      " + score;
                  li.appendChild(a);
                  ul.appendChild(li);
