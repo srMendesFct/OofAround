@@ -162,4 +162,27 @@ public class ImageResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
+	@POST
+	@Path("/deleteimage")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteImage(UploadImageData data) throws InterruptedException, ExecutionException {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "deleteImage")) {
+
+			StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+			Storage db = storage.getService();
+			
+			BlobId blobId = BlobId.of(BUCKET, data.name);
+			db.delete(blobId);
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			JsonObject token = new JsonObject();
+			token.addProperty("username", at.username);
+			token.addProperty("role", at.role);
+			token.addProperty("tokenID", at.tokenID);
+			return Response.ok(g.toJson(token)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
 }

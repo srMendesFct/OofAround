@@ -58,7 +58,7 @@ public class RegisterResource {
 		ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-			return Response.status(420).build(); //email
+			return Response.status(420).build(); // email
 		}
 
 		query = users.whereEqualTo("username", data.username);
@@ -66,7 +66,7 @@ public class RegisterResource {
 		querySnapshot = query.get();
 
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-			return Response.status(421).build(); //user
+			return Response.status(421).build(); // user
 		}
 
 		String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
@@ -80,6 +80,7 @@ public class RegisterResource {
 		docData.put("cellphone", data.cellphone);
 		docData.put("privacy", data.privacy);
 		docData.put("score", 0);
+		docData.put("numberPhotos", 0);
 
 		ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
 		return Response.ok().build();
@@ -119,6 +120,8 @@ public class RegisterResource {
 			docData.put("country", data.country);
 			docData.put("cellphone", data.cellphone);
 			docData.put("privacy", data.privacy);
+			docData.put("numberPhotos", 0);
+			docData.put("score", 0);
 
 			ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
