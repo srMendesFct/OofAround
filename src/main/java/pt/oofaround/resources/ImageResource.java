@@ -89,7 +89,7 @@ public class ImageResource {
 		Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.name + "/"));
 		Iterator<Blob> it = list.iterateAll().iterator();
 		List<String> blobs = new LinkedList<String>();
-		it.next();
+		//it.next();
 		while (it.hasNext())
 			blobs.add(it.next().getMediaLink());
 
