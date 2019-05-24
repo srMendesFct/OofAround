@@ -22,7 +22,7 @@
          success: function (Response) {
              var listDiv = document.getElementById('ranking');
              var ul = document.createElement('ul');
-             ul.className = "container table table-bordered";
+             ul.className = "container table table-borderless table-dark";
              for (var i = 0; i < Response.scores.length; ++i) {
                  var li = document.createElement('li');
                  li.className = "row";
