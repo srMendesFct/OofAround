@@ -15,7 +15,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.api.core.ApiFuture;
 import com.google.api.gax.paging.Page;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
@@ -52,6 +59,27 @@ public class ImageResource {
 		return Response.ok().build();
 	}
 
+	@POST
+	@Path("/uploadfoto")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response uploadToProfileFolder(UploadImageData data) throws InterruptedException, ExecutionException {
+		FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+				.build();
+		Firestore db = firestore.getService();
+
+		CollectionReference users = db.collection("users");
+		Query query = users.whereEqualTo("username", data.name);
+
+		ApiFuture<QuerySnapshot> querySnapshot = query.get();
+		long nbrPics = 0;
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			nbrPics = (long) document.get("numberPhotos");
+		}
+		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
+
+		return Response.ok().build();
+	}
+
 	@SuppressWarnings("unused")
 	@POST
 	@Path("/folder")
@@ -66,18 +94,6 @@ public class ImageResource {
 				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
 
 		Blob blob = db.create(blobInfo);
-
-		int nbrPics = MediaSupport.getNumberPhotos(data.name);
-
-		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
-
-		return Response.ok().build();
-	}
-
-	@POST
-	@Path("/uploadfoto")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response uploadToProfileFolder(UploadImageData data) throws InterruptedException, ExecutionException {
 
 		int nbrPics = MediaSupport.getNumberPhotos(data.name);
 
