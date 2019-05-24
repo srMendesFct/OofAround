@@ -49,6 +49,7 @@ public class JsonArraySupport {
 		JsonArray array = new JsonArray();
 		JsonObject jsObj;
 
+		
 		if (docs.isEmpty())
 			throw new NotFoundException();
 		for (QueryDocumentSnapshot document1 : docs) {
