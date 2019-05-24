@@ -109,9 +109,10 @@ public class ImageResource {
 
 		Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
+
 		// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
 
-		return Response.ok().entity(blob.getMediaLink()).build();
+		return Response.ok().entity(blob).build();
 	}
 
 }
