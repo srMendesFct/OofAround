@@ -23,6 +23,7 @@ import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Blob.BlobSourceOption;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobGetOption;
@@ -69,7 +70,7 @@ public class ImageResource {
 		long nbrPics = 0;
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 			nbrPics = (long) document.get("numberPhotos");
-			ApiFuture<WriteResult> future = document.getReference().update("numberPhotos", nbrPics+1);
+			ApiFuture<WriteResult> future = document.getReference().update("numberPhotos", nbrPics + 1);
 			future.get();
 		}
 		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
@@ -109,10 +110,9 @@ public class ImageResource {
 
 		Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-
 		// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
 
-		return Response.ok().entity(blob).build();
+		return Response.ok().entity(blob.getContent(BlobSourceOption.generationMatch())).build();
 	}
 
 }
