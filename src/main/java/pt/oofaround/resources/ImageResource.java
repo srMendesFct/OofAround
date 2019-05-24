@@ -1,7 +1,5 @@
 package pt.oofaround.resources;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,12 +22,8 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
-import com.google.cloud.storage.Acl;
-import com.google.cloud.storage.Acl.Role;
-import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.Storage.BlobListOption;
@@ -78,28 +72,6 @@ public class ImageResource {
 			ApiFuture<WriteResult> future = document.getReference().update("numberPhotos", nbrPics+1);
 			future.get();
 		}
-		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
-
-		return Response.ok().build();
-	}
-
-	@SuppressWarnings("unused")
-	@POST
-	@Path("/folder")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response uploadToProfileNewFolder(UploadImageData data) throws InterruptedException, ExecutionException {
-		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
-
-		Storage db = storage.getService();
-
-		BlobId blobId = BlobId.of(BUCKET, data.name + "/");
-		BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build();
-
-		Blob blob = db.create(blobInfo);
-
-		int nbrPics = MediaSupport.getNumberPhotos(data.name);
-
 		MediaSupport.uploadImage(data.name + "/" + nbrPics, data.image);
 
 		return Response.ok().build();
