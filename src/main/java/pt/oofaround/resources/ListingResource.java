@@ -133,7 +133,6 @@ public class ListingResource {
 					sortedUsers = users.orderBy("score", Direction.DESCENDING).limit(data.limit);
 					queryRes = sortedUsers.get();
 					docs = queryRes.get().getDocuments();
-					//res.add("scores",JsonArraySupport.createTwoPropArray(docs, "username", "score"));
 					if (docs.isEmpty())
 						return Response.status(404).build();
 					for (QueryDocumentSnapshot document1 : docs) {

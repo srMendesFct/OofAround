@@ -44,12 +44,12 @@ public class JsonArraySupport {
 	}
 
 	public static JsonArray createLocationPropArray(List<QueryDocumentSnapshot> docs, String property1,
-			String property2, String property3, String property4, String property5, String property6) {
+			String property2, String property3, String property4, String property5, String property6, String property7,
+			String property8, String property9) {
 
 		JsonArray array = new JsonArray();
 		JsonObject jsObj;
 
-		
 		if (docs.isEmpty())
 			throw new NotFoundException();
 		for (QueryDocumentSnapshot document1 : docs) {
@@ -60,6 +60,10 @@ public class JsonArraySupport {
 			jsObj.addProperty(property4, document1.get(property4).toString());
 			jsObj.addProperty(property5, document1.get(property5).toString());
 			jsObj.addProperty(property6, document1.get(property6).toString());
+			jsObj.addProperty(property7, document1.get(property7).toString());
+			jsObj.addProperty(property8, document1.get(property8).toString());
+			jsObj.addProperty(property9, document1.get(property9).toString());
+
 			array.add(jsObj);
 		}
 		return array;
