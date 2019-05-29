@@ -8,7 +8,10 @@ captureDataR = function () {
         var send = window.btoa(s);
         var values = {
             name: localStorage.getItem('username'),
-            image: send
+            image: send,
+            usernameR: localStorage.getItem('username'),
+            tokenID: localStorage.getItem('token'),
+            role: localStorage.getItem('role')
         }
         $.ajax({
             type: "POST",
