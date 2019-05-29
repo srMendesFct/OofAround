@@ -20,10 +20,11 @@ captureDataR = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
-
+                alert('Imagem alterada');
+                window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             error: function (Response) {
-                alert('Imagem alterada');
+                alert('Falha ao alterar imagem');
                 window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             data: JSON.stringify(values) // post data || get data
