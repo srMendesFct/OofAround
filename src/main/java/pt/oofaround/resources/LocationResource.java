@@ -72,13 +72,7 @@ public class LocationResource {
 			docData.put("category", data.category);
 			docData.put("region", data.region);
 			docData.put("score", data.score);
-			docData.put("rating", 0);
-			docData.put("nbrRates", 0);
-			docData.put("1", 0);
-			docData.put("2", 0);
-			docData.put("3", 0);
-			docData.put("4", 0);
-			docData.put("5", 0);
+			docData.put("nbrVisits", 0);
 
 			ApiFuture<WriteResult> newLocation = locations.document(data.name).set(docData);
 			MediaSupport.uploadImage(data.name, data.image);
@@ -112,8 +106,8 @@ public class LocationResource {
 				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
 				res.addProperty("region", document.getString("region"));
-				res.addProperty("rating", document.getDouble("rating"));
 				res.addProperty("score", document.getLong("score"));
+				res.addProperty("nbrVisits", document.getLong("nbrVisits"));
 				/*
 				 * if ((int) document.get("nbrRates") == 0) res.addProperty("rating", 0); else {
 				 * double rate = (document.getLong("oneStar") * 1 + document.getLong("twoStar")
@@ -170,7 +164,7 @@ public class LocationResource {
 					querySnapshot = query.get();
 					docs = querySnapshot.get().getDocuments();
 					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "rating", "score"));
+							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score"));
 
 				} else {
 
@@ -182,7 +176,7 @@ public class LocationResource {
 
 					if (data.category.equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
 
-						query = locations.orderBy("rating"); // .order by ranking quando ranking for implementado
+						query = locations.orderBy("nbrVisits"); // .order by ranking quando ranking for implementado
 
 					} else if (data.category.equalsIgnoreCase("")) {
 
@@ -202,7 +196,7 @@ public class LocationResource {
 					querySnapshot = query.get();
 					docs = querySnapshot.get().getDocuments();
 					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "rating", "score"));
+							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score"));
 
 				}
 				AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -220,44 +214,95 @@ public class LocationResource {
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
+	@SuppressWarnings("unused")
 	@POST
 	@Path("/rate")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response ratePlace(LocationData data)
-			throws NumberFormatException, InterruptedException, ExecutionException {
+	public Response visitLocation(LocationData data) throws InterruptedException, ExecutionException {
+		
+		//Get location info and update nbr of times visited
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
-			CollectionReference locations = db.collection("locations");
-			Query query = locations.whereEqualTo("name", data.name);
+		CollectionReference locations = db.collection("locations");
+		Query query = locations.whereEqualTo("name", data.name);
 
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-			double rate = 0;
-			long nbrRates = 0;
-			long newRate = 0;
-			DocumentReference docRef = null;
+		ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				docRef = document.getReference();
-				nbrRates = document.getLong("nbrRates") + 1;
-				newRate = document.getLong(data.rating) + 1;
-				rate = (document.getLong("1") * 1 + document.getLong("2") * 2 + document.getLong("3") * 3
-						+ document.getLong("4") * 4 + document.getLong("5") * 5 + Integer.valueOf(data.rating))
-						/ nbrRates;
-			}
+		Long scoreGainned = null;
 
-			Map<String, Object> docData = new HashMap();
+		Long nbrVisits = null;
 
-			docData.put("nbrRates", nbrRates);
-			docData.put(data.rating, newRate);
+		DocumentReference docRef = null;
 
-			ApiFuture<WriteResult> future = docRef.update(docData);
-
-			return Response.ok().entity(g.toJson(rate)).build();
-		} else {
-			return Response.status(Status.FORBIDDEN).build();
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			scoreGainned = document.getLong("score");
+			docRef = document.getReference();
+			nbrVisits = document.getLong("nbrVisits") + 1;
 		}
 
+		//Get user info and update his score
+		
+		ApiFuture<WriteResult> future = docRef.update("nbrVisits", nbrVisits);
+
+		WriteResult result = future.get();
+
+		CollectionReference users = db.collection("users");
+		query = users.whereEqualTo("username", data.usernameR);
+
+		querySnapshot = query.get();
+
+		Long oldScore = null;
+
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			docRef = document.getReference();
+			oldScore = document.getLong("score");
+		}
+
+		oldScore += scoreGainned;
+
+		future = docRef.update("score", oldScore);
+
+		result = future.get();
+
+		return Response.ok().entity(g.toJson(scoreGainned)).build();
+
 	}
+
+	/*
+	 * @SuppressWarnings({ "rawtypes", "unused", "unchecked" })
+	 * 
+	 * @POST
+	 * 
+	 * @Path("/rate")
+	 * 
+	 * @Consumes(MediaType.APPLICATION_JSON) public Response ratePlace(LocationData
+	 * data) throws NumberFormatException, InterruptedException, ExecutionException
+	 * {
+	 * 
+	 * if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role,
+	 * "getLocationsByCatAndRegion")) { CollectionReference locations =
+	 * db.collection("locations"); Query query = locations.whereEqualTo("name",
+	 * data.name);
+	 * 
+	 * ApiFuture<QuerySnapshot> querySnapshot = query.get(); double rate = 0; long
+	 * nbrRates = 0; long newRate = 0; DocumentReference docRef = null;
+	 * 
+	 * for (DocumentSnapshot document : querySnapshot.get().getDocuments()) { docRef
+	 * = document.getReference(); nbrRates = document.getLong("nbrRates") + 1;
+	 * newRate = document.getLong(data.rating) + 1; rate = (document.getLong("1") *
+	 * 1 + document.getLong("2") * 2 + document.getLong("3") * 3 +
+	 * document.getLong("4") * 4 + document.getLong("5") * 5 +
+	 * Integer.valueOf(data.rating)) / nbrRates; }
+	 * 
+	 * Map<String, Object> docData = new HashMap();
+	 * 
+	 * docData.put("nbrRates", nbrRates); docData.put(data.rating, newRate);
+	 * 
+	 * ApiFuture<WriteResult> future = docRef.update(docData);
+	 * 
+	 * WriteResult result = future.get();
+	 * 
+	 * return Response.ok().entity(g.toJson(rate)).build(); } else { return
+	 * Response.status(Status.FORBIDDEN).build(); } }
+	 */
 
 }
