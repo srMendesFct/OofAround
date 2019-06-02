@@ -16,7 +16,9 @@ captureDataD = function (values) {
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
-        success: function (Response) {},
+        success: function (Response) {
+            alert('chunga') 
+        },
         error: function (Response) {
             console.log(Response.status);
             if (Response.status == 200) {
