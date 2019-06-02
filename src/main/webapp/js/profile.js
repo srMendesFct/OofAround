@@ -49,7 +49,6 @@ captureDataG = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
-                alert('work');
                 console.log(Response);
                 window.location.href = "https://oofaround.appspot.com/profile.html";
             },
