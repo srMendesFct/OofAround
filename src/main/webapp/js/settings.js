@@ -47,7 +47,7 @@ window.onload = function () {
 setupCallback = function () {
     document.getElementById("delete").addEventListener("click", function () {
         captureDataD();
-        window.location.href = "https://oofaround.appspot.com/";
+        //window.location.href = "https://oofaround.appspot.com/";
     });
 
     document.getElementById("logout").addEventListener("click", function () {
