@@ -48,8 +48,6 @@ captureDataG = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
-                console.log(Response);
-                //window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             error: function (Response) {
                 alert('Falha ao alterar imagem');
@@ -71,7 +69,7 @@ window.onload = function () {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
-        captureDataG();
+        //captureDataG();
         setupCallback();
     }
 };
