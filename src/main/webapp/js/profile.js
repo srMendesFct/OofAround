@@ -6,10 +6,9 @@ captureDataR = function () {
     fileReader.onload = function () {
         s = fileReader.result;
         var send = window.btoa(s);
-        localStorage.setItem('image', send);
         var values = {
             name: localStorage.getItem('username'),
-            image: localStorage.setItem('image', send),
+            image: send,
             usernameR: localStorage.getItem('username'),
             tokenID: localStorage.getItem('token'),
             role: localStorage.getItem('role')
@@ -22,11 +21,11 @@ captureDataR = function () {
             crossDomain: true,
             success: function (Response) {
                 alert('Imagem alterada');
+                localStorage.setItem('image', send);
                 window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             error: function (Response) {
                 alert('Falha ao alterar imagem');
-                localStorage.removeItem('image');
                 window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             data: JSON.stringify(values) // post data || get data
@@ -50,7 +49,7 @@ captureDataG = function () {
             crossDomain: true,
             success: function (Response) {
                 console.log(Response);
-                window.location.href = "https://oofaround.appspot.com/profile.html";
+                //window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             error: function (Response) {
                 alert('Falha ao alterar imagem');
@@ -61,8 +60,9 @@ captureDataG = function () {
 };
 
 var user = localStorage.getItem('username');
+var image = localStorage.getItem('image');
 window.onload = function () {
-    document.getElementById("profilePic").src = 'data:image/jpeg;base64, send';
+    document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
     document.getElementById("user").innerHTML = user;
     var token = localStorage.getItem('expiration');
     var date = new Date();

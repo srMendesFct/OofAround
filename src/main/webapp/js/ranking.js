@@ -44,10 +44,10 @@
      });
  };
  var user = localStorage.getItem('username');
-
+ var image = localStorage.getItem('image');
  window.onload = function () {
     document.getElementById("user").innerHTML = user;
-    document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
+    document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
      var token = localStorage.getItem('expiration');
      var date = new Date();
      var longday = date.getTime();
