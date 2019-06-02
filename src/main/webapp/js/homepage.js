@@ -21,6 +21,7 @@ captureDataR = function (event) {
             console.log(Response.status);
             if (Response.status == 200) {
                 alert("Registo efetuado com sucesso.");
+                //localStorage.setItem('image', );
                 window.location.href = "https://oofaround.appspot.com/";
             } else {
                 alert("Registo falhado.");
