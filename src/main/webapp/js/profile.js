@@ -6,9 +6,10 @@ captureDataR = function () {
     fileReader.onload = function () {
         s = fileReader.result;
         var send = window.btoa(s);
+        localStorage.setItem('image', send);
         var values = {
             name: localStorage.getItem('username'),
-            image: send,
+            image: localStorage.setItem('image', send),
             usernameR: localStorage.getItem('username'),
             tokenID: localStorage.getItem('token'),
             role: localStorage.getItem('role')
@@ -25,6 +26,7 @@ captureDataR = function () {
             },
             error: function (Response) {
                 alert('Falha ao alterar imagem');
+                localStorage.removeItem('image');
                 window.location.href = "https://oofaround.appspot.com/profile.html";
             },
             data: JSON.stringify(values) // post data || get data
@@ -32,10 +34,36 @@ captureDataR = function () {
     }
 };
 
+captureDataG = function () {
+        var values = {
+            name: localStorage.getItem('username'),
+            image: localStorage.getItem('image'),
+            usernameR: localStorage.getItem('username'),
+            tokenID: localStorage.getItem('token'),
+            role: localStorage.getItem('role')
+        }
+        $.ajax({
+            type: "POST",
+            url: "https://oofaround.appspot.com/rest/images/uploadprofile",
+            contentType: "application/json;charset=utf-8",
+            dataType: 'json', // data type        
+            crossDomain: true,
+            success: function (Response) {
+                alert('work');
+                console.log(Response);
+                window.location.href = "https://oofaround.appspot.com/profile.html";
+            },
+            error: function (Response) {
+                alert('Falha ao alterar imagem');
+                window.location.href = "https://oofaround.appspot.com/profile.html";
+            },
+            data: JSON.stringify(values) // post data || get data
+        });
+};
+
 var user = localStorage.getItem('username');
 window.onload = function () {
-    document.getElementById("profilePic").src = 'https://storage.googleapis.com/oofaround.appspot.com/' + localStorage.getItem('username') + '_perfil';
-    document.getElementById("profilePic").src = "https://oofaround.appspot.com/img/silhouette-profile-pic-profile-user-silhouette-318-40557.jpg"
+    document.getElementById("profilePic").src = 'data:image/jpeg;base64, send';
     document.getElementById("user").innerHTML = user;
     var token = localStorage.getItem('expiration');
     var date = new Date();
@@ -44,6 +72,7 @@ window.onload = function () {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
+        captureDataG();
         setupCallback();
     }
 };
