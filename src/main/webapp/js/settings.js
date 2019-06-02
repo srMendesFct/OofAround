@@ -17,11 +17,11 @@ captureDataD = function (values) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            alert('chunga') 
         },
         error: function (Response) {
             console.log(Response.status);
             if (Response.status == 200) {
+                localStorage.clear();
                 alert("Conta eliminada com sucesso.")
             }
         },
