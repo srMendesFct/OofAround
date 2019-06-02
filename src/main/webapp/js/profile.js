@@ -33,7 +33,7 @@ captureDataR = function () {
     }
 };
 
-captureDataG = function () {
+/*captureDataG = function () {
         var values = {
             name: localStorage.getItem('username'),
             image: localStorage.getItem('image'),
@@ -55,7 +55,7 @@ captureDataG = function () {
             },
             data: JSON.stringify(values) // post data || get data
         });
-};
+};*/
 
 var user = localStorage.getItem('username');
 var image = localStorage.getItem('image');
