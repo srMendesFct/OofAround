@@ -71,9 +71,8 @@ public class LocationResource {
 			docData.put("longitude", data.longitude);
 			docData.put("category", data.category);
 			docData.put("region", data.region);
-			docData.put("score", data.score); //calculate score
+			docData.put("score", data.score); // calculate score
 			docData.put("nbrVisits", 0);
-			
 
 			ApiFuture<WriteResult> newLocation = locations.document(data.name).set(docData);
 			MediaSupport.uploadImage(data.name, data.image);
@@ -118,7 +117,7 @@ public class LocationResource {
 				 * df.format(rate)); }
 				 */
 			}
-			
+
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
 
@@ -221,8 +220,8 @@ public class LocationResource {
 	@Path("/rate")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response visitLocation(LocationData data) throws InterruptedException, ExecutionException {
-		
-		//Get location info and update nbr of times visited
+
+		// Get location info and update nbr of times visited
 
 		CollectionReference locations = db.collection("locations");
 		Query query = locations.whereEqualTo("name", data.name);
@@ -241,8 +240,8 @@ public class LocationResource {
 			nbrVisits = document.getLong("nbrVisits") + 1;
 		}
 
-		//Get user info and update his score
-		
+		// Get user info and update his score
+
 		ApiFuture<WriteResult> future = docRef.update("nbrVisits", nbrVisits);
 
 		WriteResult result = future.get();
@@ -269,42 +268,6 @@ public class LocationResource {
 
 	}
 
-	/*
-	 * @SuppressWarnings({ "rawtypes", "unused", "unchecked" })
-	 * 
-	 * @POST
-	 * 
-	 * @Path("/rate")
-	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON) public Response ratePlace(LocationData
-	 * data) throws NumberFormatException, InterruptedException, ExecutionException
-	 * {
-	 * 
-	 * if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role,
-	 * "getLocationsByCatAndRegion")) { CollectionReference locations =
-	 * db.collection("locations"); Query query = locations.whereEqualTo("name",
-	 * data.name);
-	 * 
-	 * ApiFuture<QuerySnapshot> querySnapshot = query.get(); double rate = 0; long
-	 * nbrRates = 0; long newRate = 0; DocumentReference docRef = null;
-	 * 
-	 * for (DocumentSnapshot document : querySnapshot.get().getDocuments()) { docRef
-	 * = document.getReference(); nbrRates = document.getLong("nbrRates") + 1;
-	 * newRate = document.getLong(data.rating) + 1; rate = (document.getLong("1") *
-	 * 1 + document.getLong("2") * 2 + document.getLong("3") * 3 +
-	 * document.getLong("4") * 4 + document.getLong("5") * 5 +
-	 * Integer.valueOf(data.rating)) / nbrRates; }
-	 * 
-	 * Map<String, Object> docData = new HashMap();
-	 * 
-	 * docData.put("nbrRates", nbrRates); docData.put(data.rating, newRate);
-	 * 
-	 * ApiFuture<WriteResult> future = docRef.update(docData);
-	 * 
-	 * WriteResult result = future.get();
-	 * 
-	 * return Response.ok().entity(g.toJson(rate)).build(); } else { return
-	 * Response.status(Status.FORBIDDEN).build(); } }
-	 */
+	
 
 }

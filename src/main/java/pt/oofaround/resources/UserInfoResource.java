@@ -1,5 +1,6 @@
 package pt.oofaround.resources;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -21,6 +22,7 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.UserData;
 
@@ -40,6 +42,7 @@ public class UserInfoResource {
 	}
 
 	// information of the own user, does not require usernameR for token
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/self")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -59,8 +62,8 @@ public class UserInfoResource {
 				res.addProperty("email", document.getString("email"));
 				res.addProperty("country", document.getString("country"));
 				res.addProperty("cellphone", document.getString("cellphone"));
-				String[] routes =  (String[]) document.get("routes");
-				//res.addProperty("routes", );
+				List<String> routes =  (List<String>) document.get("routes");
+				res.add("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
 				//comment
 				if (document.getBoolean("privacy"))
 					res.addProperty("privacy", "private");

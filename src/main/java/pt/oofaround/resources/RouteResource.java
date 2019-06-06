@@ -1,9 +1,12 @@
 package pt.oofaround.resources;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -17,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
@@ -25,6 +29,7 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
@@ -50,7 +55,7 @@ public class RouteResource {
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createRoute(RouteData data) throws InterruptedException, ExecutionException {
+	public Response createRouteFromArray(RouteData data) throws InterruptedException, ExecutionException {
 
 		LOG.fine("Creating route named " + data.name);
 
@@ -66,34 +71,41 @@ public class RouteResource {
 
 			JsonObject res = new JsonObject();
 			Map<String, Object> docData = new HashMap();
-			String[] cat = { "lixo", "maisLixo" };
-			List<String> cats = new LinkedList<String>();
+			Type listType = new TypeToken<List<String>>() {
+			}.getType();
+			List<String> locationNames = new Gson().fromJson(data.locationNames, listType);
+
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("creatorUsername", data.creatorUsername);
-			docData.put("locationsNames", data.locationNames);
+			docData.put("locationsNames", locationNames);
 
 			CollectionReference locations = db.collection("locations");
 			Query locationQuery;
 			ApiFuture<QuerySnapshot> locationQuerySnapshot;
 			String category;
+			Set<String> cats = new HashSet<String>();
 
-			for (String s : data.locationNames) {
-				locationQuery = routes.whereEqualTo("name", s);
+			for (String s : locationNames) {
+				locationQuery = locations.whereEqualTo("name", s);
 				locationQuerySnapshot = query.get();
 				for (DocumentSnapshot document : locationQuerySnapshot.get().getDocuments()) {
 					category = document.getString("category");
-					if (!cats.contains(category))
-						cats.add(category);
+					cats.add(category);
 				}
 			}
 
-			cats.sort(null);
+			List<String> catList = new LinkedList<String>(cats);
 
-			docData.put("categories", cat);
+			docData.put("categories", catList);
 			docData.put("rating", (double) 0);
 			docData.put("numberRates", 0);
 			docData.put("status", "ok");
+			docData.put("1", 0);
+			docData.put("2", 0);
+			docData.put("3", 0);
+			docData.put("4", 0);
+			docData.put("5", 0);
 
 			ApiFuture<WriteResult> newUser = routes.document(data.name).set(docData);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -137,6 +149,47 @@ public class RouteResource {
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
+	@POST
+	@Path("/rate")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response ratePlace(LocationData data)
+			throws NumberFormatException, InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
+			CollectionReference locations = db.collection("locations");
+			Query query = locations.whereEqualTo("name", data.name);
+
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			double rate = 0;
+			long nbrRates = 0;
+			long newRate = 0;
+			DocumentReference docRef = null;
+
+			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				docRef = document.getReference();
+				nbrRates = document.getLong("nbrRates") + 1;
+				newRate = document.getLong(data.rating) + 1;
+				rate = (document.getLong("1") * 1 + document.getLong("2") * 2 + document.getLong("3") * 3
+						+ document.getLong("4") * 4 + document.getLong("5") * 5 + Integer.valueOf(data.rating))
+						/ nbrRates;
+			}
+
+			Map<String, Object> docData = new HashMap();
+
+			docData.put("nbrRates", nbrRates);
+			docData.put(data.rating, newRate);
+
+			ApiFuture<WriteResult> future = docRef.update(docData);
+
+			WriteResult result = future.get();
+
+			return Response.ok().entity(g.toJson(rate)).build();
+		} else {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 	}
 
 }
