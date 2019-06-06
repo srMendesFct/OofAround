@@ -14,7 +14,7 @@ captureDataR = function () {
             role: localStorage.getItem('role')
         }
         $.ajax({
-            type: "POST",
+            type: "POST", 
             url: "https://oofaround.appspot.com/rest/images/uploadprofile",
             contentType: "application/json;charset=utf-8",
             dataType: 'json', // data type        
