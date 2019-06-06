@@ -1,7 +1,7 @@
 captureDataG = function () {
         var values = {
             name: localStorage.getItem('username'),
-            image: localStorage.getItem('username') + "_perfil",
+            image: localStorage.getItem('username') + "_profile",
             usernameR: localStorage.getItem('username'),
             tokenID: localStorage.getItem('token'),
             role: localStorage.getItem('role')
@@ -14,7 +14,6 @@ captureDataG = function () {
             crossDomain: true,
             success: function (Response) {
                 console.log(Response);
-                localStorage.setItem('image', send);
             },
             error: function (Response) {
                 console.log('erro');
