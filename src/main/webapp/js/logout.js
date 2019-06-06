@@ -1,7 +1,6 @@
 captureDataG = function () {
         var values = {
-            name: localStorage.getItem('username'),
-            image: localStorage.getItem('username') + "_profile",
+            name: localStorage.getItem('username') + "_profile",
             usernameR: localStorage.getItem('username'),
             tokenID: localStorage.getItem('token'),
             role: localStorage.getItem('role')
