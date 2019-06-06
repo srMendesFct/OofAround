@@ -8,7 +8,7 @@ captureDataG = function () {
         }
         $.ajax({
             type: "POST",
-            url: "https://oofaround.appspot.com/rest/images/uploadprofile",
+            url: "https://oofaround.appspot.com/rest/images/get",
             contentType: "application/json;charset=utf-8",
             dataType: 'json', // data type        
             crossDomain: true,
