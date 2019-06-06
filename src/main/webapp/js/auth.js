@@ -20,6 +20,8 @@ captureDataG = function () {
         crossDomain: true,
         success: function (Response) {
             localStorage.setItem('image', Response.image);
+            alert("Sessão iniciada.");
+            window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
         },
         error: function (Response) {
         },
@@ -72,9 +74,6 @@ captureDataL = function (event) {
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
             captureDataG();
-            alert("Sessão iniciada.");
-            window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
-
         },
         error: function (Response) {
             alert("Falha ao iniciar sessão.");
