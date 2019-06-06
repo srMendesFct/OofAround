@@ -13,7 +13,7 @@ captureDataG = function () {
             crossDomain: true,
             success: function (Response) {
                 localStorage.setItem('image', Response.image);
-                console.log(localStorage.setItem('image', Response.image));
+                console.log(localStorage.getItem('image', Response.image));
             },
             error: function (Response) {
             },
