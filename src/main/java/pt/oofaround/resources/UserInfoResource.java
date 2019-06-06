@@ -59,6 +59,8 @@ public class UserInfoResource {
 				res.addProperty("email", document.getString("email"));
 				res.addProperty("country", document.getString("country"));
 				res.addProperty("cellphone", document.getString("cellphone"));
+				String[] routes =  (String[]) document.get("routes");
+				res.addProperty("routes", );
 				if (document.getBoolean("privacy"))
 					res.addProperty("privacy", "private");
 				else

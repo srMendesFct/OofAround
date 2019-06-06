@@ -81,6 +81,7 @@ public class RegisterResource {
 		docData.put("privacy", data.privacy);
 		docData.put("score", 0);
 		docData.put("numberPhotos", 0);
+		docData.put("routes", new String[10]);
 
 		ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
 		return Response.ok().build();

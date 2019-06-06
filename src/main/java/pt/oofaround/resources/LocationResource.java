@@ -71,8 +71,9 @@ public class LocationResource {
 			docData.put("longitude", data.longitude);
 			docData.put("category", data.category);
 			docData.put("region", data.region);
-			docData.put("score", data.score);
+			docData.put("score", data.score); //calculate score
 			docData.put("nbrVisits", 0);
+			
 
 			ApiFuture<WriteResult> newLocation = locations.document(data.name).set(docData);
 			MediaSupport.uploadImage(data.name, data.image);
@@ -117,6 +118,7 @@ public class LocationResource {
 				 * df.format(rate)); }
 				 */
 			}
+			
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
 

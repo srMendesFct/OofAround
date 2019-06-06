@@ -29,7 +29,6 @@ import pt.oofaround.util.LocationData;
 @Path("/crontask")
 @Produces(MediaType.APPLICATION_JSON)
 public class CronTasks {
-
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(CronTasks.class.getName());
 
@@ -47,7 +46,7 @@ public class CronTasks {
 		CollectionReference flags = db.collection("flag");
 
 		Query query = flags.whereEqualTo(com.google.cloud.firestore.FieldPath.documentId(), "ranking");
-
+		
 		ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
 		boolean flag = false;
