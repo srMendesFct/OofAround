@@ -60,7 +60,7 @@ public class UserInfoResource {
 				res.addProperty("country", document.getString("country"));
 				res.addProperty("cellphone", document.getString("cellphone"));
 				String[] routes =  (String[]) document.get("routes");
-				res.addProperty("routes", );
+				//res.addProperty("routes", );
 				if (document.getBoolean("privacy"))
 					res.addProperty("privacy", "private");
 				else

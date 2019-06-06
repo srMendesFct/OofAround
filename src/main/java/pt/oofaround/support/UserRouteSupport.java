@@ -21,15 +21,9 @@ public class UserRouteSupport {
 		FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 		final Firestore db = firestore.getService();
 		
-		CollectionReference users = db.collection("users");
-		Query query = users.whereEqualTo("username", data.username);
-		ApiFuture<QuerySnapshot> querySnapshot = query.get();
-		
 		DocumentReference docRef = db.collection("users").document(email);
 		
-		for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-
-		}
+		
 		
 		return 1;
 	}
