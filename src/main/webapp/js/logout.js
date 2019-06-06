@@ -12,10 +12,10 @@ captureDataG = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
-                console.log(Response);
+                localStorage.setItem('image', Response.image);
+                console.log(localStorage.setItem('image', Response.image));
             },
             error: function (Response) {
-                console.log('erro');
             },
             data: JSON.stringify(values) // post data || get data
         });
