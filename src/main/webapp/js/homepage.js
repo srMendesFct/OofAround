@@ -5,6 +5,27 @@ window.onload = function () {
     frmsr[0].onsubmit = captureDataR;
 };
 
+captureDataG = function () {
+    var values = {
+        name: localStorage.getItem('username') + "_profile",
+        usernameR: localStorage.getItem('username'),
+        tokenID: localStorage.getItem('token'),
+        role: localStorage.getItem('role')
+    }
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/images/get",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+            localStorage.setItem('image', Response.image);
+        },
+        error: function (Response) {
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+};
 
 captureDataR = function (event) {
     var values = {};
@@ -50,6 +71,7 @@ captureDataL = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
+            captureDataG();
             alert("Sessão iniciada.");
             window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
 
