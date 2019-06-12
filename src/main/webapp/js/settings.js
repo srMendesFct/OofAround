@@ -1,6 +1,3 @@
- var user = localStorage.getItem('username');
- var date = new Date();
- 
  captureDataD = function (values) {
      var values = {
          tokenID: localStorage.getItem('token'),
@@ -61,6 +58,7 @@
      var user = localStorage.getItem('username');
      var image = localStorage.getItem('image');
      var frmsr = $('form[name="change"]');
+     var date = new Date();
      localStorage.setItem('expiration', date.getTime() + 300000);
      document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
      document.getElementById("user").innerHTML = user;
