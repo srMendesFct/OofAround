@@ -48,6 +48,7 @@ public class DeleteResource {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doSudoku")) {
 			try {
 				ApiFuture<WriteResult> orderSixtySix = db.collection("users").document(data.username).delete();
+				orderSixtySix.get();
 				return Response.ok().build();
 			} catch (Exception e) {
 				return Response.status(Status.NOT_FOUND).entity("User doesn't exist.").build();

@@ -2,6 +2,7 @@ package pt.oofaround.resources;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
@@ -81,9 +82,10 @@ public class RegisterResource {
 		docData.put("privacy", data.privacy);
 		docData.put("score", 0);
 		docData.put("numberPhotos", 0);
-		docData.put("routes", new String[10]);
+		docData.put("routes", new LinkedList<String>());
 
-		ApiFuture<WriteResult> newUser = users.document(data.email).set(docData);
+		ApiFuture<WriteResult> newUser = users.document(data.username).set(docData);
+		newUser.get();
 		return Response.ok().build();
 	}
 
