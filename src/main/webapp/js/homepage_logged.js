@@ -1,4 +1,5 @@
 window.onload = function init() {
+    localStorage.setItem('expiration', date.getTime() + 300000);
     var user = localStorage.getItem('username');
     var image = localStorage.getItem('image');
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;

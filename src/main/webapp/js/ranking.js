@@ -46,6 +46,7 @@
  var user = localStorage.getItem('username');
  var image = localStorage.getItem('image');
  window.onload = function () {
+    localStorage.setItem('expiration', date.getTime() + 300000);
     document.getElementById("user").innerHTML = user;
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
      var token = localStorage.getItem('expiration');
