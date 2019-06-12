@@ -1,4 +1,4 @@
-var user = localStorage.getItem('username');
+ var user = localStorage.getItem('username');
 
 captureDataD = function (values) {
     var values = {
