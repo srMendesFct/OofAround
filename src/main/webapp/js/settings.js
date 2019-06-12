@@ -28,6 +28,35 @@ captureDataD = function (values) {
         data: JSON.stringify(values) // post data || get data
     });
 };
+
+captureDataC = function (values) {
+    var values = {
+        tokenID: localStorage.getItem('token'),
+        usernameR: localStorage.getItem('username'),
+        role: localStorage.getItem('role'),
+        username: localStorage.getItem('username'),
+    };
+
+    console.log(JSON.stringify(values));
+
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/delete/self",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+        },
+        error: function (Response) {
+            console.log(Response.status);
+            if (Response.status == 200) {
+                localStorage.clear();
+                alert("Conta eliminada com sucesso.")
+            }
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+};
 var user = localStorage.getItem('username');
 var image = localStorage.getItem('image');
 window.onload = function () {
