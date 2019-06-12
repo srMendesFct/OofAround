@@ -35,6 +35,7 @@ captureDataR = function () {
 
 var user = localStorage.getItem('username');
 var image = localStorage.getItem('image');
+var date = new Date();
 window.onload = function () {
     localStorage.setItem('expiration', date.getTime() + 300000);
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;

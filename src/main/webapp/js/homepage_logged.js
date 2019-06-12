@@ -1,4 +1,5 @@
 window.onload = function init() {
+    var date = new Date();
     localStorage.setItem('expiration', date.getTime() + 300000);
     var user = localStorage.getItem('username');
     var image = localStorage.getItem('image');

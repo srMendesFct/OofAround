@@ -1,5 +1,6 @@
  var user = localStorage.getItem('username');
-
+ var date = new Date();
+ 
  captureDataD = function (values) {
      var values = {
          tokenID: localStorage.getItem('token'),
