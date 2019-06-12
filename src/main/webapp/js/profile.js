@@ -41,12 +41,12 @@ window.onload = function () {
     var token = localStorage.getItem('expiration');
     var date = new Date();
     var longday = date.getTime();
-    if (longday > token) {
+    /*if (longday > token) {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         setupCallback();
-    }
+    }*/
 };
 
 setupCallback = function () {

@@ -20,6 +20,16 @@
             margin-right: 4px;
         }
 
+        .imgL {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+        }
+
+        .marosca {
+            margin-bottom: 3px;
+        }
+
         .navbar {
             margin-bottom: 0;
             border-radius: 0;
@@ -136,21 +146,60 @@
     </nav>
     <br><br><br><br><br>
 
-
-    <div id="profile" class="container-fluid">
-        <input id='fileID' type='file' hidden></input>
-        <button id="upload" value='Upload'>Alterar imagem de perfil</button>
+    <div class="row">
+        <div class="col-md-4">
+            <div id="profile" class="container-fluid">
+                <img class="img" id="profilePic">
+                <input class="marosca" id='fileID' type='file' hidden></input>
+                <button id="upload" value='Upload'>Alterar imagem de perfil</button>
+                <button id="change" value="Change" href="settings.html">Alterar dados</button>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <form>
+                <div class="form-group row">
+                    <label for="staticUsername" class="col-sm-2 col-form-label">Utilizador</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control validate" id="staticUsername"
+                            value="bf.oliveira">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control validate" id="staticEmail"
+                            value="bf.oliveria@campus.fct.unl.pt">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticCountry" class="col-sm-2 col-form-label">País</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control validate" id="staticCountry"
+                            value="Portugal">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Telemóvel</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control validate" id="staticEmail"
+                            value="919790372">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Tipo de Perfil</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control validate" id="staticEmail"
+                            value="Público">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <br><br><br><br><br>
+    <br><br><br>
 
     <footer id="ourFooter" class="container-fluid text-center">
         <div class="row">
-            <div class="col-md-4">
-                <h3>QUEM SOMOS?</h3>
-                <br>
-                <h5>Um grupo de 5 estudantes a realizar a cadeira de APDC - Projeto de Engenharia e Inovação.</h5>
-            </div>
             <div class="col-md-4">
                 <img class="uh" src="img/equipa.png">
             </div>
@@ -163,7 +212,6 @@
             </div>
         </div>
     </footer>
-
 </body>
 
 </html>
