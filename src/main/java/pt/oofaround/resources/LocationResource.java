@@ -32,6 +32,7 @@ import pt.oofaround.support.MediaSupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.LocationData;
+import pt.oofaround.util.TokenData;
 
 @Path("/location")
 @Produces(MediaType.APPLICATION_JSON)
@@ -268,6 +269,26 @@ public class LocationResource {
 
 	}
 
-	
+	@POST
+	@Path("/getall")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getAllLocations(TokenData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
+			CollectionReference locations = db.collection("locations");
+
+			ApiFuture<QuerySnapshot> querySnapshot = locations.get();
+			JsonObject res = new JsonObject();
+			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
+
+			res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude", "longitude", "category"));
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
 
 }

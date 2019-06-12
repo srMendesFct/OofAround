@@ -85,4 +85,22 @@ public class JsonArraySupport {
 		return array;
 	}
 
+	public static JsonArray createThreePropArray(List<QueryDocumentSnapshot> docs, String property1, String property2,
+			String property3) {
+
+		JsonArray array = new JsonArray();
+		JsonObject jsObj;
+
+		if (docs.isEmpty())
+			throw new NotFoundException();
+		for (QueryDocumentSnapshot document1 : docs) {
+			jsObj = new JsonObject();
+			jsObj.addProperty(property1, document1.get(property1).toString());
+			jsObj.addProperty(property2, document1.get(property2).toString());
+			jsObj.addProperty(property3, document1.get(property3).toString());
+			array.add(jsObj);
+		}
+		return array;
+	}
+
 }
