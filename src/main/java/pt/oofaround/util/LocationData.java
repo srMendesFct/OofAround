@@ -15,7 +15,6 @@ public class LocationData {
 	public int limit;
 	public String lastName;
 	public String region;
-	public String rating;
 	public long score;
 	// Open hours and cupons later
 
@@ -60,12 +59,12 @@ public class LocationData {
 		this.region = region;
 	}
 
-	public LocationData(String tokenID, String usernameR, String role, String name, String rating) {
+	public LocationData(String tokenID, String usernameR, String role, String latitude, String longitude) {
 		this.tokenID = tokenID;
 		this.usernameR = usernameR;
 		this.role = role;
-		this.name = name;
-		this.rating = rating;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 }

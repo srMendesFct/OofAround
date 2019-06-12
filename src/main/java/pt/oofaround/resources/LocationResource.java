@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -25,6 +26,7 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.support.JsonArraySupport;
@@ -96,6 +98,45 @@ public class LocationResource {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
 			CollectionReference locations = db.collection("locations");
 			Query query = locations.whereEqualTo("name", data.name);
+
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			JsonObject res = new JsonObject();
+			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				res.addProperty("name", document.getString("name"));
+				res.addProperty("description", document.getString("description"));
+				res.addProperty("address", document.getString("address"));
+				res.addProperty("latitude", document.getString("latitude"));
+				res.addProperty("longitude", document.getString("longitude"));
+				res.addProperty("category", document.getString("category"));
+				res.addProperty("region", document.getString("region"));
+				res.addProperty("score", document.getLong("score"));
+				res.addProperty("nbrVisits", document.getLong("nbrVisits"));
+				/*
+				 * if ((int) document.get("nbrRates") == 0) res.addProperty("rating", 0); else {
+				 * double rate = (document.getLong("oneStar") * 1 + document.getLong("twoStar")
+				 * * 2 + document.getLong("threeStar") * 3 + document.getLong("fourStar") * 4 +
+				 * document.getLong("fiveStar") * 5) / document.getLong("nbrRates");
+				 * DecimalFormat df = new DecimalFormat("#.#"); res.addProperty("rating",
+				 * df.format(rate)); }
+				 */
+			}
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+	
+	@POST
+	@Path("/getfromcoord")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getFromCoordinates(LocationData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
+			CollectionReference locations = db.collection("locations");
+			Query query = locations.whereEqualTo("latitude", data.latitude).whereEqualTo("longitude", data.longitude);
 
 			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 			JsonObject res = new JsonObject();
@@ -274,15 +315,30 @@ public class LocationResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getAllLocations(TokenData data) throws InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllLocations")) {
 			CollectionReference locations = db.collection("locations");
 
 			ApiFuture<QuerySnapshot> querySnapshot = locations.get();
 			JsonObject res = new JsonObject();
 			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
 
-			res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude", "longitude", "category"));
+			//res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude", "longitude", "category"));
+			
+			JsonArray array = new JsonArray();
+			JsonObject jsObj;
 
+			if (docs.isEmpty())
+				throw new NotFoundException();
+			for (QueryDocumentSnapshot document1 : docs) {
+				jsObj = new JsonObject();
+				jsObj.addProperty("latitude", document1.get("latitude").toString());
+				jsObj.addProperty("longitude", document1.get("longitude").toString());
+				jsObj.addProperty("category", document1.get("category").toString());
+				array.add(jsObj);
+			}
+			
+			res.add("locations", array);
+			
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
 

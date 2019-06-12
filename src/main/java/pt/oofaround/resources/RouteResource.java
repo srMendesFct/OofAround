@@ -1,6 +1,5 @@
 package pt.oofaround.resources;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -24,12 +23,13 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.GeoPoint;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
@@ -71,29 +71,23 @@ public class RouteResource {
 
 			JsonObject res = new JsonObject();
 			Map<String, Object> docData = new HashMap();
-			Type listType = new TypeToken<List<String>>() {
-			}.getType();
-			List<String> locationNames = new Gson().fromJson(data.locationNames, listType);
+			Set<String> cats = new HashSet<String>();
+			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
+
+			JsonArray jar = data.locationNames;
+			JsonObject obj;
+			GeoPoint geo;
+			for (int i = 0; i < jar.size(); i++) {
+				obj = (JsonObject) jar.get(i);
+				cats.add(obj.get("category").getAsString());
+				geo = new GeoPoint(obj.get("latitude").getAsDouble(), obj.get("longitude").getAsDouble());
+				locationsList.add(geo);
+			}
 
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("creatorUsername", data.creatorUsername);
-			docData.put("locationsNames", locationNames);
-
-			CollectionReference locations = db.collection("locations");
-			Query locationQuery;
-			ApiFuture<QuerySnapshot> locationQuerySnapshot;
-			String category;
-			Set<String> cats = new HashSet<String>();
-
-			for (String s : locationNames) {
-				locationQuery = locations.whereEqualTo("name", s);
-				locationQuerySnapshot = query.get();
-				for (DocumentSnapshot document : locationQuerySnapshot.get().getDocuments()) {
-					category = document.getString("category");
-					cats.add(category);
-				}
-			}
+			docData.put("locationsNames", locationsList);
 
 			List<String> catList = new LinkedList<String>(cats);
 
@@ -155,8 +149,7 @@ public class RouteResource {
 	@POST
 	@Path("/rate")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response ratePlace(LocationData data)
-			throws NumberFormatException, InterruptedException, ExecutionException {
+	public Response ratePlace(RouteData data) throws NumberFormatException, InterruptedException, ExecutionException {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
 			CollectionReference locations = db.collection("locations");
