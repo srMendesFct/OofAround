@@ -26,38 +26,12 @@
      });
  };
 
- captureDataC = function (event) {
-     var values = {};
-     $.each($('form[name="change"]').serializeArray(), function (i, field) {
-         values[field.name] = field.value;
-     });
-     $.ajax({
-         type: "POST",
-         url: "https://oofaround.appspot.com/rest/register/user",
-         contentType: "application/json;charset=utf-8",
-         dataType: 'json', // data type        
-         crossDomain: true,
-         success: function (Response) {},
-         error: function (Response) {
-             if (Response.status == 200) {
-                 alert("Alteração efetuada com sucesso.");
-                 window.location.href = "https://oofaround.appspot.com/";
-             } else {
-                 alert("Falha ao alterar os dados.");
-                 window.location.href = "https://oofaround.appspot.com/";
-             }
-
-         },
-         data: JSON.stringify(values) // post data || get data
-     });
-     event.preventDefault();
- };
+ 
 
 
- window.onload = function () {
+ window.onload = function (event) {
      var user = localStorage.getItem('username');
      var image = localStorage.getItem('image');
-     var frmsr = $('form[name="change"]');
      var date = new Date();
      localStorage.setItem('expiration', date.getTime() + 300000);
      document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
@@ -70,8 +44,9 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
-         frmsr[0].onsubmit = captureDataC();
-         setupCallback();
+        var frmsl = $('form[name="change"]');
+        frmsl[0].onsubmit = captureDataC;
+        setupCallback();
      }
  };
 
@@ -86,4 +61,36 @@
          alert("Sessão terminada.")
          window.location.href = "https://oofaround.appspot.com/";
      });
+
+     document.getElementById("altera").addEventListener("click", function () {
+         //captureDataC();
+         //window.location.href = "https://oofaround.appspot.com/";
+     });
  };
+
+ captureDataC = function (event) {
+    var values = {};
+    $.each($('form[name="change"]').serializeArray(), function (i, field) {
+        values[field.name] = field.value;
+    });
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/register/user",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {},
+        error: function (Response) {
+            if (Response.status == 200) {
+                alert("Alteração efetuada com sucesso.");
+                //window.location.href = "https://oofaround.appspot.com/";
+            } else {
+                alert("Falha ao alterar os dados.");
+                //window.location.href = "https://oofaround.appspot.com/";
+            }
+
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+    event.preventDefault();
+};
