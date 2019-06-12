@@ -70,7 +70,7 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
-         frmsr[0].onsubmit = captureDataC;
+         frmsr[0].onsubmit = captureDataC();
          setupCallback();
      }
  };
