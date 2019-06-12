@@ -26,7 +26,31 @@
      });
  };
 
- 
+ captureDataC = function () {
+     var values = {};
+     $.each($('form[name="change"]').serializeArray(), function (i, field) {
+         values[field.name] = field.value;
+     });
+     $.ajax({
+         type: "POST",
+         url: "https://oofaround.appspot.com/rest/register/user",
+         contentType: "application/json;charset=utf-8",
+         dataType: 'json', // data type        
+         crossDomain: true,
+         success: function (Response) {},
+         error: function (Response) {
+             if (Response.status == 200) {
+                 alert("Alteração efetuada com sucesso.");
+                 //window.location.href = "https://oofaround.appspot.com/";
+             } else {
+                 alert("Falha ao alterar os dados.");
+                 //window.location.href = "https://oofaround.appspot.com/";
+             }
+
+         },
+         data: JSON.stringify(values) // post data || get data
+     });
+ };
 
 
  window.onload = function (event) {
@@ -44,9 +68,7 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
-        var frmsl = $('form[name="change"]');
-        frmsl[0].onsubmit = captureDataC;
-        setupCallback();
+         setupCallback();
      }
  };
 
@@ -63,34 +85,7 @@
      });
 
      document.getElementById("altera").addEventListener("click", function () {
-         //captureDataC();
+         captureDataC();
          //window.location.href = "https://oofaround.appspot.com/";
      });
  };
-
- captureDataC = function (event) {
-    var values = {};
-    $.each($('form[name="change"]').serializeArray(), function (i, field) {
-        values[field.name] = field.value;
-    });
-    $.ajax({
-        type: "POST",
-        url: "https://oofaround.appspot.com/rest/register/user",
-        contentType: "application/json;charset=utf-8",
-        dataType: 'json', // data type        
-        crossDomain: true,
-        success: function (Response) {},
-        error: function (Response) {
-            if (Response.status == 200) {
-                alert("Alteração efetuada com sucesso.");
-                //window.location.href = "https://oofaround.appspot.com/";
-            } else {
-                alert("Falha ao alterar os dados.");
-                //window.location.href = "https://oofaround.appspot.com/";
-            }
-
-        },
-        data: JSON.stringify(values) // post data || get data
-    });
-    event.preventDefault();
-};
