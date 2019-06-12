@@ -143,6 +143,7 @@ public class ImageResource {
 
 			Storage db = storage.getService();
 
+			try {
 			BlobId blobId = BlobId.of(BUCKET, data.name);
 
 			Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
@@ -158,6 +159,15 @@ public class ImageResource {
 			token.addProperty("role", at.role);
 			token.addProperty("tokenID", at.tokenID);
 			return Response.ok(g.toJson(token)).build();
+			
+			}catch(Exception e) {
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JsonObject token = new JsonObject();
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.status(Status.NOT_FOUND).entity(g.toJson(token)).build();
+			}
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}
