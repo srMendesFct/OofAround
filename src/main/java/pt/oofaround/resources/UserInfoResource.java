@@ -79,7 +79,7 @@ public class UserInfoResource {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@POST
-	@Path("/self")
+	@Path("/alterself")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response alterUserInfo(UserData data) throws InterruptedException, ExecutionException {
 
