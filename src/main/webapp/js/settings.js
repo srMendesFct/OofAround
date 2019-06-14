@@ -67,19 +67,14 @@
          dataType: 'json', // data type        
          crossDomain: true,
          success: function (Response) {
-             console.log(Response.status);
-             alert("Alteração efetuada com sucesso.");
-             //window.location.href = "https://oofaround.appspot.com/profile.html";
          },
          error: function (Response) {
-             console.log(Response.status);
-             if(Response.status==200) {
-                alert("Alteração efetuada com sucesso.");
+             if (Response.status == 200) {
+                 alert("Alteração efetuada com sucesso.");
+             } else {
+                 alert("Falha ao alterar os dados.");
              }
-             else {
-                alert("Falha ao alterar os dados.");
-             }
-             //window.location.href = "https://oofaround.appspot.com/profile.html";
+             window.location.href = "https://oofaround.appspot.com/profile.html";
          },
          data: JSON.stringify(values) // post data || get data
      });
@@ -115,9 +110,8 @@
  };
 
  setupCallback = function () {
-
-    var frmsl = $('form[name="change"]');
-    frmsl[0].onsubmit = captureDataChangeUserInfo;
+     var frmsl = $('form[name="change"]');
+     frmsl[0].onsubmit = captureDataChangeUserInfo;
 
      document.getElementById("delete").addEventListener("click", function () {
          captureDataDeleteUser();
