@@ -54,6 +54,7 @@
 
  captureDataChangeUserInfo = function () {
      var values = {};
+     var event;
      $.each($('form[name="change"]').serializeArray(), function (i, field) {
          values[field.name] = field.value;
      });
@@ -74,6 +75,7 @@
          },
          data: JSON.stringify(values) // post data || get data
      });
+     event.preventDefault();
  };
 
  window.onload = function (event) {
