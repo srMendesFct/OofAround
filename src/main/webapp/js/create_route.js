@@ -1,8 +1,10 @@
 var map;
+var directionsService;
+var directionsDisplay;
 
 function initMap() {
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: 7,
       center: {lat: 38.71667, lng: -9.13333}
@@ -60,6 +62,7 @@ captureDataMonuments = function() {
             for(var i = 0; i < response.locations.length; i++) {
                 console.log(response.locations[i].name);
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
+                console.log(response.locations[i].latitude);
                 var marker = new google.maps.Marker({
                     position: pos,
                     map: map
@@ -73,5 +76,7 @@ captureDataMonuments = function() {
 }
 
 window.onload = function () {
+    initMap();
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
     captureDataMonuments();
 }
