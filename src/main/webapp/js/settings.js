@@ -84,7 +84,7 @@
      document.getElementById("userC").value = localStorage.getItem('username');;
      document.getElementById("emailC").value = email;
      document.getElementById("countryC").value = country;
-     document.getElementById("teleC").value = cellphone;
+     document.getElementById("cellphoneC").value = cellphone;
      document.getElementById("privacy").value = privacy;
      document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
      document.getElementById("user").innerHTML = user;
