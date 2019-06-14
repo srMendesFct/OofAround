@@ -77,6 +77,6 @@ captureDataMonuments = function() {
 
 window.onload = function () {
     initMap();
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
+   // calculateAndDisplayRoute(directionsService, directionsDisplay);
     captureDataMonuments();
 }
