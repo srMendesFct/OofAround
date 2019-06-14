@@ -49,7 +49,12 @@ captureDataGetUserInfo = function (values) {
             localStorage.setItem('email', Response.email);
             localStorage.setItem('country', Response.country);
             localStorage.setItem('cellphone', Response.cellphone);
-            localStorage.setItem('privacy', Response.privacy);
+            if(Response.privacy == "public") {
+                localStorage.setItem('privacy', "Público");
+            }
+            else {
+                localStorage.setItem('privacy', "Privado");
+            }
         },
         error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
@@ -58,6 +63,7 @@ captureDataGetUserInfo = function (values) {
 
 
 window.onload = function () {
+    captureDataGetUserInfo();
     var date = new Date();
     var email = localStorage.getItem('email');
     var country = localStorage.getItem('country');
@@ -80,7 +86,6 @@ window.onload = function () {
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
-        captureDataGetUserInfo();
         setupCallback();
     }
 };
