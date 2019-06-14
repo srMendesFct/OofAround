@@ -39,7 +39,6 @@ captureDataGetUserInfo = function (values) {
         role: localStorage.getItem('role'),
         username: localStorage.getItem('username'),
     };
-    console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/userinfo/self",
@@ -47,15 +46,10 @@ captureDataGetUserInfo = function (values) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            console.log(Response);
             localStorage.setItem('email', Response.email);
-            console.log(localStorage.getItem('email'));
             localStorage.setItem('country', Response.country);
-            console.log(localStorage.getItem('country'));
             localStorage.setItem('cellphone', Response.cellphone);
-            console.log(localStorage.getItem('cellphone'));
-            localStorage.setItem('type', Response.privacy);
-            console.log(localStorage.getItem('type'));
+            localStorage.setItem('privacy', Response.privacy);
         },
         error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
@@ -68,7 +62,7 @@ window.onload = function () {
     var email = localStorage.getItem('email');
     var country = localStorage.getItem('country');
     var cellphone = localStorage.getItem('cellphone');
-    var type = localStorage.getItem('type');
+    var privacy = localStorage.getItem('privacy');
     var user = localStorage.getItem('username');
     var image = localStorage.getItem('image');
     var token = localStorage.getItem('expiration');
@@ -77,7 +71,7 @@ window.onload = function () {
     document.getElementById("emailC").value = email;
     document.getElementById("countryC").value = country;
     document.getElementById("teleC").value = cellphone;
-    document.getElementById("typeC").value = type;
+    document.getElementById("privacy").value = privacy;
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
     document.getElementById("user").innerHTML = user;
     document.getElementById("profilePicBig").src = 'data:image/jpeg;base64, ' + image;
