@@ -49,13 +49,15 @@ captureDataGetUserInfo = function (values) {
         success: function (Response) {
             console.log(Response);
             localStorage.setItem('email', Response.email);
+            console.log(localStorage.getItem('email'));
             localStorage.setItem('country', Response.country);
+            console.log(localStorage.getItem('country'));
             localStorage.setItem('cellphone', Response.cellphone);
-            localStorage.setItem('type', Response.profile);
+            console.log(localStorage.getItem('cellphone'));
+            localStorage.setItem('type', Response.privacy);
+            console.log(localStorage.getItem('type'));
         },
-        error: function (Response) {
-
-        },
+        error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
     });
 };
@@ -71,11 +73,11 @@ window.onload = function () {
     var image = localStorage.getItem('image');
     var token = localStorage.getItem('expiration');
     var longday = date.getTime();
-    document.getElementById("userC").nodeValue = localStorage.getItem('username');;
-    document.getElementById("emailC").nodeValue = email;
-    document.getElementById("countryC").nodeValue = country;
-    document.getElementById("teleC").nodeValue = cellphone;
-    document.getElementById("typeC").nodeValue = type;
+    document.getElementById("userC").value = localStorage.getItem('username');;
+    document.getElementById("emailC").value = email;
+    document.getElementById("countryC").value = country;
+    document.getElementById("teleC").value = cellphone;
+    document.getElementById("typeC").value = type;
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
     document.getElementById("user").innerHTML = user;
     document.getElementById("profilePicBig").src = 'data:image/jpeg;base64, ' + image;
