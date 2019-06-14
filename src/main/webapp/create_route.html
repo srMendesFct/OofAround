@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="./js/create_route.js"></script>
 
   <style>
 
@@ -45,36 +46,57 @@
     .navbar-inverse .navbar-nav li a {
       color: #D5D5D5;
     }
+    
+          .modal .modal-header {
+            background-color: #ff5252;
+        }
+
+        .modal .modal-footer {
+            background-color: #ff5252;
+        }
+    
 </style>
 
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+ <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><img src="img/logo.png"></a>
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-left">
-              <li class="active"><a href="homepage.html">Home</a></li>
-              <li><a href="#percursosRecomendados">Percursos</a></li>
-              <li><a href="map.html">Mapa</a></li>
-              <li><a href="#ourFooter">Sobre Nós</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#"><span class="glyphicon glyphicon-user" data-toggle="modal" data-target="#registerForm"
-                    id="registerFlag"> Registar</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-log-in" data-toggle="modal" data-target="#loginForm"
-                    id="loginFlag"> Login</a></li>
-            </ul>
-          </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="homepage_logged.html"><img src="img/logo.png"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active"><a href="homepage_logged.html">Home</a></li>
+                    <li><a href="#percursosRecomendados">Percursos</a></li>
+                    <li><a href="map_logged.html">Mapa</a></li>
+                    <li><a href="ranking.html">Ranking</a></li>
+                    <li><a href="#ourFooter">Sobre Nós</a></li>
+
+                </ul>
+                <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
+                        href="#"><img class="img" id="profilePic"></a>
+                    <div class="dropdown-menu" aria-labelledby="loginPainel">
+                        <a id="user" class=" dropdown-item disabled"></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="profile.html">Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="settings.html">Definições</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://oofaround.appspot.com/" role="button"
+                            id="logout">Terminar sessão</a>
+                    </div>
+                </li>
+
+            </div>
         </div>
-      </nav>
+    </nav>
+
 
         <!----------------------------------------MODAL LOGIN FORM--------------------------------->
   <div class="modal fade" id="loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
