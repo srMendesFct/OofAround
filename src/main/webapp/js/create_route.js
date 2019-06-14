@@ -7,7 +7,7 @@ captureDataMonuments = function() {
     }
     $.ajax({
         type: "POST",
-        url: "https://oofaround.appspot.com/rest/location/get",
+        url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
         contentType: "application/json;charset=utf-8",
         dataType: 'json',
         crossDomain: 'true',
