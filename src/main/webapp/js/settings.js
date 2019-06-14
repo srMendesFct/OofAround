@@ -73,9 +73,11 @@
          },
          error: function (Response) {
              console.log(Response.status);
+             if(Response.status==200) {
+                alert("Alteração efetuada com sucesso.");
+             }
              alert("Falha ao alterar os dados.");
              //window.location.href = "https://oofaround.appspot.com/profile.html";
-
          },
          data: JSON.stringify(values) // post data || get data
      });
