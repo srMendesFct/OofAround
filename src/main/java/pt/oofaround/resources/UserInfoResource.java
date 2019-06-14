@@ -79,6 +79,33 @@ public class UserInfoResource {
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
+	@SuppressWarnings("unchecked")
+	@POST
+	@Path("/routes")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getUserRoutes(UserData data) throws InterruptedException, ExecutionException {
+
+		LOG.fine("Listing user" + data.username);
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.username, data.role, "getUserRoutes")) {
+			CollectionReference users = db.collection("users");
+			Query query = users.whereEqualTo("username", data.username);
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+			JsonObject res = new JsonObject();
+			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				List<String> routes = (List<String>) document.get("routes");
+				if (routes != null)
+					res.add("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
+				else {
+					return Response.status(Status.NO_CONTENT).build();
+				}
+			}
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@POST
 	@Path("/alterself")
@@ -92,7 +119,8 @@ public class UserInfoResource {
 		docData.put("cellphone", data.cellphone);
 		docData.put("privacy", data.privacy);
 
-		ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.usernameR).set(docData, SetOptions.merge());
+		ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.usernameR).set(docData,
+				SetOptions.merge());
 		alterInfo.get();
 
 		// FALTA TOKEN

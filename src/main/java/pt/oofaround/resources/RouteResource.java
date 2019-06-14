@@ -24,7 +24,6 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.GeoPoint;
-import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
@@ -124,33 +123,36 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
 			CollectionReference locations = db.collection("locations");
-			Query query = locations.whereEqualTo("name", data.name);
-			
 
 			List<GeoPoint> locationsList;
 			List<String> locationsNames;
 			List<String> placeIDs;
-			
 
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("name", data.name)
+					.whereEqualTo("creatorUsername", data.usernameR).get();
 			JsonObject res = new JsonObject();
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				res.addProperty("name", document.getString("name"));
 				res.addProperty("description", document.getString("description"));
 				res.addProperty("creatorUsername", document.getString("creatorUsername"));
-				
-				
-				
+
 				locationsNames = (List<String>) document.get("locationNames");
 				locationsList = (List<GeoPoint>) document.get("locationsList");
 				placeIDs = (List<String>) document.get("placeIDs");
-				
-				for(int i = 0; i < locationsNames.size(); i++) {
-					//res.add
+
+				JsonArray array = new JsonArray();
+				JsonObject jsObj;
+
+				for (int i = 0; i < locationsNames.size(); i++) {
+					jsObj = new JsonObject();
+					jsObj.addProperty("name", locationsNames.get(i));
+					jsObj.addProperty("latitude", locationsList.get(i).getLatitude());
+					jsObj.addProperty("longitude", locationsList.get(i).getLongitude());
+					jsObj.addProperty("placeIDs", placeIDs.get(i));
+					array.add(jsObj);
 				}
 
-				res.add("locationNames", JsonArraySupport.createOnePropArrayFromFirestoreArray(
-						(List<String>) document.get("locationNames"), "locationNames"));
+				res.add("locations", array);
 				res.add("categories", JsonArraySupport
 						.createOnePropArrayFromFirestoreArray((List<String>) document.get("categories"), "categories"));
 				res.addProperty("rating", document.getDouble("rating"));
