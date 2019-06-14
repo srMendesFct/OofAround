@@ -71,10 +71,11 @@
          error: function (Response) {
              if (Response.status == 200) {
                  alert("Alteração efetuada com sucesso.");
+                 window.location.href = "https://oofaround.appspot.com/settings.html";
              } else {
                  alert("Falha ao alterar os dados.");
+                 window.location.href = "https://oofaround.appspot.com/settings.html";
              }
-             window.location.href = "https://oofaround.appspot.com/profile.html";
          },
          data: JSON.stringify(values) // post data || get data
      });
