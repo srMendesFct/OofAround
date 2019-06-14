@@ -65,7 +65,7 @@ captureDataLogin = function (event) {
         type: "POST",
         url: "https://oofaround.appspot.com/rest/login/",
         contentType: "application/json;charset=utf-8",
-        dataType: 'json', // data type        
+        dataType: 'json',     
         crossDomain: true,
         success: function (Response) {
             var date = new Date();
@@ -75,7 +75,7 @@ captureDataLogin = function (event) {
             localStorage.setItem('expiration', date.getTime() + 300000);
             captureDataGetImage();
         },
-        error: function (Response) {
+        error: function () {
             alert("Falha ao iniciar sessão.");
             window.location.href = "https://oofaround.appspot.com/";
         },

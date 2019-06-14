@@ -1,6 +1,7 @@
 window.onload = function init() {
     var date = new Date();
     var user = localStorage.getItem('username');
+    console.log(user);
     var image = localStorage.getItem('image');
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
     document.getElementById("user").innerHTML = user;

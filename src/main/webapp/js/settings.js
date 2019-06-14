@@ -54,7 +54,6 @@
 
  captureDataChangeUserInfo = function () {
      var values = {};
-     var event;
      $.each($('form[name="change"]').serializeArray(), function (i, field) {
          values[field.name] = field.value;
      });
@@ -68,14 +67,13 @@
          error: function (Response) {
              console.log(Response.status);
              if (Response.status == 200) {
-                 //alert("Alteração efetuada com sucesso.");
+                 alert("Alteração efetuada com sucesso.");
              } else {
-                 //alert("Falha ao alterar os dados.");
+                 alert("Falha ao alterar os dados.");
              }
          },
          data: JSON.stringify(values) // post data || get data
      });
-     event.preventDefault();
  };
 
  window.onload = function (event) {
