@@ -67,14 +67,13 @@
          contentType: "application/json;charset=utf-8",
          dataType: 'json', // data type        
          crossDomain: true,
-         success: function (Response) {},
+         success: function (Response) {
+            console.log(Response.status);
+            alert("Alteração efetuada com sucesso.");
+         },
          error: function (Response) {
-             console.log(Response.status);
-             if (Response.status == 200) {
-                 alert("Alteração efetuada com sucesso.");
-             } else {
-                 alert("Falha ao alterar os dados.");
-             }
+            console.log(Response.status);
+            alert("Falha ao alterar os dados.");
          },
          data: JSON.stringify(values) // post data || get data
      });
