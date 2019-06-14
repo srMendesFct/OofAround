@@ -53,10 +53,15 @@
  };
 
  captureDataChangeUserInfo = function () {
-     var values = {};
+     var values = {
+         tokenID: localStorage.getItem('token'),
+         role: localStorage.getItem('role'),
+         usernameR: localStorage.getItem('username'),
+     };
      $.each($('form[name="change"]').serializeArray(), function (i, field) {
          values[field.name] = field.value;
      });
+     console.log(JSON.stringify(values));
      $.ajax({
          type: "POST",
          url: "https://oofaround.appspot.com/rest/userinfo/alterself",
