@@ -1,6 +1,8 @@
 var map;
 var directionsService;
 var directionsDisplay;
+var marker;
+var pos;
 
 function initMap() {
     directionsService = new google.maps.DirectionsService;
@@ -61,9 +63,9 @@ captureDataMonuments = function() {
         success: function(response) {
             for(var i = 0; i < response.locations.length; i++) {
                 console.log(response.locations[i].name);
-                var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
+                pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
                 console.log(response.locations[i].latitude);
-                var marker = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     position: pos,
                     map: map
                 });
