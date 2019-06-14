@@ -51,7 +51,7 @@
      });
  };
 
- captureDataChangeUserInfo = function () {
+ captureDataChangeUserInfo = function (event) {
      var values = {};
      values["tokenID"] = localStorage.getItem('token');
      values["role"] = localStorage.getItem('role');
@@ -76,11 +76,14 @@
              if(Response.status==200) {
                 alert("Alteração efetuada com sucesso.");
              }
-             alert("Falha ao alterar os dados.");
+             else {
+                alert("Falha ao alterar os dados.");
+             }
              //window.location.href = "https://oofaround.appspot.com/profile.html";
          },
          data: JSON.stringify(values) // post data || get data
      });
+     event.preventDefault();
  };
 
  window.onload = function () {
@@ -108,12 +111,14 @@
      } else {
          localStorage.setItem('expiration', date.getTime() + 300000);
          setupCallback();
-         var frmsl = $('form[name="change"]');
-         frmsl[0].onsubmit = captureDataChangeUserInfo();
      }
  };
 
  setupCallback = function () {
+
+    var frmsl = $('form[name="change"]');
+    frmsl[0].onsubmit = captureDataChangeUserInfo;
+
      document.getElementById("delete").addEventListener("click", function () {
          captureDataDeleteUser();
          window.location.href = "https://oofaround.appspot.com/";
