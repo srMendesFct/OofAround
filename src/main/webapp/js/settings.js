@@ -70,6 +70,15 @@
          },
          error: function (Response) {
              if (Response.status == 200) {
+                 localStorage.setItem('email', Response.email);
+                 localStorage.setItem('country', Response.country);
+                 localStorage.setItem('cellphone', Response.cellphone);
+                 if(Response.privacy == true) {
+                    localStorage.setItem('privacy', "Privado");
+                 }
+                 else {
+                     localStorage.setItem('privacy', Público);
+                 }
                  alert("Alteração efetuada com sucesso.");
                  window.location.href = "https://oofaround.appspot.com/settings.html";
              } else {
