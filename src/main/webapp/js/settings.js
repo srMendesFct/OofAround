@@ -52,11 +52,10 @@
  };
 
  captureDataChangeUserInfo = function () {
-     var values = {
-         tokenID: localStorage.getItem('token'),
-         role: localStorage.getItem('role'),
-         usernameR: localStorage.getItem('username'),
-     };
+     var values = {};
+     values["tokenID"] = localStorage.getItem('token');
+     values["role"] = localStorage.getItem('role');
+     values["usernameR"] = localStorage.getItem('username');
      $.each($('form[name="change"]').serializeArray(), function (i, field) {
          values[field.name] = field.value;
      });
@@ -70,16 +69,19 @@
          success: function (Response) {
              console.log(Response.status);
              alert("Alteração efetuada com sucesso.");
+             //window.location.href = "https://oofaround.appspot.com/profile.html";
          },
          error: function (Response) {
              console.log(Response.status);
              alert("Falha ao alterar os dados.");
+             //window.location.href = "https://oofaround.appspot.com/profile.html";
+
          },
          data: JSON.stringify(values) // post data || get data
      });
  };
 
- window.onload = function (event) {
+ window.onload = function () {
      captureDataGetUserInfo();
      var user = localStorage.getItem('username');
      var image = localStorage.getItem('image');
