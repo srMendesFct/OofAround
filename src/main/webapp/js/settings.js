@@ -77,7 +77,7 @@
                     localStorage.setItem('privacy', "Privado");
                  }
                  else {
-                     localStorage.setItem('privacy', Público);
+                     localStorage.setItem('privacy', "Público");
                  }
                  alert("Alteração efetuada com sucesso.");
                  window.location.href = "https://oofaround.appspot.com/settings.html";
