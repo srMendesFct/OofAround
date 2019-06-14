@@ -1,6 +1,5 @@
 window.onload = function init() {
     var date = new Date();
-    localStorage.setItem('expiration', date.getTime() + 300000);
     var user = localStorage.getItem('username');
     var image = localStorage.getItem('image');
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
@@ -12,6 +11,7 @@ window.onload = function init() {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
+        localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
     }
 }

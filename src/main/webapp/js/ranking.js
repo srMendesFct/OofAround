@@ -47,7 +47,6 @@
  var image = localStorage.getItem('image');
  window.onload = function () {
     var date = new Date();
-    localStorage.setItem('expiration', date.getTime() + 300000);
     document.getElementById("user").innerHTML = user;
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
      var token = localStorage.getItem('expiration');
@@ -57,6 +56,7 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
+        localStorage.setItem('expiration', date.getTime() + 300000);
          captureDataRanking();
          setupCallback();
      }

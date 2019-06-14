@@ -46,32 +46,44 @@ captureDataGetUserInfo = function (values) {
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
-        success: function (Response) {},
+        success: function (Response) {
+            console.log(Response);
+            localStorage.setItem('email', Response.email);
+            localStorage.setItem('country', Response.country);
+            localStorage.setItem('cellphone', Response.cellphone);
+            localStorage.setItem('type', Response.profile);
+        },
         error: function (Response) {
-            console.log(Response.status);
-            if (Response.status == 200) {
-                console.log(Response);
-            }
+
         },
         data: JSON.stringify(values) // post data || get data
     });
 };
 
-var user = localStorage.getItem('username');
-var image = localStorage.getItem('image');
+
 window.onload = function () {
     var date = new Date();
-    localStorage.setItem('expiration', date.getTime() + 300000);
+    var email = localStorage.getItem('email');
+    var country = localStorage.getItem('country');
+    var cellphone = localStorage.getItem('cellphone');
+    var type = localStorage.getItem('type');
+    var user = localStorage.getItem('username');
+    var image = localStorage.getItem('image');
+    var token = localStorage.getItem('expiration');
+    var longday = date.getTime();
+    document.getElementById("userC").nodeValue = localStorage.getItem('username');;
+    document.getElementById("emailC").nodeValue = email;
+    document.getElementById("countryC").nodeValue = country;
+    document.getElementById("teleC").nodeValue = cellphone;
+    document.getElementById("typeC").nodeValue = type;
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
     document.getElementById("user").innerHTML = user;
     document.getElementById("profilePicBig").src = 'data:image/jpeg;base64, ' + image;
-    var token = localStorage.getItem('expiration');
-    var date = new Date();
-    var longday = date.getTime();
     if (longday > token) {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
+        localStorage.setItem('expiration', date.getTime() + 300000);
         captureDataGetUserInfo();
         setupCallback();
     }
