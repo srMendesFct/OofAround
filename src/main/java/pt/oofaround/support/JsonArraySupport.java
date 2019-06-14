@@ -40,7 +40,7 @@ public class JsonArraySupport {
 		}
 		return array;
 	}
-
+	
 	public static JsonArray createLocationPropArray(List<QueryDocumentSnapshot> docs, String property1,
 			String property2, String property3, String property4, String property5, String property6, String property7,
 			String property8, String property9) {
@@ -59,8 +59,8 @@ public class JsonArraySupport {
 			jsObj.addProperty(property5, document1.get(property5).toString());
 			jsObj.addProperty(property6, document1.get(property6).toString());
 			jsObj.addProperty(property7, document1.get(property7).toString());
-			jsObj.addProperty(property8, document1.get(property8).toString());
-			jsObj.addProperty(property9, document1.get(property9).toString());
+			//jsObj.addProperty(property8, document1.get(property8).toString());
+			//jsObj.addProperty(property9, document1.get(property9).toString());
 
 			array.add(jsObj);
 		}

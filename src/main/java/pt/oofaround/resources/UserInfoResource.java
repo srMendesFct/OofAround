@@ -21,6 +21,7 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -91,7 +92,7 @@ public class UserInfoResource {
 		docData.put("cellphone", data.cellphone);
 		docData.put("privacy", data.privacy);
 
-		ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.usernameR).set(docData);
+		ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.usernameR).set(docData, SetOptions.merge());
 		alterInfo.get();
 
 		// FALTA TOKEN

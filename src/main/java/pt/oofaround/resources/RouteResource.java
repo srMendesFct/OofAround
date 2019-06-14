@@ -61,9 +61,9 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRoute")) {
 			CollectionReference routes = db.collection("routes");
-			Query query = routes.whereEqualTo("name", data.name);
 
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			ApiFuture<QuerySnapshot> querySnapshot = routes.whereEqualTo("name", data.name)
+					.whereEqualTo("creatorUsername", data.usernameR).get();
 
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				return Response.status(Status.FOUND).entity("Route name already in use.").build();
@@ -73,21 +73,25 @@ public class RouteResource {
 			Map<String, Object> docData = new HashMap();
 			Set<String> cats = new HashSet<String>();
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
+			List<String> names = new LinkedList<String>();
+			List<String> placeIDs = new LinkedList<String>();
 
 			JsonArray jar = data.locationNames;
 			JsonObject obj;
-			GeoPoint geo;
 			for (int i = 0; i < jar.size(); i++) {
 				obj = (JsonObject) jar.get(i);
 				cats.add(obj.get("category").getAsString());
-				geo = new GeoPoint(obj.get("latitude").getAsDouble(), obj.get("longitude").getAsDouble());
-				locationsList.add(geo);
+				names.add(obj.get("name").getAsString());
+				placeIDs.add(obj.get("placeID").getAsString());
+				locationsList.add(new GeoPoint(obj.get("latitude").getAsDouble(), obj.get("longitude").getAsDouble()));
 			}
 
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("creatorUsername", data.creatorUsername);
-			docData.put("locationsNames", locationsList);
+			docData.put("locationsCoords", locationsList);
+			docData.put("locationsNames", names);
+			docData.put("placeIDs", placeIDs);
 
 			List<String> catList = new LinkedList<String>(cats);
 
@@ -121,6 +125,12 @@ public class RouteResource {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
 			CollectionReference locations = db.collection("locations");
 			Query query = locations.whereEqualTo("name", data.name);
+			
+
+			List<GeoPoint> locationsList;
+			List<String> locationsNames;
+			List<String> placeIDs;
+			
 
 			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 			JsonObject res = new JsonObject();
@@ -128,10 +138,19 @@ public class RouteResource {
 				res.addProperty("name", document.getString("name"));
 				res.addProperty("description", document.getString("description"));
 				res.addProperty("creatorUsername", document.getString("creatorUsername"));
+				
+				
+				
+				locationsNames = (List<String>) document.get("locationNames");
+				locationsList = (List<GeoPoint>) document.get("locationsList");
+				placeIDs = (List<String>) document.get("placeIDs");
+				
+				for(int i = 0; i < locationsNames.size(); i++) {
+					//res.add
+				}
 
 				res.add("locationNames", JsonArraySupport.createOnePropArrayFromFirestoreArray(
 						(List<String>) document.get("locationNames"), "locationNames"));
-				// res.addProperty("locationNames", document.get("locationNames"));
 				res.add("categories", JsonArraySupport
 						.createOnePropArrayFromFirestoreArray((List<String>) document.get("categories"), "categories"));
 				res.addProperty("rating", document.getDouble("rating"));
@@ -153,9 +172,8 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
 			CollectionReference locations = db.collection("locations");
-			Query query = locations.whereEqualTo("name", data.name);
 
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("name", data.name).get();
 			double rate = 0;
 			long nbrRates = 0;
 			long newRate = 0;
