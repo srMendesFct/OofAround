@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -76,6 +75,7 @@ public class LocationResource {
 			docData.put("region", data.region);
 			docData.put("score", data.score); // calculate score
 			docData.put("nbrVisits", 0);
+			docData.put("placeID", data.placeID);
 
 			ApiFuture<WriteResult> newLocation = locations.document(data.name).set(docData);
 			MediaSupport.uploadImage(data.name, data.image);
@@ -111,14 +111,7 @@ public class LocationResource {
 				res.addProperty("region", document.getString("region"));
 				res.addProperty("score", document.getLong("score"));
 				res.addProperty("nbrVisits", document.getLong("nbrVisits"));
-				/*
-				 * if ((int) document.get("nbrRates") == 0) res.addProperty("rating", 0); else {
-				 * double rate = (document.getLong("oneStar") * 1 + document.getLong("twoStar")
-				 * * 2 + document.getLong("threeStar") * 3 + document.getLong("fourStar") * 4 +
-				 * document.getLong("fiveStar") * 5) / document.getLong("nbrRates");
-				 * DecimalFormat df = new DecimalFormat("#.#"); res.addProperty("rating",
-				 * df.format(rate)); }
-				 */
+				res.addProperty("placeID", document.getString("placeID"));
 			}
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -128,13 +121,13 @@ public class LocationResource {
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}
-	
+
 	@POST
 	@Path("/getfromcoord")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getFromCoordinates(LocationData data) throws InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getFromCoordinates")) {
 			CollectionReference locations = db.collection("locations");
 			Query query = locations.whereEqualTo("latitude", data.latitude).whereEqualTo("longitude", data.longitude);
 
@@ -148,16 +141,9 @@ public class LocationResource {
 				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
 				res.addProperty("region", document.getString("region"));
-				res.addProperty("score", document.getLong("score"));
-				res.addProperty("nbrVisits", document.getLong("nbrVisits"));
-				/*
-				 * if ((int) document.get("nbrRates") == 0) res.addProperty("rating", 0); else {
-				 * double rate = (document.getLong("oneStar") * 1 + document.getLong("twoStar")
-				 * * 2 + document.getLong("threeStar") * 3 + document.getLong("fourStar") * 4 +
-				 * document.getLong("fiveStar") * 5) / document.getLong("nbrRates");
-				 * DecimalFormat df = new DecimalFormat("#.#"); res.addProperty("rating",
-				 * df.format(rate)); }
-				 */
+				//res.addProperty("score", document.getLong("score"));
+				//res.addProperty("nbrVisits", document.getLong("nbrVisits"));
+				//res.addProperty("placeID", document.getString("placeID"));
 			}
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -171,7 +157,7 @@ public class LocationResource {
 	@POST
 	@Path("/getcategoryregion")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getLocationsByFCatAndRegion(LocationData data) throws InterruptedException, ExecutionException {
+	public Response getLocationsByCatAndRegion(LocationData data) throws InterruptedException, ExecutionException {
 
 		LOG.fine("Getting category" + data.name);
 
@@ -322,23 +308,88 @@ public class LocationResource {
 			JsonObject res = new JsonObject();
 			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
 
-			//res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude", "longitude", "category"));
-			
+			// res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude",
+			// "longitude", "category"));
+
 			JsonArray array = new JsonArray();
 			JsonObject jsObj;
 
-			if (docs.isEmpty())
-				throw new NotFoundException();
 			for (QueryDocumentSnapshot document1 : docs) {
 				jsObj = new JsonObject();
 				jsObj.addProperty("latitude", document1.get("latitude").toString());
 				jsObj.addProperty("longitude", document1.get("longitude").toString());
 				jsObj.addProperty("category", document1.get("category").toString());
+				jsObj.addProperty("placeID", document1.getString("placeID"));
 				array.add(jsObj);
 			}
-			
+
 			res.add("locations", array);
-			
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/getsimple")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getLocationSimple(LocationData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationSimple")) {
+			CollectionReference locations = db.collection("locations");
+
+			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("latitude", data.latitude)
+					.whereEqualTo("longitude", data.longitude).get();
+			JsonObject res = new JsonObject();
+			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
+
+			JsonArray array = new JsonArray();
+			JsonObject jsObj;
+
+			for (QueryDocumentSnapshot document1 : docs) {
+				jsObj = new JsonObject();
+				jsObj.addProperty("latitude", document1.get("latitude").toString());
+				jsObj.addProperty("longitude", document1.get("longitude").toString());
+				jsObj.addProperty("category", document1.get("category").toString());
+				jsObj.addProperty("placeID", document1.getString("placeID"));
+				array.add(jsObj);
+			}
+
+			res.add("locations", array);
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/updateid")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updatePlaceID(LocationData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "updatePlaceID")) {
+			CollectionReference locations = db.collection("locations");
+
+			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("latitude", data.latitude)
+					.whereEqualTo("longitude", data.longitude).get();
+			JsonObject res = new JsonObject();
+			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
+
+			DocumentReference docRef = null;
+
+			for (QueryDocumentSnapshot document1 : docs) {
+				docRef = document1.getReference();
+			}
+
+			ApiFuture<WriteResult> update = docRef.update("placeID", data.placeID);
+			update.get();
+
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
 
