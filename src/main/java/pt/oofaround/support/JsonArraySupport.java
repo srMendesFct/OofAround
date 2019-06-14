@@ -32,9 +32,7 @@ public class JsonArraySupport {
 
 		JsonArray array = new JsonArray();
 		JsonObject jsObj;
-
-		if (docs.isEmpty())
-			throw new NotFoundException();
+		
 		for (String document1 : docs) {
 			jsObj = new JsonObject();
 			jsObj.addProperty(property, document1);

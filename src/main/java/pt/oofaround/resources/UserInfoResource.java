@@ -65,7 +65,8 @@ public class UserInfoResource {
 				res.addProperty("country", document.getString("country"));
 				res.addProperty("cellphone", document.getString("cellphone"));
 				List<String> routes = (List<String>) document.get("routes");
-				res.add("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
+				if (routes != null)
+					res.add("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
 				// comment
 				if (document.getBoolean("privacy"))
 					res.addProperty("privacy", "private");
@@ -84,17 +85,17 @@ public class UserInfoResource {
 	public Response alterUserInfo(UserData data) throws InterruptedException, ExecutionException {
 
 		Map<String, Object> docData = new HashMap();
-		
+
 		docData.put("email", data.email);
 		docData.put("country", data.country);
 		docData.put("cellphone", data.cellphone);
 		docData.put("privacy", data.privacy);
-		
+
 		ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.usernameR).set(docData);
-		alterInfo.get(); 
-		
-		//FALTA TOKEN
-		
+		alterInfo.get();
+
+		// FALTA TOKEN
+
 		return Response.ok().build();
 	}
 

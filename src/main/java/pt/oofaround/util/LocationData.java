@@ -5,6 +5,7 @@ public class LocationData {
 	public String tokenID;
 	public String usernameR;
 	public String role;
+	public String placeID;
 	public String name;
 	public String description;
 	public String address;
@@ -37,15 +38,7 @@ public class LocationData {
 		this.image = image;
 		this.region = region;
 		this.score = Long.valueOf(score);
-	}
-
-	// for individual get
-	public LocationData(String tokenID, String usernameR, String role, String name) {
-		this.tokenID = tokenID;
-		this.usernameR = usernameR;
-		this.role = role;
-		this.name = name;
-	}
+	}	
 
 	// paginated/collective get
 	public LocationData(String tokenID, String usernameR, String role, int limit, String lastName, String category,
@@ -58,7 +51,8 @@ public class LocationData {
 		this.category = category;
 		this.region = region;
 	}
-
+	
+	// for individual get
 	public LocationData(String tokenID, String usernameR, String role, String latitude, String longitude) {
 		this.tokenID = tokenID;
 		this.usernameR = usernameR;
