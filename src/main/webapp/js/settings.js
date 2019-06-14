@@ -68,12 +68,12 @@
          dataType: 'json', // data type        
          crossDomain: true,
          success: function (Response) {
-            console.log(Response.status);
-            alert("Alteração efetuada com sucesso.");
+             console.log(Response.status);
+             alert("Alteração efetuada com sucesso.");
          },
          error: function (Response) {
-            console.log(Response.status);
-            alert("Falha ao alterar os dados.");
+             console.log(Response.status);
+             alert("Falha ao alterar os dados.");
          },
          data: JSON.stringify(values) // post data || get data
      });
@@ -104,6 +104,8 @@
      } else {
          localStorage.setItem('expiration', date.getTime() + 300000);
          setupCallback();
+         var frmsl = $('form[name="change"]');
+         frmsl[0].onsubmit = captureDataChangeUserInfo();
      }
  };
 
@@ -117,10 +119,5 @@
          localStorage.clear();
          alert("Sessão terminada.")
          window.location.href = "https://oofaround.appspot.com/";
-     });
-
-     document.getElementById("altera").addEventListener("click", function () {
-         captureDataChangeUserInfo();
-         //window.location.href = "https://oofaround.appspot.com/";
      });
  };
