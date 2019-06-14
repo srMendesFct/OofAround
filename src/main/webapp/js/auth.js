@@ -1,11 +1,11 @@
 window.onload = function () {
     var frmsr = $('form[name="register"]');
     var frmsl = $('form[name="login"]');
-    frmsl[0].onsubmit = captureDataL;
-    frmsr[0].onsubmit = captureDataR;
+    frmsl[0].onsubmit = captureDataLogin;
+    frmsr[0].onsubmit = captureDataRegister;
 };
 
-captureDataG = function () {
+captureDataGetImage = function () {
     var values = {
         name: localStorage.getItem('username') + "_profile",
         usernameR: localStorage.getItem('username'),
@@ -29,7 +29,7 @@ captureDataG = function () {
     });
 };
 
-captureDataR = function (event) {
+captureDataRegister = function (event) {
     var values = {};
     $.each($('form[name="register"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
@@ -56,7 +56,7 @@ captureDataR = function (event) {
     event.preventDefault();
 };
 
-captureDataL = function (event) {
+captureDataLogin = function (event) {
     var values = {};
     $.each($('form[name="login"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
@@ -73,7 +73,7 @@ captureDataL = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            captureDataG();
+            captureDataGetImage();
         },
         error: function (Response) {
             alert("Falha ao iniciar sessão.");

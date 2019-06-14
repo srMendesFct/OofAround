@@ -1,13 +1,10 @@
- captureDataD = function (values) {
+ captureDataDeleteUser = function (values) {
      var values = {
          tokenID: localStorage.getItem('token'),
          usernameR: localStorage.getItem('username'),
          role: localStorage.getItem('role'),
          username: localStorage.getItem('username'),
      };
-
-     console.log(JSON.stringify(values));
-
      $.ajax({
          type: "POST",
          url: "https://oofaround.appspot.com/rest/delete/self",
@@ -16,24 +13,50 @@
          crossDomain: true,
          success: function (Response) {},
          error: function (Response) {
-             console.log(Response.status);
-             if (Response.status == 200) {
-                 localStorage.clear();
-                 alert("Conta eliminada com sucesso.")
-             }
+            if (Response.status == 200) {
+                localStorage.clear();
+                alert("Conta eliminada com sucesso.")
+            }
+            else {
+                alert("Falha ao eliminar conta");
+            }
          },
          data: JSON.stringify(values) // post data || get data
      });
  };
 
- captureDataC = function () {
+captureDataGetUserInfo = function (values) {
+    var values = {
+        tokenID: localStorage.getItem('token'),
+        role: localStorage.getItem('role'),
+        username: localStorage.getItem('username'),
+    };
+    console.log(JSON.stringify(values));
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/userinfo/self",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {},
+        error: function (Response) {
+            console.log(Response.status);
+            if (Response.status == 200) {
+                console.log(Response);
+            }
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+};
+
+ captureDataChangeUserInfo = function () {
      var values = {};
      $.each($('form[name="change"]').serializeArray(), function (i, field) {
          values[field.name] = field.value;
      });
      $.ajax({
          type: "POST",
-         url: "https://oofaround.appspot.com/rest/register/user",
+         url: "https://oofaround.appspot.com/rest/userinfo/alterself",
          contentType: "application/json;charset=utf-8",
          dataType: 'json', // data type        
          crossDomain: true,
@@ -52,7 +75,6 @@
      });
  };
 
-
  window.onload = function (event) {
      var user = localStorage.getItem('username');
      var image = localStorage.getItem('image');
@@ -68,14 +90,15 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
-         setupCallback();
+        captureDataGetUserInfo();
+        setupCallback();
      }
  };
 
  setupCallback = function () {
      document.getElementById("delete").addEventListener("click", function () {
-         captureDataD();
-         //window.location.href = "https://oofaround.appspot.com/";
+         captureDataDeleteUser();
+         window.location.href = "https://oofaround.appspot.com/";
      });
 
      document.getElementById("logout").addEventListener("click", function () {
@@ -85,7 +108,7 @@
      });
 
      document.getElementById("altera").addEventListener("click", function () {
-         captureDataC();
+         captureDataChangeUserInfo();
          //window.location.href = "https://oofaround.appspot.com/";
      });
  };

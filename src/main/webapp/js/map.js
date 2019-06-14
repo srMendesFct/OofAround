@@ -42,11 +42,11 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 window.onload = function initMap() {
     var frmsr = $('form[name="register"]');
     var frmsl = $('form[name="login"]');
-    frmsl[0].onsubmit = captureDataL;
-    frmsr[0].onsubmit = captureDataR;
+    frmsl[0].onsubmit = captureDataLogin;
+    frmsr[0].onsubmit = captureDataRegister;
 };
 
-captureDataR = function (event) {
+captureDataRegister = function (event) {
     var values = {};
     $.each($('form[name="register"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
@@ -74,7 +74,7 @@ captureDataR = function (event) {
     event.preventDefault();
 };
 
-captureDataL = function (event) {
+captureDataLogin = function (event) {
     var values = {};
     $.each($('form[name="login"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;

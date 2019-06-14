@@ -3,7 +3,7 @@
  var last = "";
  
 
- captureDataR = function () {
+ captureDataRanking = function () {
     var values = {
         tokenID: localStorage.getItem('token'),
         usernameR: localStorage.getItem('username'),
@@ -57,13 +57,13 @@
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
-         captureDataR();
+         captureDataRanking();
          setupCallback();
      }
  };
 
  setupCallback = function () {
      document.getElementById("vermais").addEventListener("click", function () {
-         captureDataR();
+         captureDataRanking();
      });
  };

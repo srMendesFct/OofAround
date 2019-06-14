@@ -1,4 +1,4 @@
-captureDataR = function () {
+captureDataChangePic = function () {
     var fileReader = new FileReader();
     var file = document.getElementById("fileID").files[0];
     var s;
@@ -33,6 +33,30 @@ captureDataR = function () {
     }
 };
 
+captureDataGetUserInfo = function (values) {
+    var values = {
+        tokenID: localStorage.getItem('token'),
+        role: localStorage.getItem('role'),
+        username: localStorage.getItem('username'),
+    };
+    console.log(JSON.stringify(values));
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/userinfo/self",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {},
+        error: function (Response) {
+            console.log(Response.status);
+            if (Response.status == 200) {
+                console.log(Response);
+            }
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+};
+
 var user = localStorage.getItem('username');
 var image = localStorage.getItem('image');
 window.onload = function () {
@@ -48,12 +72,13 @@ window.onload = function () {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
+        captureDataGetUserInfo();
         setupCallback();
     }
 };
 
 setupCallback = function () {
     document.getElementById("upload").addEventListener("click", function () {
-        captureDataR();
+        captureDataChangePic();
     });
 };
