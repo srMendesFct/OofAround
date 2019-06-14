@@ -27,3 +27,7 @@ captureDataMonuments = function() {
         data: JSON.stringify(values)
     });
 }
+
+window.onload = function () {
+    captureDataMonuments();
+}
