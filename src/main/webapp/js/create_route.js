@@ -3,8 +3,12 @@ captureDataMonuments = function() {
         tokenID: localStorage.getItem('token'),
         usernameR: localStorage.getItem('username'),
         role: localStorage.getItem('role'),
-
+        limit: "",
+        lastName: "",
+        category: "",
+        region: ""
     }
+    
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
@@ -15,7 +19,7 @@ captureDataMonuments = function() {
             var m = document.getElementById('map');
             for(var i = 0; i < response.locations.length; i++) {
                 console.log(response.locations[i].name);
-                var pos = new google.maps.LatLng(locations[i].latitude, locations[i].longitude);
+                var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
                 var marker = new google.maps.Marker({
                     position: pos,
                     map: map
