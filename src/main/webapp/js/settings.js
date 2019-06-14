@@ -40,11 +40,10 @@
              localStorage.setItem('email', Response.email);
              localStorage.setItem('country', Response.country);
              localStorage.setItem('cellphone', Response.cellphone);
-             if(Response.privacy == "public") {
-                localStorage.setItem('privacy', "Público")
-             }
-             else {
-                localStorage.setItem('privacy', "Privado");
+             if (Response.privacy == "public") {
+                 localStorage.setItem('privacy', "Público")
+             } else {
+                 localStorage.setItem('privacy', "Privado");
              }
          },
          error: function (Response) {},
@@ -82,6 +81,7 @@
  };
 
  window.onload = function (event) {
+     captureDataGetUserInfo();
      var user = localStorage.getItem('username');
      var image = localStorage.getItem('image');
      var date = new Date();
@@ -104,7 +104,6 @@
          window.location.href = "https://oofaround.appspot.com/";
      } else {
          localStorage.setItem('expiration', date.getTime() + 300000);
-         captureDataGetUserInfo();
          setupCallback();
      }
  };
