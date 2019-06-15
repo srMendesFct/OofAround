@@ -61,10 +61,10 @@ captureDataMonuments = function() {
         dataType: 'json',
         crossDomain: 'true',
         success: function(response) {
-            for(var i = 0; i < response.locations.length - 4; i++) {
+            for(var i = 0; i < response.locations.length; i++) {
                 console.log(response.locations[i].name);
                 pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
-                console.log(response.locations[i].latitude);
+                console.log("iteracao" + i + ":" + response.locations[i].latitude + " , " + response.locations[i].longitude);
                 marker = new google.maps.Marker({
                     position: pos,
                     map: map
