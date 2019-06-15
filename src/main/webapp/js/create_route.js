@@ -68,7 +68,6 @@ captureDataMonuments = function() {
                     position: new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude),
                     map: map
                 });
-                console.log(marker);
 
             }
         },
@@ -78,6 +77,5 @@ captureDataMonuments = function() {
 }
 
 window.onload = function () {
-    initMap();
     captureDataMonuments();
 }
