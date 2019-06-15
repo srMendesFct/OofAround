@@ -3,6 +3,19 @@ var directionsService;
 var directionsDisplay;
 var marker, i;
 var pos;
+var geocoder;
+
+function codeAddress(addr) {
+    geocoder.geocode({ address: addr}, function(results, status) {
+        if(status == 'OK') {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({ position: results[0].geometry.location, map: map});
+        }
+        else {
+            alert('Geocode was not successful for the following reason: '+status);
+        }
+    });
+}
 
 function initMap() {
     directionsService = new google.maps.DirectionsService;
@@ -62,12 +75,12 @@ captureDataMonuments = function() {
         crossDomain: 'true',
         success: function(response) {
             for(i = 0; i < response.locations.length; i++) {
-                console.log(response.locations[i].name);
-                console.log("iteracao" + i + ":" + response.locations[i].latitude + " , " + response.locations[i].longitude);
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude),
-                    map: map
-                });
+                codeAddress(response.locations[i].name);
+               // console.log("iteracao" + i + ":" + response.locations[i].latitude + " , " + response.locations[i].longitude);
+                //marker = new google.maps.Marker({
+                 //   position: new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude),
+                  //  map: map
+               // });
 
             }
         },
