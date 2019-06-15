@@ -5,6 +5,7 @@ var marker, i;
 var pos;
 var geocoder;
 
+
 function codeAddress(addr) {
     geocoder.geocode({ address: addr}, function(results, status) {
         if(status == 'OK') {
@@ -24,6 +25,9 @@ function initMap() {
       zoom: 7,
       center: {lat: 38.71667, lng: -9.13333}
     });
+    
+    geocoder = new google.maps.Geocoder();
+
     //directionsDisplay.setMap(map);
 
    // var onChangeHandler = function() {
