@@ -1,7 +1,7 @@
 var map;
 var directionsService;
 var directionsDisplay;
-var marker;
+var marker, i;
 var pos;
 
 function initMap() {
@@ -11,7 +11,7 @@ function initMap() {
       zoom: 7,
       center: {lat: 38.71667, lng: -9.13333}
     });
-    directionsDisplay.setMap(map);
+    //directionsDisplay.setMap(map);
 
    // var onChangeHandler = function() {
     //  calculateAndDisplayRoute(directionsService, directionsDisplay);
@@ -61,12 +61,11 @@ captureDataMonuments = function() {
         dataType: 'json',
         crossDomain: 'true',
         success: function(response) {
-            for(var i = 0; i < response.locations.length; i++) {
+            for(i = 0; i < response.locations.length; i++) {
                 console.log(response.locations[i].name);
-                pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
                 console.log("iteracao" + i + ":" + response.locations[i].latitude + " , " + response.locations[i].longitude);
                 marker = new google.maps.Marker({
-                    position: pos,
+                    position: new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude),
                     map: map
                 });
 
