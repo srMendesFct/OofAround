@@ -5,6 +5,33 @@ window.onload = function () {
     frmsr[0].onsubmit = captureDataRegister;
 };
 
+captureDataGetUserInfo = function (values) {
+    var values = {
+        tokenID: localStorage.getItem('token'),
+        role: localStorage.getItem('role'),
+        username: localStorage.getItem('username'),
+    };
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/userinfo/self",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+            localStorage.setItem('email', Response.email);
+            localStorage.setItem('country', Response.country);
+            localStorage.setItem('cellphone', Response.cellphone);
+            if (Response.privacy == "public") {
+                localStorage.setItem('privacy', "Público")
+            } else {
+                localStorage.setItem('privacy', "Privado");
+            }
+        },
+        error: function (Response) {},
+        data: JSON.stringify(values) // post data || get data
+    });
+};
+
 captureDataGetImage = function () {
     var values = {
         name: localStorage.getItem('username') + "_profile",
@@ -74,6 +101,7 @@ captureDataLogin = function (event) {
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
             captureDataGetImage();
+            captureDataGetUserInfo();
         },
         error: function () {
             alert("Falha ao iniciar sessão.");

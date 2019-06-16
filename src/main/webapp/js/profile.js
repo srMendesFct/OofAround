@@ -33,35 +33,6 @@ captureDataChangePic = function () {
     }
 };
 
-captureDataGetUserInfo = function (values) {
-    var values = {
-        tokenID: localStorage.getItem('token'),
-        role: localStorage.getItem('role'),
-        username: localStorage.getItem('username'),
-    };
-    $.ajax({
-        type: "POST",
-        url: "https://oofaround.appspot.com/rest/userinfo/self",
-        contentType: "application/json;charset=utf-8",
-        dataType: 'json', // data type        
-        crossDomain: true,
-        success: function (Response) {
-            localStorage.setItem('email', Response.email);
-            localStorage.setItem('country', Response.country);
-            localStorage.setItem('cellphone', Response.cellphone);
-            if(Response.privacy == "public") {
-                localStorage.setItem('privacy', "Público");
-            }
-            else {
-                localStorage.setItem('privacy', "Privado");
-            }
-        },
-        error: function (Response) {},
-        data: JSON.stringify(values) // post data || get data
-    });
-};
-
-captureDataGetUserInfo();
 window.onload = function () {
     var date = new Date();
     var email = localStorage.getItem('email');
