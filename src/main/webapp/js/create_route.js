@@ -67,9 +67,9 @@ function initMap() {
       createWaypoints();
 
     directionsService.route({
-      origin: routePoints[0],
+      origin: routePoints[0].latLng,
       waypoints: waypts,
-      destination: routePoints[routePoints.length - 1],
+      destination: routePoints[routePoints.length - 1].latLng,
       travelMode: 'WALKING'
     }, function(response, status) {
       if (status === 'OK') {
