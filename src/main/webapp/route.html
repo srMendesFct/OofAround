@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <title>OofAround</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/route.css">
+    <link rel="stylesheet" type="text/css" href="./css/ihover.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="./js/ranking.js"></script>
+    
+
     <style>
-        .img {
+
+    .img_profile {
             max-width: 67px;
             max-height: 67px;
             border-radius: 50%;
@@ -35,49 +40,42 @@
             background-color: whitesmoke;
         }
 
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-            background-color: #e53935;
-            color: #FFF;
-            padding: 0.5% 0;
-            font-size: 1.1em;
-            border: 0;
+  .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color: #e53935;
+      color: #FFF;
+      padding: 0.5% 0;
+      font-size: 1.1em;
+      border: 0;
+    }
+
+    /*logo da navbar*/
+    .navbar-brand {
+      float: left;
+      min-height: 55px;
+      padding: 0 2px 5px;
+    }
+
+    /*cores da caixa da nav bar que se encontra ativa*/
+    .navbar-inverse .navbar-nav .active a,
+    .navbar-inverse .navbar-nav .active a:focus,
+    .navbar-inverse .navbar-nav .active a:hover {
+      color: #FFF;
+      background-color: #e53935;
+    }
+
+    /*cores das palavras da nav bar*/
+    .navbar-inverse .navbar-nav li a {
+      color: #D5D5D5;
+    }
+    
+          .modal .modal-header {
+            background-color: #ff5252;
         }
 
-        /*logo da navbar*/
-        .navbar-brand {
-            float: left;
-            min-height: 55px;
-            padding: 0 2px 5px;
-        }
-
-        /*cores da caixa da nav bar que se encontra ativa*/
-        .navbar-inverse .navbar-nav .active a,
-        .navbar-inverse .navbar-nav .active a:focus,
-        .navbar-inverse .navbar-nav .active a:hover {
-            color: #FFF;
-            background-color: #e53935;
-        }
-
-        /*cores das palavras da nav bar*/
-        .navbar-inverse .navbar-nav li a {
-            color: #D5D5D5;
-        }
-
-        /*texto da imagem dos sliders*/
-        .carousel-caption {
-            top: 50%;
-            transform: translateY(-50%);
-            text-transform: uppercase;
-        }
-
-        .btn {
-            font-size: 18px;
-            color: #FFF;
-            padding: 12px 22px;
-            background: #e53935;
-            border: 1px solid #FFF;
+        .modal .modal-footer {
+            background-color: #ff5252;
         }
 
         footer {
@@ -87,28 +85,14 @@
             color: #FFF;
         }
 
-        /*para estas dimensoes qd redimensionamos, o carousel deixa de mostrar texto e botoes*/
-        @media (max-width: 600px) {
-            .carousel-caption {
-                display: none;
-            }
-        }
-
         .fa {
             padding: 20px;
             font-size: 30px;
             color: #FFF;
         }
 
-        .modal .modal-header {
-            background-color: #ff5252;
-        }
 
-        .modal .modal-footer {
-            background-color: #ff5252;
-        }
-    </style>
-</head>
+  </style>
 
 <body class="backG">
 
@@ -132,7 +116,7 @@
                 </ul>
                 <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
-                        href="#"><img class="img" id="profilePic"></a>
+                        href="#"><img class="img_profile" id="profilePic"></a>
                     <div class="dropdown-menu dropdownB" aria-labelledby="loginPainel">
                         <a id="user" class="dropdown-item" style="text-decoration: none" style="color: black"></a>
                         <div></div>
@@ -149,21 +133,87 @@
             </div>
         </div>
     </nav>
-    <br><br><br><br><br>
+<br><br><br><br><br><br>
 
+<div class="container">
+    <!-- Top to bottom -->
 
-    <div id="ranking">
+    <div class="row">
+    <div class="col-md-6">
+   
+      <!-- normal -->
+      <div class="ih-item circle effect20 top_to_bottom"><a href="#">
+          <div class="img"><img src="img/ui.jpg" alt="img"></div>
+          <div class="info">
+            <div class="info-back">
+              <h3>NOVO PERCURSO</h3>
+              <p><button class="btn btn-danger">CRIAR</button></p>
+            </div>
+          </div></a></div>
+      <!-- end normal -->
+   
     </div>
-    <div class="container-fluid">
-        <button id="vermais"> Ver mais</button>
+    <div class="col-md-6">
+   
+      <!-- colored -->
+      <div class="ih-item circle colored effect20 top_to_bottom"><a href="#">
+          <div class="img"><img src="img/interest.jpg" alt="img"></div>
+          <div class="info">
+            <div class="info-back">
+              <h3>PONTOS DE INTERESSE</h3>
+              <p><button class="btn btn-danger">CONHECER</button></p>
+            </div>
+          </div></a></div>
+      <!-- end colored -->
+   
     </div>
+  </div>
+  <!-- end Top to bottom -->
+  
+  <br><br><br><br>
+   
+  <!-- Bottom to top -->
+  <div class="row">
+    <div class="col-md-6">
+   
+      <!-- normal -->
+      <div class="ih-item circle effect20 bottom_to_top"><a href="#">
+          <div class="img"><img src="img/list.jpg" alt="img"></div>
+          <div class="info">
+            <div class="info-back">
+              <h3>PERCURSOS CRIADOS</h3>
+              <p><button class="btn btn-danger">LISTAR</button></p>
+            </div>
+          </div></a></div>
+      <!-- end normal -->
+   
+    </div>
+    <div class="col-md-6">
+   
+      <!-- colored -->
+      <div class="ih-item circle colored effect20 bottom_to_top"><a href="#">
+          <div class="img"><img src="img/delete.jpg" alt="img"></div>
+          <div class="info">
+            <div class="info-back">
+              <h3>APAGAR PERCURSO</h3>
+              <p><button class="btn btn-danger">APAGAR</button></p>
+            </div>
+          </div></a></div>
+      <!-- end colored -->
+   
+    </div>
+  </div>
+  <!-- end Bottom to top -->
+
+</div>
+
+<br><br><br><br>
 
 
-    <br><br><br><br><br>
 
     <footer id="ourFooter" class="container-fluid text-center">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <img class="uh" src="img/equipa.png">
             </div>
             <div class="col-md-4">
@@ -176,6 +226,6 @@
         </div>
     </footer>
 
-</body>
 
+</body>
 </html>
