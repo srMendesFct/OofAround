@@ -1,6 +1,6 @@
 var map;
 var directionsService, directionsDisplay;
-var geocoder, marker;
+var geocoder;
 
 function codeAddress(addr) {
     geocoder.geocode({ address: addr}, function(results, status) {
@@ -76,7 +76,12 @@ captureDataMonuments = function() {
         success: function(response) {
           console.log(response.locations.length);
             for(i = 0; i < response.locations.length; i++) {
-                codeAddress(response.locations[i].name);
+                //codeAddress(response.locations[i].name);
+                var position = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
+                console.log('posicao igual a ' + position);
+
+
+
             }
         },
         error: function (response) {},
