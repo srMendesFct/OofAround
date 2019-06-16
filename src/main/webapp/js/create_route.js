@@ -34,8 +34,8 @@ function initMap() {
         icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
        });
        routePoints.push(marker);
+       console.log('testeeee' + routePoints.length);
     });
-      console.log('testeeee' + routePoints.length);
     //directionsDisplay.setMap(map);
 
    // var onChangeHandler = function() {
