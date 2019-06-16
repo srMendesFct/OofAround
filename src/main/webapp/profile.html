@@ -18,6 +18,18 @@
             margin-right: 4px;
         }
 
+        .dropdownB {
+            margin-right: 4px;
+            padding: 0.5% 0;
+            font-size: 1.1em;
+            background-color: whitesmoke;
+        }
+
+        .letters {
+            margin-left: 3px;
+            color: #e53935;
+            font-size: 15px;
+        }
         .center {
             display: block;
             margin-left: auto;
@@ -137,18 +149,16 @@
                 <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
                         href="#"><img class="img" id="profilePic"></a>
-                    <div class="dropdown-menu" aria-labelledby="loginPainel">
-                        <a id="user" aria-disabled="true"></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="profile.html">Perfil</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="settings.html">Definições</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="https://oofaround.appspot.com/" role="button"
-                            id="logout">Terminar sessão</a>
+                    <div class="dropdown-menu dropdownB" aria-labelledby="loginPainel">
+                        <div id="user" class="dropdown-item disabled letters" aria-disabled="true"></div>
+                        <div class="dropdown-item letters " href="https://oofaround.appspot.com/profile.html" role="button">
+                            Perfil</div>
+                        <div class="dropdown-item letters" href="https://oofaround.appspot.com/settings.html" role="button">
+                            Definições</div>
+                        <div class="dropdown-item letters" href="https://oofaround.appspot.com/" role="button"
+                            id="logout">Terminar sessão</div>
                     </div>
                 </li>
-
             </div>
         </div>
     </nav>
