@@ -18,6 +18,11 @@
             margin-right: 4px;
         }
 
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .backG {
             background-color: whitesmoke;
         }
@@ -27,9 +32,6 @@
             max-height: 150px;
             border-radius: 50%;
             margin-bottom: 3px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .marosca {
@@ -131,11 +133,11 @@
                     <li><a href="#ourFooter">Sobre Nós</a></li>
 
                 </ul>
-                <li class="dropdown dropleft">
-                    <a class="dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
+                <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
                         href="#"><img class="img" id="profilePic"></a>
                     <div class="dropdown-menu" aria-labelledby="loginPainel">
-                        <a id="user"></a>
+                        <a id="user" aria-disabled="true"></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="profile.html">Perfil</a>
                         <div class="dropdown-divider"></div>
@@ -154,7 +156,7 @@
     <div class="row">
         <div class="col-md-4">
             <div id="profile" class="container-fluid">
-                <img class="imgL" id="profilePicBig">
+                <img class="imgL center" id="profilePicBig">
                 <input class="marosca" id='fileID' type='file' hidden></input>
                 <button id="upload" value='Upload' class="center">Alterar imagem de perfil</button>
                 <button id="change" value="Change" class="center" href="settings.html">Alterar dados</button>
