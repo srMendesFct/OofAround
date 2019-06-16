@@ -3,6 +3,7 @@ var directionsService, directionsDisplay;
 var geocoder;
 var presetMarkers = [];
 var routePoints = [];
+var waypts = [];
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -34,15 +35,10 @@ function initMap() {
         icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
        });
        routePoints.push(marker);
-       console.log('testeeee' + routePoints.length);
     });
-    //directionsDisplay.setMap(map);
-
-   // var onChangeHandler = function() {
-    //  calculateAndDisplayRoute(directionsService, directionsDisplay);
-    //};
-    //document.getElementById('start').addEventListener('change', onChangeHandler);
-    //document.getElementById('end').addEventListener('change', onChangeHandler);
+    
+    directionsDisplay.setMap(map);
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
   }
 
   function getPlaceId(location) {
@@ -56,20 +52,25 @@ function initMap() {
   });
   }
 
+  function createWaypoints() {
+    for(var i = 1; i < routePoints.length - 1; i++) {
+      waypts.push({
+        location: routePoints[i].latLng,
+        stopover: true
+      });
+    }
+    return waypoints;
+  }
+
   function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    if(routePoints.length > 1) {
+      createWaypoints();
+
     directionsService.route({
-      origin: document.getElementById('start').value,
-      waypoints: [
-      {
-      location: 'gallup, nm',
-      stopover: false
-      },
-      {
-      location: 'barstow, ca',
-       stopover: true
-      }],
-      destination: document.getElementById('end').value,
-      travelMode: 'DRIVING'
+      origin: routePoints[0],
+      waypoints: waypts,
+      destination: routePoints[routePoints.length - 1],
+      travelMode: 'WALKING'
     }, function(response, status) {
       if (status === 'OK') {
         directionsDisplay.setDirections(response);
@@ -77,6 +78,8 @@ function initMap() {
         window.alert('Directions request failed due to ' + status);
       }
     });
+  } else {
+    alert('Tem de selecionar pelo menos a origem e o destino');
   }
 
 captureDataMonuments = function() {
