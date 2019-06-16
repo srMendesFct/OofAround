@@ -61,9 +61,8 @@ captureDataGetUserInfo = function (values) {
     });
 };
 
-
+captureDataGetUserInfo();
 window.onload = function () {
-    captureDataGetUserInfo();
     var date = new Date();
     var email = localStorage.getItem('email');
     var country = localStorage.getItem('country');

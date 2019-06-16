@@ -83,8 +83,8 @@
      event.preventDefault();
  };
 
+ captureDataGetUserInfo();
  window.onload = function () {
-     captureDataGetUserInfo();
      var user = localStorage.getItem('username');
      var image = localStorage.getItem('image');
      var date = new Date();
