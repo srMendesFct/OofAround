@@ -1,4 +1,4 @@
-account.email=bf.oliveira@campus.fct.unl.pt
+account.email=p.mimoso@campus.fct.unl.pt
 eclipse.preferences.version=1
 include.optional.configuration.files=true
 project.allowObsoleteRuntime=false
@@ -6,4 +6,4 @@ project.bucket=
 project.id=oofaround
 project.previousVersion.stop=true
 project.promote=true
-project.version=31
+project.version=35
