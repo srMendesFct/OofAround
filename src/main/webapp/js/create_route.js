@@ -78,11 +78,10 @@ captureDataMonuments = function() {
             for(i = 0; i < response.locations.length; i++) {
                 //codeAddress(response.locations[i].name);
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
-                console.log('posicao igual a ' + position);
-                var marker = new google.maps.Marker({ position: pos, map: map});
-
-
-
+                var marker = new google.maps.Marker({
+                   position: pos, 
+                   map: map
+                  });
             }
         },
         error: function (response) {},
