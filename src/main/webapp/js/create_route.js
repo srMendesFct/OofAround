@@ -12,9 +12,10 @@ function codeAddress(addr) {
             //map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({ position: results[0].geometry.location, map: map});
         }
-        if(status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-          setTimeout(2000);  
+        else {
+          console.log(hum);
         }
+           
     });
 }
 
