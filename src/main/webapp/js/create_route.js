@@ -1,10 +1,6 @@
 var map;
-var directionsService;
-var directionsDisplay;
-var marker, i;
-var pos;
-var geocoder;
-
+var directionsService, directionsDisplay;
+var geocoder, marker;
 
 function codeAddress(addr) {
     geocoder.geocode({ address: addr}, function(results, status) {
@@ -13,9 +9,8 @@ function codeAddress(addr) {
             var marker = new google.maps.Marker({ position: results[0].geometry.location, map: map});
         }
         else {
-          console.log(hum);
+          alert('deu merda');
         }
-           
     });
 }
 
@@ -79,6 +74,7 @@ captureDataMonuments = function() {
         dataType: 'json',
         crossDomain: 'true',
         success: function(response) {
+          console.log(response.locations.length);
             for(i = 0; i < response.locations.length; i++) {
                 codeAddress(response.locations[i].name);
             }
