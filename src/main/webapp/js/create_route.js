@@ -81,6 +81,7 @@ function initMap() {
   } else {
     alert('Tem de selecionar pelo menos a origem e o destino');
   }
+}
 
 captureDataMonuments = function() {
     var values = { 
