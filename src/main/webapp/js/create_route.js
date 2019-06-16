@@ -25,6 +25,14 @@ function initMap() {
     
     geocoder = new google.maps.Geocoder();
 
+    google.maps.event.addListener(map, 'click', function(event) {
+      var marker = new google.maps.Marker({
+        position: event.latLng, 
+        map: map,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+       });
+    });
+
     //directionsDisplay.setMap(map);
 
    // var onChangeHandler = function() {
@@ -88,15 +96,6 @@ captureDataMonuments = function() {
         data: JSON.stringify(values)
     });
 }
-
-google.maps.event.addListener(map, 'click', function(event) {
-  var marker = new google.maps.Marker({
-    position: event.latLng, 
-    map: map,
-    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-   });
-});
-
 
 window.onload = function() {
   captureDataMonuments();
