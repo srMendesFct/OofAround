@@ -24,7 +24,7 @@ function initMap() {
       center: {lat: 38.71667, lng: -9.13333}
     });
     
-    //geocoder = new google.maps.Geocoder();
+    geocoder = new google.maps.Geocoder();
 
     google.maps.event.addListener(map, 'click', function(event) {
       var marker = new google.maps.Marker({
@@ -41,6 +41,17 @@ function initMap() {
     //};
     //document.getElementById('start').addEventListener('change', onChangeHandler);
     //document.getElementById('end').addEventListener('change', onChangeHandler);
+  }
+
+  function getPlaceId(location) {
+    geocoder.geocode({ address: location}, function(results, status) {
+      if(status == 'OK') {
+        return results[1].place_id;
+      }
+      else {
+        alert('Error');
+      }
+  });
   }
 
   function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -103,6 +114,8 @@ captureDataMonuments = function() {
 
 function setInfo(markerNumber, name, address, latitude, longitude) {
   var m = presetMarkers[markerNumber];
+
+  //fazer isto mais bonito
   var contentString = '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
