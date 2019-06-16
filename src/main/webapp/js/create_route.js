@@ -2,6 +2,7 @@ var map;
 var directionsService, directionsDisplay;
 var geocoder;
 var presetMarkers = [];
+var routePoints = [];
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -32,8 +33,9 @@ function initMap() {
         map: map,
         icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
        });
+       routePoints.push(marker);
     });
-
+      console.log('testeeee' + routePoints.length);
     //directionsDisplay.setMap(map);
 
    // var onChangeHandler = function() {
