@@ -86,9 +86,27 @@ captureDataMonuments = function() {
           console.log(response.locations.length);
             for(i = 0; i < response.locations.length; i++) {
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
+
+                var contentString = '<div id="content">'+
+                '<div id="siteNotice">'+
+                '</div>'+
+                '<h1 id="firstHeading" class="firstHeading"><b>' + response.locations[i].name + '</b></h1>'+
+                '<div id="bodyContent">'+
+                '<p>' + response.locations[i].description + '</p>'+
+                '</div>'+
+                '</div>';
+
+                var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+                });
+
                 var marker = new google.maps.Marker({
                    position: pos, 
                    map: map
+                  });
+                  
+                  marker.addListener('click', function() {
+                    infowindow.open(map, marker);
                   });
             }
         },
