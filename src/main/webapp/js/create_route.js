@@ -136,5 +136,8 @@ function setInfo(markerNumber, name, address, latitude, longitude) {
 }
 
 window.onload = function() {
+  var image = localStorage.getItem('image');
+  document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
+  document.getElementById("user").innerHTML = user;
   captureDataMonuments();
 }
