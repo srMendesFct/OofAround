@@ -78,12 +78,10 @@ captureDataMonuments = function() {
           console.log(response.locations.length);
             for(i = 0; i < response.locations.length; i++) {
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
-                setTimeout(function() {
                 var marker = new google.maps.Marker({
                    position: pos, 
                    map: map
                   });
-                }, i * 500);
             }
         },
         error: function (response) {},
