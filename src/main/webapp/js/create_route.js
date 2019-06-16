@@ -1,6 +1,7 @@
 var map;
 var directionsService, directionsDisplay;
 var geocoder;
+var allMarkers = [];
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -86,31 +87,38 @@ captureDataMonuments = function() {
             for(i = 0; i < response.locations.length; i++) {
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
 
-                var contentString = '<div id="content">'+
-                '<div id="siteNotice">'+
-                '</div>'+
-                '<h1 id="firstHeading" class="firstHeading"><b>' + response.locations[i].name + '</b></h1>'+
-                '<div id="bodyContent">'+
-                '<p>' + response.locations[i].description + '</p>'+
-                '</div>'+
-                '</div>';
-
                 var marker = new google.maps.Marker({
                    position: pos, 
                    map: map
                   });
-
-                  marker.addListener('click', function() {
-                    var infowindow = new google.maps.InfoWindow({
-                      content: contentString
-                    });
-                    infowindow.open(map, marker);
-                  });
+                  
+                  allMarkers.push(marker);
+                  setInfo(i, response.locations[i].name, response.locations[i].description);
             }
         },
         error: function (response) {},
         data: JSON.stringify(values)
     });
+}
+
+function setInfo(markerNumber, name, description) {
+  var m = allMarkers[markerNumber];
+  var contentString = '<div id="content">'+
+                '<div id="siteNotice">'+
+                '</div>'+
+                '<h1 id="firstHeading" class="firstHeading"><b>' + name + '</b></h1>'+
+                '<div id="bodyContent">'+
+                '<p>' + description + '</p>'+
+                '</div>'+
+                '</div>';
+
+                m.addListener('click', function() {
+                  var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                  });
+                  infowindow.open(map, marker);
+                });
+
 }
 
 window.onload = function() {
