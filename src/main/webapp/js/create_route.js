@@ -2,6 +2,7 @@ var map;
 var directionsService, directionsDisplay;
 var geocoder;
 
+//qd for necessario criar marker pelo nome
 function codeAddress(addr) {
     geocoder.geocode({ address: addr}, function(results, status) {
         if(status == 'OK') {
@@ -9,7 +10,7 @@ function codeAddress(addr) {
             var marker = new google.maps.Marker({ position: results[0].geometry.location, map: map});
         }
         else {
-          alert('deu merda');
+          alert('Error');
         }
     });
 }
@@ -76,12 +77,13 @@ captureDataMonuments = function() {
         success: function(response) {
           console.log(response.locations.length);
             for(i = 0; i < response.locations.length; i++) {
-                //codeAddress(response.locations[i].name);
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
+                setTimeout(function() {
                 var marker = new google.maps.Marker({
                    position: pos, 
                    map: map
                   });
+                }, i * 500);
             }
         },
         error: function (response) {},
