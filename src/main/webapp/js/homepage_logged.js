@@ -7,13 +7,13 @@ window.onload = function init() {
     var token = localStorage.getItem('expiration');
     var date = new Date();
     var longday = date.getTime();
-    /*if (longday > token) {
+    if (longday > token) {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
-    }*/
+    }
 }
 
 setupCallback = function () {
