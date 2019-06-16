@@ -9,7 +9,7 @@ var geocoder;
 function codeAddress(addr) {
     geocoder.geocode({ address: addr}, function(results, status) {
         if(status == 'OK') {
-            //map.setCenter(results[0].geometry.location);
+            map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({ position: results[0].geometry.location, map: map});
         }
         else {
