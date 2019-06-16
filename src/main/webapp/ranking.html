@@ -12,9 +12,14 @@
     <script src="./js/ranking.js"></script>
     <style>
         .img {
-            max-width: 67px;
-            max-height: 67px;
+            max-width: 67em;
+            max-height: 67em;
             border-radius: 50%;
+            margin-right: 4em;
+        }
+
+        .backG {
+            background-color: whitesmoke;
         }
 
         .navbar {
@@ -30,8 +35,8 @@
         /*logo da navbar*/
         .navbar-brand {
             float: left;
-            min-height: 55px;
-            padding: 0 2px 5px;
+            min-height: 55em;
+            padding: 0 2em 5em;
         }
 
         /*cores da caixa da nav bar que se encontra ativa*/
@@ -55,11 +60,11 @@
         }
 
         .btn {
-            font-size: 18px;
+            font-size: 18em;
             color: #FFF;
-            padding: 12px 22px;
+            padding: 12em 22em;
             background: #e53935;
-            border: 1px solid #FFF;
+            border: 1em solid #FFF;
         }
 
         footer {
@@ -70,15 +75,15 @@
         }
 
         /*para estas dimensoes qd redimensionamos, o carousel deixa de mostrar texto e botoes*/
-        @media (max-width: 600px) {
+        @media (max-width: 600em) {
             .carousel-caption {
                 display: none;
             }
         }
 
         .fa {
-            padding: 20px;
-            font-size: 30px;
+            padding: 20em;
+            font-size: 30em;
             color: #FFF;
         }
 
@@ -92,7 +97,7 @@
     </style>
 </head>
 
-<body>
+<body class="backG">
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -131,15 +136,15 @@
         </div>
     </nav>
     <br><br><br><br><br>
-    
-    
-  <div id="ranking">
+
+
+    <div id="ranking">
     </div>
     <div class="container-fluid">
         <button id="vermais"> Ver mais</button>
     </div>
 
- 
+
     <br><br><br><br><br>
 
     <footer id="ourFooter" class="container-fluid text-center">
