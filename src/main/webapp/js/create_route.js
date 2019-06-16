@@ -93,7 +93,7 @@ captureDataMonuments = function() {
                   });
 
                   allMarkers.push(marker);
-                  setInfo(i, response.locations[i].name, response.locations[i].description);
+                  setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude);
             }
         },
         error: function (response) {},
@@ -101,14 +101,15 @@ captureDataMonuments = function() {
     });
 }
 
-function setInfo(markerNumber, name, description) {
+function setInfo(markerNumber, name, address, latitude, longitude) {
   var m = allMarkers[markerNumber];
   var contentString = '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
                 '<h1 id="firstHeading" class="firstHeading"><b>' + name + '</b></h1>'+
                 '<div id="bodyContent">'+
-                '<p>' + description + '</p>'+
+                '<p>Endereço: ' + address + '</p>'+
+                '<p>Coordenadas:' + latitude +  ' , ' + longitude + '</p>'+
                 '</div>'+
                 '</div>';
 
