@@ -9,11 +9,11 @@ var geocoder;
 function codeAddress(addr) {
     geocoder.geocode({ address: addr}, function(results, status) {
         if(status == 'OK') {
-            map.setCenter(results[0].geometry.location);
+            //map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({ position: results[0].geometry.location, map: map});
         }
-        else {
-            //wtv
+        if(status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+          setTimeout(2000);  
         }
     });
 }
@@ -25,10 +25,8 @@ function initMap() {
       zoom: 7,
       center: {lat: 38.71667, lng: -9.13333}
     });
-
-    captureDataMonuments();
     
-    //geocoder = new google.maps.Geocoder();
+    geocoder = new google.maps.Geocoder();
 
     //directionsDisplay.setMap(map);
 
@@ -81,16 +79,14 @@ captureDataMonuments = function() {
         crossDomain: 'true',
         success: function(response) {
             for(i = 0; i < response.locations.length; i++) {
-                //codeAddress(response.locations[i].name);
-               // console.log("iteracao" + i + ":" + response.locations[i].latitude + " , " + response.locations[i].longitude);
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude),
-                    map: map
-                });
-
+                codeAddress(response.locations[i].name);
             }
         },
         error: function (response) {},
         data: JSON.stringify(values)
     });
+}
+
+window.onload = function() {
+  captureDataMonuments();
 }
