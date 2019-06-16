@@ -91,7 +91,7 @@ captureDataMonuments = function() {
                    position: pos, 
                    map: map
                   });
-                  
+
                   allMarkers.push(marker);
                   setInfo(i, response.locations[i].name, response.locations[i].description);
             }
@@ -116,7 +116,7 @@ function setInfo(markerNumber, name, description) {
                   var infowindow = new google.maps.InfoWindow({
                     content: contentString
                   });
-                  infowindow.open(map, marker);
+                  infowindow.open(map, m);
                 });
 
 }
