@@ -23,7 +23,7 @@ function initMap() {
       center: {lat: 38.71667, lng: -9.13333}
     });
     
-    geocoder = new google.maps.Geocoder();
+    //geocoder = new google.maps.Geocoder();
 
     google.maps.event.addListener(map, 'click', function(event) {
       var marker = new google.maps.Marker({
@@ -83,7 +83,6 @@ captureDataMonuments = function() {
         dataType: 'json',
         crossDomain: 'true',
         success: function(response) {
-          console.log(response.locations.length);
             for(i = 0; i < response.locations.length; i++) {
                 var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
 
@@ -96,16 +95,15 @@ captureDataMonuments = function() {
                 '</div>'+
                 '</div>';
 
-                var infowindow = new google.maps.InfoWindow({
-                  content: contentString
-                });
-
                 var marker = new google.maps.Marker({
                    position: pos, 
                    map: map
                   });
-                  
+
                   marker.addListener('click', function() {
+                    var infowindow = new google.maps.InfoWindow({
+                      content: contentString
+                    });
                     infowindow.open(map, marker);
                   });
             }
