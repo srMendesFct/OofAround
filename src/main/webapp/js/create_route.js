@@ -31,7 +31,7 @@ function initMap() {
       var marker = new google.maps.Marker({
         position: event.latLng, 
         map: map,
-        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
        });
        routePoints.push(marker);
     });
