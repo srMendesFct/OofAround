@@ -1,7 +1,7 @@
 var map;
 var directionsService, directionsDisplay;
 var geocoder;
-var allMarkers = [];
+var presetMarkers = [];
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -20,7 +20,7 @@ function initMap() {
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 7,
+      zoom: 9,
       center: {lat: 38.71667, lng: -9.13333}
     });
     
@@ -92,7 +92,7 @@ captureDataMonuments = function() {
                    map: map
                   });
 
-                  allMarkers.push(marker);
+                  presetMarkers.push(marker);
                   setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude);
             }
         },
@@ -102,14 +102,14 @@ captureDataMonuments = function() {
 }
 
 function setInfo(markerNumber, name, address, latitude, longitude) {
-  var m = allMarkers[markerNumber];
+  var m = presetMarkers[markerNumber];
   var contentString = '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
-                '<h1 id="firstHeading" class="firstHeading"><b>' + name + '</b></h1>'+
+                '<h2 id="firstHeading" class="firstHeading"><b>' + name + '</b></h2>'+
                 '<div id="bodyContent">'+
                 '<p>Endereço: ' + address + '</p>'+
-                '<p>Coordenadas:' + latitude +  ' , ' + longitude + '</p>'+
+                '<p>Coordenadas: ' + latitude +  ' , ' + longitude + '</p>'+
                 '</div>'+
                 '</div>';
 
