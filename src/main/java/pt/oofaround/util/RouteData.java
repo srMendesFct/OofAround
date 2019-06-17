@@ -1,13 +1,11 @@
 package pt.oofaround.util;
 
-import com.google.gson.JsonArray;
-
 public class RouteData {
 
 	public String name;
 	public String description;
 	public String creatorUsername;
-	public JsonArray locationNames;
+	public CreateRouteData[] locationNames;
 	public String tokenID;
 	public String role;
 	public String usernameR;
@@ -16,8 +14,8 @@ public class RouteData {
 	public RouteData() {
 	}
 
-	public RouteData(String name, String description, String creatorUsername, JsonArray locationNames, String tokenID,
-			String role, String usernameR) {
+	public RouteData(String name, String description, String creatorUsername, String tokenID, String role,
+			String usernameR, CreateRouteData[] locationNames) {
 		this.name = name;
 		this.description = description;
 		this.creatorUsername = creatorUsername;

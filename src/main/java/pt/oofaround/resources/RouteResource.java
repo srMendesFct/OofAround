@@ -58,10 +58,9 @@ public class RouteResource {
 
 		LOG.fine("Creating route named " + data.name);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRoute")) {
-			CollectionReference routes = db.collection("routes");
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {				
 
-			ApiFuture<QuerySnapshot> querySnapshot = routes.whereEqualTo("name", data.name)
+			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.usernameR).get();
 
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
@@ -74,15 +73,12 @@ public class RouteResource {
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
-
-			JsonArray jar = data.locationNames;
-			JsonObject obj;
-			for (int i = 0; i < jar.size(); i++) {
-				obj = (JsonObject) jar.get(i);
-				cats.add(obj.get("category").getAsString());
-				names.add(obj.get("name").getAsString());
-				placeIDs.add(obj.get("placeID").getAsString());
-				locationsList.add(new GeoPoint(obj.get("latitude").getAsDouble(), obj.get("longitude").getAsDouble()));
+			
+			for(int i = 0; i < data.locationNames.length; i++) {
+				cats.add(data.locationNames[i].category);
+				names.add(data.locationNames[i].name);
+				placeIDs.add(data.locationNames[i].placeId);
+				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
 			}
 
 			docData.put("name", data.name);
@@ -104,9 +100,9 @@ public class RouteResource {
 			docData.put("4", 0);
 			docData.put("5", 0);
 
-			ApiFuture<WriteResult> newUser = routes.document(data.name).set(docData);
+			ApiFuture<WriteResult> newUser = db.collection("routes").document(data.name+ " " + data.creatorUsername).set(docData);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-
+			
 			res.addProperty("tokenID", at.tokenID);
 			return Response.ok(g.toJson(res)).build();
 		} else

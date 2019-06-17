@@ -34,10 +34,12 @@ public class AuthenticationTool {
 		Query query = perm.whereEqualTo(FieldPath.documentId(), role);
 
 		ApiFuture<QuerySnapshot> querySnapshot = query.get();
+		
+		for(DocumentSnapshot doc : querySnapshot.get().getDocuments())
+			return doc.getBoolean(action);
+		
 
-		DocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
-
-		return document.getBoolean(action);
+		return false;
 	}
 
 }
