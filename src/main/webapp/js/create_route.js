@@ -40,9 +40,10 @@ function initMap() {
     directionsDisplay.setMap(map);
 
     document.getElementById('submit').addEventListener('click', function() {
+      createWaypoints();
       calculateAndDisplayRoute(directionsService, directionsDisplay);
     });
-    
+
   }
 
   function getPlaceId(location) {
@@ -59,7 +60,7 @@ function initMap() {
   function createWaypoints() {
     for(var i = 1; i < routePoints.length - 1; i++) {
       waypts.push({
-        location: routePoints[i].latLng,
+        location: routePoints[i].position,
         stopover: true
       });
     }
@@ -67,9 +68,9 @@ function initMap() {
 
   function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     directionsService.route({
-      origin: routePoints[0].latLng,
+      origin: routePoints[0].position,
       waypoints: waypts,
-      destination: routePoints[routePoints.length - 1].latLng,
+      destination: routePoints[routePoints.length - 1].position,
       travelMode: 'WALKING'
     }, function(response, status) {
       if (status === 'OK') {
