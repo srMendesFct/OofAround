@@ -38,7 +38,11 @@ function initMap() {
     });
     
     directionsDisplay.setMap(map);
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+    document.getElementById('submit').addEventListener('click', function() {
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+    });
+    
   }
 
   function getPlaceId(location) {
@@ -59,13 +63,9 @@ function initMap() {
         stopover: true
       });
     }
-    return waypoints;
   }
 
   function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-    if(routePoints.length > 1) {
-      createWaypoints();
-
     directionsService.route({
       origin: routePoints[0].latLng,
       waypoints: waypts,
@@ -78,10 +78,7 @@ function initMap() {
         window.alert('Directions request failed due to ' + status);
       }
     });
-  } else {
-    alert('Tem de selecionar pelo menos a origem e o destino');
   }
-}
 
 captureDataMonuments = function() {
     var values = { 
