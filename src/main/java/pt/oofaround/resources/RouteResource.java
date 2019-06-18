@@ -33,7 +33,6 @@ import com.google.gson.JsonObject;
 import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
-import pt.oofaround.util.LocationData;
 import pt.oofaround.util.RouteData;
 
 @Path("/route")
@@ -100,8 +99,7 @@ public class RouteResource {
 			docData.put("4", 0);
 			docData.put("5", 0);
 
-			ApiFuture<WriteResult> newUser = db.collection("routes").document(data.name + " " + data.creatorUsername)
-					.set(docData);
+			ApiFuture<WriteResult> newUser = db.collection("routes").document().set(docData);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 
 			res.addProperty("tokenID", at.tokenID);
@@ -110,15 +108,36 @@ public class RouteResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
+	@POST
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteRoute(RouteData data) throws InterruptedException, ExecutionException {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "deleteRoute")) {
+			try {
+				ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
+						.whereEqualTo("creatorUsername", data.usernameR).get();
+
+				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					document.getReference().delete().get();
+				}
+
+				return Response.ok().build();
+			} catch (Exception e) {
+				return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
+
 	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getLocation(LocationData data) throws InterruptedException, ExecutionException {
+	public Response getRoute(RouteData data) throws InterruptedException, ExecutionException {
 
 		LOG.fine("Getting location" + data.name);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocation")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getRoute")) {
 			CollectionReference locations = db.collection("locations");
 
 			List<GeoPoint> locationsList;
@@ -126,7 +145,7 @@ public class RouteResource {
 			List<String> placeIDs;
 
 			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("name", data.name)
-					.whereEqualTo("creatorUsername", data.usernameR).get();
+					.whereEqualTo("creatorUsername", data.creatorUsername).get();
 			JsonObject res = new JsonObject();
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				res.addProperty("name", document.getString("name"));
@@ -161,6 +180,28 @@ public class RouteResource {
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/listall")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response listAllRoutes(RouteData data) throws InterruptedException, ExecutionException {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "listAllRoutes")) {
+			try {
+				ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes")
+						.whereEqualTo("creatorUsername", data.creatorUsername).get();
+
+				List<String> nameList = new LinkedList<String>();
+				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					nameList.add(document.getString("name"));
+				}
+
+				return Response.ok().entity(g.toJson(nameList)).build();
+			} catch (Exception e) {
+				return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
