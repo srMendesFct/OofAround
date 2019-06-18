@@ -88,17 +88,13 @@ captureDataChangeUserInfo = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            alert('merda');
+            captureDataGetUserInfo();
+            alert("Alteração efetuada com sucesso.");
+            window.location.href = "https://oofaround.appspot.com/settings.html";
         },
         error: function (Response) {
-            if (Response.status == 200) {
-                captureDataGetUserInfo();
-                alert("Alteração efetuada com sucesso.");
-                window.location.href = "https://oofaround.appspot.com/settings.html";
-            } else {
-                alert("Falha ao alterar os dados.");
-                window.location.href = "https://oofaround.appspot.com/settings.html";
-            }
+            alert("Falha ao alterar os dados.");
+            window.location.href = "https://oofaround.appspot.com/settings.html";
         },
         data: JSON.stringify(values) // post data || get data
     });
@@ -136,17 +132,14 @@ window.onload = function () {
 setupCallback = function () {
 
     var frmsl = $('form[name="Alterar Dados"]');
+    /*var frms = $('form[name="Alterar Password"]');
+    frms[0].onsubmit = captureDataChangePassword;*/
     frmsl[0].onsubmit = captureDataChangeUserInfo;
 
     document.getElementById("delete").addEventListener("click", function () {
         captureDataDeleteUser();
         window.location.href = "https://oofaround.appspot.com/";
     });
-
-    /*document.getElementById("AlterarD").addEventListener("click", function () {
-        var frmsl = $('form[name="Alterar Dados"]');
-        frmsl[0].onsubmit = captureDataChangeUserInfo;
-    });*/
 
     document.getElementById("logout").addEventListener("click", function () {
         localStorage.clear();
