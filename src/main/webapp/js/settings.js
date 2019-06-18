@@ -135,9 +135,7 @@ function openCity(evt, cityName) {
 
  setupCallback = function () {
      var frmsl = $('form[name="Alterar Dados"]');
-     //var frms = $('form[name="Alterar Password"]');
      frmsl[0].onsubmit = captureDataChangeUserInfo;
-     //frms[0].onsubmit = captureDataChangePassword;
 
 
      document.getElementById("delete").addEventListener("click", function () {
