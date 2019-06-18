@@ -1,3 +1,24 @@
+function openCity(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+  
+    // Get all elements with class="pure-form" and hide them
+    tabcontent = document.getElementsByClassName("pure-form");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+  
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+  
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
  captureDataDeleteUser = function () {
      var values = {
          tokenID: localStorage.getItem('token'),
@@ -94,6 +115,7 @@
      var country = localStorage.getItem('country');
      var cellphone = localStorage.getItem('cellphone');
      var privacy = localStorage.getItem('privacy');
+     document.getElementById("Alterar Password").style.display = "none";
      document.getElementById("userC").value = localStorage.getItem('username');;
      document.getElementById("emailC").value = email;
      document.getElementById("countryC").value = country;
@@ -102,13 +124,13 @@
      document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
      document.getElementById("user").innerHTML = user;
      document.getElementById("profilePicBig").src = 'data:image/jpeg;base64, ' + image;
-     if (longday > token) {
+     /*if (longday > token) {
          localStorage.clear();
          window.location.href = "https://oofaround.appspot.com/";
      } else {
          localStorage.setItem('expiration', date.getTime() + 300000);
          setupCallback();
-     }
+     }*/
  };
 
  setupCallback = function () {
