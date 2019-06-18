@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.support.JsonArraySupport;
+import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.UserData;
 
@@ -74,6 +75,9 @@ public class UserInfoResource {
 				else
 					res.addProperty("privacy", "public");
 			}
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
@@ -101,6 +105,9 @@ public class UserInfoResource {
 					return Response.status(Status.NO_CONTENT).build();
 				}
 			}
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
@@ -123,9 +130,12 @@ public class UserInfoResource {
 				SetOptions.merge());
 		alterInfo.get();
 
-		// FALTA TOKEN
+		JsonObject res = new JsonObject();
 
-		return Response.ok().build();
+		AuthToken at = new AuthToken(data.usernameR, data.role);
+		res.addProperty("tokenID", at.tokenID);
+
+		return Response.ok().entity(g.toJson(res)).build();
 	}
 
 	@POST
@@ -152,6 +162,9 @@ public class UserInfoResource {
 				else
 					res.addProperty("privacy", "public");
 			}
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+			
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();

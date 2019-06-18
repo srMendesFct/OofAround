@@ -167,8 +167,6 @@ public class ImageResource {
 				token.addProperty("role", at.role);
 				token.addProperty("tokenID", at.tokenID);
 				return Response.ok().entity(g.toJson(token)).build();
-
-				//return Response.status(Status.NOT_FOUND).entity(g.toJson(token)).build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).build();

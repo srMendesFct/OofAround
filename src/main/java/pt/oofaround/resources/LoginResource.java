@@ -79,34 +79,6 @@ public class LoginResource {
 				return Response.ok(g.toJson(token)).build();
 			}
 		}
-		/*
-		 * 
-		 * query = users.whereEqualTo("username", data.username);
-		 * 
-		 * querySnapshot = query.get();
-		 * 
-		 * for (DocumentSnapshot document : querySnapshot.get().getDocuments()) { return
-		 * Response.status(Status.FOUND).entity("Username already in use.").build(); }
-		 * 
-		 * String passEnc = Hashing.sha512().hashString(data.password,
-		 * StandardCharsets.UTF_8).toString();
-		 * 
-		 * CollectionReference users = db.collection("users"); try { Query query; if
-		 * (data.username.indexOf('a') == -1) query = users.whereEqualTo("username",
-		 * data.username); else query = users.whereEqualTo("email", data.username);
-		 * 
-		 * ApiFuture<QuerySnapshot> querySnapshot = query.get(); DocumentSnapshot
-		 * document = querySnapshot.get().getDocuments().get(0); if (document.exists())
-		 * { String passEnc = Hashing.sha512().hashString(data.password,
-		 * StandardCharsets.UTF_8).toString();
-		 * 
-		 * if (document.get("username") != null &&
-		 * document.get("password").equals(passEnc)) { AuthToken at = new
-		 * AuthToken(data.username, document.get("role").toString()); return
-		 * Response.ok(g.toJson(at)).build(); } } } catch (Exception e) { return
-		 * Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").
-		 * build(); }
-		 */
 
 		return Response.status(Status.FORBIDDEN).entity("Incorrect username or password.").build();
 

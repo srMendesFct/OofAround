@@ -58,7 +58,7 @@ public class RouteResource {
 
 		LOG.fine("Creating route named " + data.name);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {				
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {
 
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.usernameR).get();
@@ -73,8 +73,8 @@ public class RouteResource {
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
-			
-			for(int i = 0; i < data.locationNames.length; i++) {
+
+			for (int i = 0; i < data.locationNames.length; i++) {
 				cats.add(data.locationNames[i].category);
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
@@ -100,9 +100,10 @@ public class RouteResource {
 			docData.put("4", 0);
 			docData.put("5", 0);
 
-			ApiFuture<WriteResult> newUser = db.collection("routes").document(data.name+ " " + data.creatorUsername).set(docData);
+			ApiFuture<WriteResult> newUser = db.collection("routes").document(data.name + " " + data.creatorUsername)
+					.set(docData);
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			
+
 			res.addProperty("tokenID", at.tokenID);
 			return Response.ok(g.toJson(res)).build();
 		} else
@@ -195,7 +196,12 @@ public class RouteResource {
 
 			WriteResult result = future.get();
 
-			return Response.ok().entity(g.toJson(rate)).build();
+			JsonObject res = new JsonObject();
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.addProperty("tokenID", at.tokenID);
+			res.addProperty("rating", newRate);
+
+			return Response.ok().entity(g.toJson(res)).build();
 		} else {
 			return Response.status(Status.FORBIDDEN).build();
 		}
