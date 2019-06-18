@@ -77,7 +77,7 @@ function openCity(evt, cityName) {
      values["tokenID"] = localStorage.getItem('token');
      values["role"] = localStorage.getItem('role');
      values["usernameR"] = localStorage.getItem('username');
-     $.each($('form[name="change"]').serializeArray(), function (i, field) {
+     $.each($('form[name="Alterar Dados"]').serializeArray(), function (i, field) {
          values[field.name] = field.value;
      });
      console.log(JSON.stringify(values));
@@ -134,8 +134,11 @@ function openCity(evt, cityName) {
  };
 
  setupCallback = function () {
-     var frmsl = $('form[name="change"]');
+     var frmsl = $('form[name="Alterar Dados"]');
+     //var frms = $('form[name="Alterar Password"]');
      frmsl[0].onsubmit = captureDataChangeUserInfo;
+     //frms[0].onsubmit = captureDataChangePassword;
+
 
      document.getElementById("delete").addEventListener("click", function () {
          captureDataDeleteUser();

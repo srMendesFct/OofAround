@@ -75,8 +75,8 @@ public class UserInfoResource {
 				else
 					res.addProperty("privacy", "public");
 			}
-			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.addProperty("tokenID", at.tokenID);
+			//AuthToken at = new AuthToken(data.usernameR, data.role);
+			//res.addProperty("tokenID", at.tokenID);
 
 			return Response.ok(g.toJson(res)).build();
 		} else
@@ -132,8 +132,8 @@ public class UserInfoResource {
 
 		JsonObject res = new JsonObject();
 
-		AuthToken at = new AuthToken(data.usernameR, data.role);
-		res.addProperty("tokenID", at.tokenID);
+		//AuthToken at = new AuthToken(data.usernameR, data.role);
+		//res.addProperty("tokenID", at.tokenID);
 
 		return Response.ok().entity(g.toJson(res)).build();
 	}
