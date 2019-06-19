@@ -42,9 +42,9 @@ function initMap() {
        var newLoc = {
          name: "hum",
          category: "undefined",
-         placeId: "123",
-         latitude: event.latLng.latitude,
-         longitude: event.latLng.longitude
+         placeId: getPlaceId(event.latLng),
+         latitude: event.latLng.lat(),
+         longitude: event.latLng.lng()
        }
        locationNames.push(newLoc);
     });
