@@ -37,9 +37,9 @@ function initMap() {
        });
        routePoints.push(marker);
        var newLoc = {
-         name: getAddress(event.latlng),
+         name: "hum",
          category: "undefined",
-         placeId: getPlaceId(event.latLng),
+         placeId: "123",
          latitude: event.latLng.latitude,
          longitude: event.latLng.longitude
        }
