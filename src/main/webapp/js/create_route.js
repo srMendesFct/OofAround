@@ -48,7 +48,7 @@ function initMap() {
     
     directionsDisplay.setMap(map);
 
-    document.getElementById('submit').addEventListener('click', function() {
+    document.getElementById('submitF').addEventListener('click', function() {
       createWaypoints();
       calculateAndDisplayRoute(directionsService, directionsDisplay);
     });
