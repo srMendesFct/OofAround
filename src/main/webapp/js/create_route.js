@@ -4,6 +4,7 @@ var geocoder;
 var presetMarkers = [];
 var routePoints = [];
 var waypts = [];
+var locationNames = [];
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -35,6 +36,14 @@ function initMap() {
         icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
        });
        routePoints.push(marker);
+       var newLoc = {
+         name: getAddress(event.latlng),
+         category: "undefined",
+         placeId: getPlaceId(event.latLng),
+         latitude: event.latLng.latitude,
+         longitude: event.latLng.longitude
+       }
+       locationNames.push(newLoc);
     });
     
     directionsDisplay.setMap(map);
@@ -46,8 +55,19 @@ function initMap() {
 
   }
 
+  function getAddress(location) {
+    geocoder.geocode({'location'  : location}, function(results, status) {
+      if(status == 'OK') {
+        return results[0].formatted_address;
+      }
+      else {
+        alert('Error');
+      }
+  });
+  }
+
   function getPlaceId(location) {
-    geocoder.geocode({ address: location}, function(results, status) {
+    geocoder.geocode({'location': location}, function(results, status) {
       if(status == 'OK') {
         return results[1].place_id;
       }
@@ -81,6 +101,35 @@ function initMap() {
     });
   }
 
+captureDataCreateCourse = function() {
+  var values = {};
+  values['tokenID'] = localStorage.getItem('token');
+  values['usernameR'] = localStorage.getItem('username');
+  values['role'] = localStorage.getItem('role');
+  values['creatorUsername'] = localStorage.getItem('username');
+  values['locationNames'] = locationNames;
+
+  $.each($('form[name="courseForm"]').serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+  });
+
+  $.ajax({
+    type: "POST",
+    url: "https://oofaround.appspot.com/rest/route/create",
+    contentType: "application/json;charset=utf-8",
+    dataType: 'json',
+    crossDomain: 'true',
+    success: function(response) {
+      alert('Percurso criado!');
+    },
+    error: function (response) {
+      alert('Erro!')
+    },
+    data: JSON.stringify(values)
+});
+
+}
+
 captureDataMonuments = function() {
     var values = { 
         tokenID: localStorage.getItem('token'),
@@ -90,7 +139,7 @@ captureDataMonuments = function() {
         lastName: "",
         category: "",
         region: ""
-    }
+    }    
     
     $.ajax({
         type: "POST",
@@ -145,4 +194,6 @@ window.onload = function() {
   document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
   document.getElementById("user").innerHTML = user;
   captureDataMonuments();
+  var form_c = $('form[name="courseForm"]');
+  form_c[0].onsubmit = captureDataCreateCourse;
 }
