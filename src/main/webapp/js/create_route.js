@@ -30,6 +30,9 @@ function initMap() {
     geocoder = new google.maps.Geocoder();
 
     google.maps.event.addListener(map, 'click', function(event) {
+      console.log('posicao do mambo ' + event.latLng);
+      console.log('latitude do mambo ' + event.latLng.latitude);
+      console.log('posicao do mambo ' + event.latLng.longitude);
       var marker = new google.maps.Marker({
         position: event.latLng, 
         map: map,
