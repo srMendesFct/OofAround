@@ -30,9 +30,8 @@ function initMap() {
     geocoder = new google.maps.Geocoder();
 
     google.maps.event.addListener(map, 'click', function(event) {
-      console.log('posicao do mambo ' + event.latLng);
+      console.log('FUNCAO PLACEID' + getAddress(event.latLng));
       console.log('latitude do mambo ' + event.latLng.lat());
-      console.log('posicao do mambo ' + event.latLng.lng());
       var marker = new google.maps.Marker({
         position: event.latLng, 
         map: map,
@@ -59,7 +58,7 @@ function initMap() {
   }
 
   function getAddress(location) {
-    geocoder.geocode({'location'  : location}, function(results, status) {
+    geocoder.geocode({'location': location}, function(results, status) {
       if(status == 'OK') {
         return results[0].formatted_address;
       }
