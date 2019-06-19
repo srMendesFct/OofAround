@@ -8,6 +8,10 @@ public class UserData {
 	public String country;
 	public String cellphone;
 	public boolean privacy;
+	public String tokenID;
+	public String role;
+	public String usernameR;
+	public String newRole;
 
 	public UserData(String username, String email, String country, String cellphone, boolean privacy, String tokenID,
 			String role, String usernameR) {
@@ -21,10 +25,6 @@ public class UserData {
 		this.usernameR = usernameR;
 	}
 
-	public String tokenID;
-	public String role;
-	public String usernameR;
-
 	public UserData() {
 	}
 
@@ -34,11 +34,13 @@ public class UserData {
 		this.role = role;
 	}
 
-	public UserData(String username, String tokenID, String role, String usernameR) {
+	// alter other user role
+	public UserData(String username, String tokenID, String role, String usernameR, String newRole) {
 		this.username = username;
 		this.tokenID = tokenID;
 		this.role = role;
 		this.usernameR = usernameR;
+		this.newRole = newRole;
 	}
 
 }

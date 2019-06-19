@@ -46,7 +46,7 @@ public class CronTasks {
 		CollectionReference flags = db.collection("flag");
 
 		Query query = flags.whereEqualTo(com.google.cloud.firestore.FieldPath.documentId(), "ranking");
-		
+
 		ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
 		boolean flag = false;
@@ -55,56 +55,103 @@ public class CronTasks {
 			flag = document.getBoolean("flag");
 		}
 		if (flag) {
-			CollectionReference users = db.collection("users");
 
-			query = users.orderBy("score");
-
-			querySnapshot = query.get();
-
-			List<QueryDocumentSnapshot> userDocs = querySnapshot.get().getDocuments();
+			List<QueryDocumentSnapshot> userDocs = db.collection("users").orderBy("score").get().get().getDocuments();
 
 			if (!userDocs.isEmpty()) {
-				CollectionReference ranks = db.collection("rankings");
-				
-				query = ranks.orderBy("score");
 
-				querySnapshot = query.get();
-
-				List<QueryDocumentSnapshot> rankingDocs = querySnapshot.get().getDocuments();
+				List<QueryDocumentSnapshot> rankingDocs = db.collection("rankings").orderBy("score").get().get()
+						.getDocuments();
 
 				Map<String, Object> docData;
-				
+
 				int compValue = Integer.compare(userDocs.size(), rankingDocs.size());
-				
-				if(compValue == 0) {
-					
+
+				if (compValue == 0) {
+
 					Iterator<QueryDocumentSnapshot> itUsers = userDocs.iterator();
-					Iterator<QueryDocumentSnapshot> itRankings = rankingDocs.iterator();					
-					
+					Iterator<QueryDocumentSnapshot> itRankings = rankingDocs.iterator();
+
 					int i = 0;
-					while(itUsers.hasNext()) {
-						DocumentSnapshot user = itUsers.next();
-						DocumentSnapshot rank = itRankings.next();
-						
+
+					DocumentSnapshot user;
+					DocumentSnapshot rank;
+
+					while (itUsers.hasNext()) {
+						user = itUsers.next();
+						rank = itRankings.next();
+
 						docData = new HashMap<>();
-						if(user.get("username") != rank.get("username") || user.get("score") != rank.get("score")) {
-						docData.put("username", user.get("username"));
-						docData.put("score", user.get("score"));
+						if (user.get("username") != rank.get("username") || user.get("score") != rank.get("score")) {
+							docData.put("username", user.get("username"));
+							docData.put("score", user.get("score"));
 
-						ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i++)).set(docData, SetOptions.merge());
-						future.get();
+							ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i++))
+									.set(docData, SetOptions.merge());
+							future.get();
 						}
+					}
+				} else if (compValue > 0) {
 
-					
-					
-				}
-				
-				
+					Iterator<QueryDocumentSnapshot> itUsers = userDocs.iterator();
+					Iterator<QueryDocumentSnapshot> itRankings = rankingDocs.iterator();
 
+					int i = 0;
+
+					DocumentSnapshot user;
+					DocumentSnapshot rank;
+
+					while (itRankings.hasNext()) {
+						user = itUsers.next();
+						rank = itRankings.next();
+
+						docData = new HashMap<>();
+						if (user.get("username") != rank.get("username") || user.get("score") != rank.get("score")) {
+							docData.put("username", user.get("username"));
+							docData.put("score", user.get("score"));
+
+							ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i++))
+									.set(docData, SetOptions.merge());
+							future.get();
+						}
+					}
+					while (itUsers.hasNext()) {
+						itUsers.next();
+						ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i++))
+								.delete();
+						future.get();
+					}
+				} else if (compValue < 0) {
+
+					Iterator<QueryDocumentSnapshot> itUsers = userDocs.iterator();
+					Iterator<QueryDocumentSnapshot> itRankings = rankingDocs.iterator();
+
+					int i = 0;
+					DocumentSnapshot user;
+					DocumentSnapshot rank;
+					while (itUsers.hasNext()) {
+						user = itUsers.next();
+						rank = itRankings.next();
+
+						docData = new HashMap<>();
+						if (user.get("username") != rank.get("username") || user.get("score") != rank.get("score")) {
+							docData.put("username", user.get("username"));
+							docData.put("score", user.get("score"));
+
+							ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i++))
+									.set(docData, SetOptions.merge());
+							future.get();
+						}
+					}
+					while (itRankings.hasNext()) {
+						itRankings.next();
+						ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i++))
+								.delete();
+						future.get();
+					}
 				}
 			}
 		}
-
 	}
 
 }

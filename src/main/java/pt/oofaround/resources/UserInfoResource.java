@@ -1,5 +1,6 @@
 package pt.oofaround.resources;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +24,14 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
+import pt.oofaround.util.ChangePasswordData;
 import pt.oofaround.util.UserData;
 
 @Path("/userinfo")
@@ -52,11 +55,11 @@ public class UserInfoResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUserInfo(UserData data) throws InterruptedException, ExecutionException {
 
-		LOG.fine("Listing user" + data.username);
+		LOG.fine("Listing user" + data.usernameR);
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.username, data.role, "getUserInfo")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getUserInfo")) {
 			CollectionReference users = db.collection("users");
-			Query query = users.whereEqualTo("username", data.username);
+			Query query = users.whereEqualTo("username", data.usernameR);
 			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
 			JsonObject res = new JsonObject();
@@ -75,8 +78,8 @@ public class UserInfoResource {
 				else
 					res.addProperty("privacy", "public");
 			}
-			//AuthToken at = new AuthToken(data.usernameR, data.role);
-			//res.addProperty("tokenID", at.tokenID);
+			// AuthToken at = new AuthToken(data.usernameR, data.role);
+			// res.addProperty("tokenID", at.tokenID);
 
 			return Response.ok(g.toJson(res)).build();
 		} else
@@ -89,11 +92,9 @@ public class UserInfoResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUserRoutes(UserData data) throws InterruptedException, ExecutionException {
 
-		LOG.fine("Listing user" + data.username);
-
-		if (AuthenticationTool.authenticate(data.tokenID, data.username, data.role, "getUserRoutes")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getUserRoutes")) {
 			CollectionReference users = db.collection("users");
-			Query query = users.whereEqualTo("username", data.username);
+			Query query = users.whereEqualTo("username", data.usernameR);
 			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
 			JsonObject res = new JsonObject();
@@ -132,18 +133,74 @@ public class UserInfoResource {
 
 		JsonObject res = new JsonObject();
 
-		//AuthToken at = new AuthToken(data.usernameR, data.role);
-		//res.addProperty("tokenID", at.tokenID);
+		// AuthToken at = new AuthToken(data.usernameR, data.role);
+		// res.addProperty("tokenID", at.tokenID);
 
 		return Response.ok().entity(g.toJson(res)).build();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@POST
+	@Path("/alterpassword")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response alterPassword(ChangePasswordData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "alterPassword")) {
+
+			String passEnc = Hashing.sha512().hashString(data.oldPassword, StandardCharsets.UTF_8).toString();
+
+			if (db.collection("users").document(data.usernameR).get().get().getString("password").equals(passEnc)) {
+
+				Map<String, Object> docData = new HashMap();
+				passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
+
+				docData.put("password", passEnc);
+
+				ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.usernameR).set(docData,
+						SetOptions.merge());
+				alterInfo.get();
+
+				JsonObject res = new JsonObject();
+
+				// AuthToken at = new AuthToken(data.usernameR, data.role);
+				// res.addProperty("tokenID", at.tokenID);
+
+				return Response.ok().entity(g.toJson(res)).build();
+			} else
+				return Response.status(Status.FORBIDDEN).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@POST
+	@Path("/alterotherrole")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response alterOtherRole(UserData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "alterOtherRole")) {
+			Map<String, Object> docData = new HashMap();
+
+			docData.put("role", data.newRole);
+
+			ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.username).set(docData,
+					SetOptions.merge());
+			alterInfo.get();
+
+			JsonObject res = new JsonObject();
+
+			// AuthToken at = new AuthToken(data.usernameR, data.role);
+			// res.addProperty("tokenID", at.tokenID);
+
+			return Response.ok().entity(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
 	}
 
 	@POST
 	@Path("/other")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getOtherUserInfo(UserData data) throws InterruptedException, ExecutionException {
-
-		LOG.fine("Listing user" + data.username);
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getOtherUserInfo")) {
 			CollectionReference users = db.collection("users");
@@ -164,7 +221,7 @@ public class UserInfoResource {
 			}
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.addProperty("tokenID", at.tokenID);
-			
+
 			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
