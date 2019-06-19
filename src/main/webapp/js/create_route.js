@@ -30,6 +30,9 @@ function initMap() {
     geocoder = new google.maps.Geocoder();
 
     google.maps.event.addListener(map, 'click', function(event) {
+      console.log('posicao do mambo ' + event.latLng);
+      console.log('latitude do mambo ' + event.latLng.lat());
+      console.log('posicao do mambo ' + event.latLng.lng());
       var marker = new google.maps.Marker({
         position: event.latLng, 
         map: map,
@@ -37,18 +40,18 @@ function initMap() {
        });
        routePoints.push(marker);
        var newLoc = {
-         name: getAddress(event.latlng),
+         name: "hum",
          category: "undefined",
          placeId: getPlaceId(event.latLng),
-         latitude: event.latLng.latitude,
-         longitude: event.latLng.longitude
+         latitude: event.latLng.lat(),
+         longitude: event.latLng.lng()
        }
        locationNames.push(newLoc);
     });
     
     directionsDisplay.setMap(map);
 
-    document.getElementById('submit').addEventListener('click', function() {
+    document.getElementById('submitF').addEventListener('click', function() {
       createWaypoints();
       calculateAndDisplayRoute(directionsService, directionsDisplay);
     });
@@ -61,7 +64,7 @@ function initMap() {
         return results[0].formatted_address;
       }
       else {
-        alert('Error');
+        alert('Error NO CODE ADDRESS?');
       }
   });
   }
@@ -72,7 +75,7 @@ function initMap() {
         return results[1].place_id;
       }
       else {
-        alert('Error');
+        alert('Error NO PLACEID????');
       }
   });
   }
