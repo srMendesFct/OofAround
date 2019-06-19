@@ -31,8 +31,8 @@ function initMap() {
 
     google.maps.event.addListener(map, 'click', function(event) {
       console.log('posicao do mambo ' + event.latLng);
-      console.log('latitude do mambo ' + event.latLng.latitude);
-      console.log('posicao do mambo ' + event.latLng.longitude);
+      console.log('latitude do mambo ' + event.latLng.lat());
+      console.log('posicao do mambo ' + event.latLng.lng());
       var marker = new google.maps.Marker({
         position: event.latLng, 
         map: map,
