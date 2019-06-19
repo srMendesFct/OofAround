@@ -10,6 +10,7 @@ public class RouteData {
 	public String role;
 	public String usernameR;
 	public String rating;
+	public String[] categories;
 
 	public RouteData() {
 	}
@@ -25,6 +26,7 @@ public class RouteData {
 		this.usernameR = usernameR;
 	}
 
+	//rate route
 	public RouteData(String name, String tokenID, String role, String usernameR, int rating) {
 		this.name = name;
 		this.tokenID = tokenID;
@@ -33,6 +35,7 @@ public class RouteData {
 		this.rating = String.valueOf(rating);
 	}
 	
+	//individual get
 	public RouteData(String name, String tokenID, String role, String usernameR, String creatorUsername) {
 		this.name = name;
 		this.tokenID = tokenID;
@@ -40,5 +43,20 @@ public class RouteData {
 		this.usernameR = usernameR;
 		this.creatorUsername = creatorUsername;
 	}
-
+	
+	//user get all routes
+	public RouteData(String tokenID, String role, String usernameR) {
+		this.tokenID = tokenID;
+		this.role = role;
+		this.usernameR = usernameR;
+	}
+	
+	//category get
+	public RouteData(String name, String tokenID, String role, String usernameR, String[] categories) {
+		this.name = name;
+		this.tokenID = tokenID;
+		this.role = role;
+		this.usernameR = usernameR;
+		this.categories = categories;
+	}
 }

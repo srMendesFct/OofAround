@@ -72,12 +72,14 @@ public class RouteResource {
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
+			Map<String, Integer> catMap = new HashMap<String, Integer>();
 
 			for (int i = 0; i < data.locationNames.length; i++) {
 				cats.add(data.locationNames[i].category);
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
 				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
+				catMap.putIfAbsent(data.locationNames[i].category,1);
 			}
 
 			docData.put("name", data.name);
@@ -87,9 +89,9 @@ public class RouteResource {
 			docData.put("locationsNames", names);
 			docData.put("placeIDs", placeIDs);
 
-			List<String> catList = new LinkedList<String>(cats);
+			//List<String> catList = new LinkedList<String>(cats);			
 
-			docData.put("categories", catList);
+			docData.put("categories", catMap);
 			docData.put("rating", (double) 0);
 			docData.put("numberRates", 0);
 			docData.put("status", "ok");
@@ -138,13 +140,13 @@ public class RouteResource {
 		LOG.fine("Getting location" + data.name);
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getRoute")) {
-			CollectionReference locations = db.collection("locations");
+			// CollectionReference routes = db.collection("routes");
 
-			List<GeoPoint> locationsList;
+			List<GeoPoint> locationsCoords;
 			List<String> locationsNames;
 			List<String> placeIDs;
 
-			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("name", data.name)
+			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.creatorUsername).get();
 			JsonObject res = new JsonObject();
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
@@ -152,8 +154,8 @@ public class RouteResource {
 				res.addProperty("description", document.getString("description"));
 				res.addProperty("creatorUsername", document.getString("creatorUsername"));
 
-				locationsNames = (List<String>) document.get("locationNames");
-				locationsList = (List<GeoPoint>) document.get("locationsList");
+				locationsNames = (List<String>) document.get("locationsNames");
+				locationsCoords = (List<GeoPoint>) document.get("locationsCoords");
 				placeIDs = (List<String>) document.get("placeIDs");
 
 				JsonArray array = new JsonArray();
@@ -162,8 +164,8 @@ public class RouteResource {
 				for (int i = 0; i < locationsNames.size(); i++) {
 					jsObj = new JsonObject();
 					jsObj.addProperty("name", locationsNames.get(i));
-					jsObj.addProperty("latitude", locationsList.get(i).getLatitude());
-					jsObj.addProperty("longitude", locationsList.get(i).getLongitude());
+					jsObj.addProperty("latitude", locationsCoords.get(i).getLatitude());
+					jsObj.addProperty("longitude", locationsCoords.get(i).getLongitude());
 					jsObj.addProperty("placeIDs", placeIDs.get(i));
 					array.add(jsObj);
 				}
@@ -188,8 +190,11 @@ public class RouteResource {
 	public Response listAllRoutes(RouteData data) throws InterruptedException, ExecutionException {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "listAllRoutes")) {
 			try {
-				ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes")
-						.whereEqualTo("creatorUsername", data.creatorUsername).get();
+				ApiFuture<QuerySnapshot> querySnapshot;
+				if (data.categories == null)
+					querySnapshot = db.collection("routes").get();
+				else
+					querySnapshot = db.collection("routes").whereEqualTo("categories.Culture", 1).get();
 
 				List<String> nameList = new LinkedList<String>();
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
@@ -198,7 +203,12 @@ public class RouteResource {
 
 				return Response.ok().entity(g.toJson(nameList)).build();
 			} catch (Exception e) {
-				return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
+				String s = "";
+				for (StackTraceElement ss : e.getStackTrace()) {
+					s += "   " + ss.toString();
+				}
+				return Response.status(Status.FORBIDDEN).entity(s).build();
+				//return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
