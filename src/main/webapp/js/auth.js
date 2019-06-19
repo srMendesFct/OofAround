@@ -100,8 +100,15 @@ captureDataLogin = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            captureDataGetImage();
-            captureDataGetUserInfo();
+            if(localStorage.getItem('role') == user) {
+                captureDataGetImage();
+                captureDataGetUserInfo();
+            }
+            else {
+                alert('Sessão Iniciada.');
+                window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+            }
+            
         },
         error: function () {
             alert("Falha ao iniciar sessão.");
