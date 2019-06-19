@@ -100,7 +100,7 @@ captureDataLogin = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            if(localStorage.getItem('role') == user) {
+            if(localStorage.getItem('role') == "user") {
                 captureDataGetImage();
                 captureDataGetUserInfo();
             }
