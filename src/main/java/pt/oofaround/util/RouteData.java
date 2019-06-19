@@ -35,7 +35,7 @@ public class RouteData {
 		this.rating = String.valueOf(rating);
 	}
 	
-	//individual get
+	//individual get and delete
 	public RouteData(String name, String tokenID, String role, String usernameR, String creatorUsername) {
 		this.name = name;
 		this.tokenID = tokenID;

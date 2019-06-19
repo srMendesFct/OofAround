@@ -161,8 +161,15 @@ public class ImageResource {
 			return Response.ok(g.toJson(token)).build();
 			
 			}catch(Exception e) {
+				BlobId blobId = BlobId.of(BUCKET, "profile_generic.png");
+
+				Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+				String s = Base64.getEncoder().encodeToString(blob.getContent());
+				
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				JsonObject token = new JsonObject();
+				token.addProperty("image", s);
 				token.addProperty("username", at.username);
 				token.addProperty("role", at.role);
 				token.addProperty("tokenID", at.tokenID);

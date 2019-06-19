@@ -79,7 +79,7 @@ public class RouteResource {
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
 				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
-				catMap.putIfAbsent(data.locationNames[i].category,1);
+				catMap.putIfAbsent(data.locationNames[i].category, 1);
 			}
 
 			docData.put("name", data.name);
@@ -89,7 +89,7 @@ public class RouteResource {
 			docData.put("locationsNames", names);
 			docData.put("placeIDs", placeIDs);
 
-			//List<String> catList = new LinkedList<String>(cats);			
+			// List<String> catList = new LinkedList<String>(cats);
 
 			docData.put("categories", catMap);
 			docData.put("rating", (double) 0);
@@ -191,10 +191,54 @@ public class RouteResource {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "listAllRoutes")) {
 			try {
 				ApiFuture<QuerySnapshot> querySnapshot;
+
 				if (data.categories == null)
 					querySnapshot = db.collection("routes").get();
+				else if (data.categories.length == 1)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1).get();
+				else if (data.categories.length == 2)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).get();
+				else if (data.categories.length == 3)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1).get();
+				else if (data.categories.length == 4)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).get();
+				else if (data.categories.length == 5)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1).get();
+				else if (data.categories.length == 6)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
+							.whereEqualTo(data.categories[5], 1).get();
+				else if (data.categories.length == 7)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
+							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1).get();
+				else if (data.categories.length == 8)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
+							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1)
+							.whereEqualTo(data.categories[7], 1).get();
+				else if (data.categories.length == 9)
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
+							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1)
+							.whereEqualTo(data.categories[7], 1).whereEqualTo(data.categories[8], 1).get();
 				else
-					querySnapshot = db.collection("routes").whereEqualTo("categories.Culture", 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
+							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
+							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
+							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1)
+							.whereEqualTo(data.categories[7], 1).whereEqualTo(data.categories[8], 1)
+							.whereEqualTo(data.categories[9], 1).get();
 
 				List<String> nameList = new LinkedList<String>();
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
@@ -208,7 +252,8 @@ public class RouteResource {
 					s += "   " + ss.toString();
 				}
 				return Response.status(Status.FORBIDDEN).entity(s).build();
-				//return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
+				// return Response.status(Status.NOT_FOUND).entity("Route doesn't
+				// exist.").build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
