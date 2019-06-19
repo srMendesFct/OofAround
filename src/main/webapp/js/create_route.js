@@ -61,7 +61,7 @@ function initMap() {
         return results[0].formatted_address;
       }
       else {
-        alert('Error');
+        alert('Error NO CODE ADDRESS?');
       }
   });
   }
@@ -72,7 +72,7 @@ function initMap() {
         return results[1].place_id;
       }
       else {
-        alert('Error');
+        alert('Error NO PLACEID????');
       }
   });
   }
