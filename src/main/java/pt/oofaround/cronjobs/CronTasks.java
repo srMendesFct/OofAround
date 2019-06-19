@@ -8,10 +8,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
@@ -38,10 +39,10 @@ public class CronTasks {
 	public CronTasks() {
 	}
 
-	@POST
+	@GET
 	@Path("/ranking")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void rank(LocationData data) throws InterruptedException, ExecutionException {
+	public Response rank(LocationData data) throws InterruptedException, ExecutionException {
 
 		CollectionReference flags = db.collection("flag");
 
@@ -55,6 +56,8 @@ public class CronTasks {
 			flag = document.getBoolean("flag");
 		}
 		if (flag) {
+
+			// alterar a flag para false no fim da execucao
 
 			List<QueryDocumentSnapshot> userDocs = db.collection("users").orderBy("score").get().get().getDocuments();
 
@@ -152,6 +155,7 @@ public class CronTasks {
 				}
 			}
 		}
+		return Response.ok().build();
 	}
 
 }
