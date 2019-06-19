@@ -75,7 +75,8 @@ public class RouteResource {
 			Map<String, Integer> catMap = new HashMap<String, Integer>();
 
 			for (int i = 0; i < data.locationNames.length; i++) {
-				cats.add(data.locationNames[i].category);
+				if (data.locationNames[i].category != "undefined")
+					cats.add(data.locationNames[i].category);
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
 				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
@@ -88,8 +89,6 @@ public class RouteResource {
 			docData.put("locationsCoords", locationsList);
 			docData.put("locationsNames", names);
 			docData.put("placeIDs", placeIDs);
-
-			// List<String> catList = new LinkedList<String>(cats);
 
 			docData.put("categories", catMap);
 			docData.put("rating", (double) 0);
@@ -195,50 +194,59 @@ public class RouteResource {
 				if (data.categories == null)
 					querySnapshot = db.collection("routes").get();
 				else if (data.categories.length == 1)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1).get();
 				else if (data.categories.length == 2)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1).get();
 				else if (data.categories.length == 3)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1).get();
 				else if (data.categories.length == 4)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1).get();
 				else if (data.categories.length == 5)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1).get();
 				else if (data.categories.length == 6)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
-							.whereEqualTo(data.categories[5], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1).get();
 				else if (data.categories.length == 7)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
-							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1).get();
 				else if (data.categories.length == 8)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
-							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1)
-							.whereEqualTo(data.categories[7], 1).get();
-				else if (data.categories.length == 9)
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
-							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1)
-							.whereEqualTo(data.categories[7], 1).whereEqualTo(data.categories[8], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1)
+							.whereEqualTo("categories." + data.categories[7], 1).get();
 				else
-					querySnapshot = db.collection("routes").whereEqualTo(data.categories[0], 1)
-							.whereEqualTo(data.categories[1], 1).whereEqualTo(data.categories[2], 1)
-							.whereEqualTo(data.categories[3], 1).whereEqualTo(data.categories[4], 1)
-							.whereEqualTo(data.categories[5], 1).whereEqualTo(data.categories[6], 1)
-							.whereEqualTo(data.categories[7], 1).whereEqualTo(data.categories[8], 1)
-							.whereEqualTo(data.categories[9], 1).get();
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1)
+							.whereEqualTo("categories." + data.categories[7], 1)
+							.whereEqualTo("categories." + data.categories[8], 1).get();
 
 				List<String> nameList = new LinkedList<String>();
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
