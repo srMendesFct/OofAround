@@ -45,7 +45,7 @@ captureDataCreatePointOfInterest = function (event) {
     var send = window.btoa(s);
     var values = {}
     values['image'] = send,
-      values['usernameR'] = localStorage.getItem('username');
+    values['usernameR'] = localStorage.getItem('username');
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
     $.each($('form[name="Criar ponto"]').serializeArray(), function (i, field) {
@@ -59,12 +59,12 @@ captureDataCreatePointOfInterest = function (event) {
       dataType: 'json', // data type        
       crossDomain: true,
       success: function (Response) {
-        alert('Imagem alterada');
+        alert('Ponto criado');
         //localStorage.setItem('image', send);
         //window.location.href = "https://oofaround.appspot.com/profile.html";
       },
       error: function (Response) {
-        alert('Falha ao alterar imagem');
+        alert('Falha ao criar ponto');
         //window.location.href = "https://oofaround.appspot.com/profile.html";
       },
       data: JSON.stringify(values) // post data || get data
@@ -74,16 +74,17 @@ captureDataCreatePointOfInterest = function (event) {
 };
 
 window.onload = function () {
+  openCity();
   var date = new Date();
   var token = localStorage.getItem('expiration');
   var longday = date.getTime();
   if (longday > token) {
     localStorage.clear();
     window.location.href = "https://oofaround.appspot.com/";
-  } else {
+  } 
+  else {
     localStorage.setItem('expiration', date.getTime() + 300000);
     var frmsl = $('form[name="Criar ponto"]');
     frmsl[0].onsubmit = captureDataCreatePointOfInterest;
-    openCity();
   }
 }
