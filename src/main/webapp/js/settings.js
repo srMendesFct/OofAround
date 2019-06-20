@@ -80,7 +80,6 @@ captureDataChangeUserInfo = function (event) {
     $.each($('form[name="Alterar Dados"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });
-    console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/userinfo/alterself",

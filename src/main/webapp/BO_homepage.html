@@ -12,6 +12,12 @@
   <script src="./js/BO_homepage.js"></script>
 
   <style>
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .backG {
       background-color: whitesmoke;
     }
@@ -53,7 +59,6 @@
     .tabcontent {
       float: left;
       padding: 0px 12px;
-      border: 1px solid #ccc;
       width: 70%;
       border-left: none;
       height: 100%;
@@ -61,6 +66,77 @@
 
     * {
       box-sizing: border-box
+    }
+
+    .img {
+      max-width: 67px;
+      max-height: 67px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .dropdownB {
+      margin-right: 4px;
+      padding: 0.5% 0;
+      font-size: 1.1em;
+      background-color: whitesmoke;
+    }
+
+    .letters {
+      margin-left: 3px;
+      color: #e53935;
+      font-size: 15px;
+    }
+
+    .imgL {
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 50%;
+      margin-bottom: 3px;
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color: #e53935;
+      color: #FFF;
+      padding: 0.5% 0;
+      font-size: 1.1em;
+      border: 0;
+    }
+
+    /*logo da navbar*/
+    .navbar-brand {
+      float: left;
+      min-height: 55px;
+      padding: 0 2px 5px;
+    }
+
+    .btn {
+      font-size: 18px;
+      color: #FFF;
+      padding: 12px 22px;
+      background: #e53935;
+      border: 1px solid #FFF;
+    }
+
+    footer {
+      width: 100%;
+      background-color: #e53935;
+      padding: 0.2%;
+      color: #FFF;
+    }
+
+    .modal .modal-footer {
+      background-color: #ff5252;
+    }
+
+    .modal-footer button:hover {
+      background-color: rgb(238, 95, 95);
+    }
+
+    .modal-footer button.active {
+      background-color: darkred;
     }
   </style>
 </head>
@@ -89,8 +165,82 @@
   </div>
 
   <div id="Pontos de Interesse" class="tabcontent">
-    <h3>Pontos de Interesse</h3>
-    <p>Tokyo is the capital of Japan.</p>
+    <h3 style="text-align: center">Pontos de Interesse</h3>
+    <br>
+
+    <div class="row">
+      <div class="col-md-7">
+        <form id="Criar ponto" name="Alterar Dados" class="pure-form pure-form-stacked block" accept-charset="utf-8">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nome</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" class="form-control validate" id="nameP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Morada</label>
+            <div class="col-sm-10">
+              <input type="text" name="address" class="form-control validate" id="addressP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Categoria</label>
+            <div class="col-sm-10">
+              <input type="text" name="category" class="form-control validate" id="categoryP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Latitude</label>
+            <div class="col-sm-10">
+              <input type="number" name="latitude" class="form-control validate" id="latitudeP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Longitude</label>
+            <div class="col-sm-10">
+              <input type="number" name="longitude" class="form-control validate" id="longitudeP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Região</label>
+            <div class="col-sm-10">
+              <input type="text" name="region" class="form-control validate" id="regionP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pontuação</label>
+            <div class="col-sm-10">
+              <input type="number" name="score" class="form-control validate" id="scoreP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">PlaceID</label>
+            <div class="col-sm-10">
+              <input type="text" name="placeID" class="form-control validate" id="placeIDP">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Imagem</label>
+            <div class="col-sm-10">
+              <input name="image" id='fileID' type='file' hidden></input>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button id="CriarP" type="submit" class="btn btn-default">Criar</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-sd-3">
+          <div class="form-group row">
+              <label>Descrição</label>
+              <br>
+              <div class="col-sm-4">
+                <textarea id="descriptionP" class="form-control validate" form="Criar ponto" name="description"></textarea>
+              </div>
+          </div>
+      </div>
+    </div>
+
   </div>
 
   <div id="Cupões" class="tabcontent">
@@ -104,9 +254,9 @@
   </div>
 
   <div id="Suporte" class="tabcontent">
-      <h3>Suporte</h3>
-      <p>Tokyo is the capital of Japan.</p>
-    </div>
+    <h3>Suporte</h3>
+    <p>Tokyo is the capital of Japan.</p>
+  </div>
 
   <div id="Terminar sessão" class="tabcontent">
     <h3>Terminar sessão</h3>
