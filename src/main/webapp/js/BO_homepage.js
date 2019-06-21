@@ -71,6 +71,12 @@ captureDataCreatePointOfInterest = function (event) {
   event.preventDefault();
 };
 
+function logout() {
+  localStorage.clear();
+  alert("Sessão terminada.")
+  window.location.href = "https://oofaround.appspot.com/";
+};
+
 window.onload = function () {
   openCity();
   var date = new Date();
@@ -88,10 +94,4 @@ window.onload = function () {
 }
 
 setupCallbacks = function () {
-
-  document.getElementById("TS").addEventListener("click", function () {
-    localStorage.clear();
-    alert("Sessão terminada.")
-    window.location.href = "https://oofaround.appspot.com/";
-});
 }
