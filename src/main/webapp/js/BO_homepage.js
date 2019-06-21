@@ -51,7 +51,6 @@ captureDataCreatePointOfInterest = function (event) {
     $.each($('form[name="Criar ponto"]').serializeArray(), function (i, field) {
       values[field.name] = field.value;
     });
-    console.log(JSON.stringify(values));
     $.ajax({
       type: "POST",
       url: "https://oofaround.appspot.com/rest/location/create",
@@ -60,12 +59,11 @@ captureDataCreatePointOfInterest = function (event) {
       crossDomain: true,
       success: function (Response) {
         alert('Ponto criado');
-        //localStorage.setItem('image', send);
-        //window.location.href = "https://oofaround.appspot.com/profile.html";
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
         alert('Falha ao criar ponto');
-        //window.location.href = "https://oofaround.appspot.com/profile.html";
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       data: JSON.stringify(values) // post data || get data
     });
