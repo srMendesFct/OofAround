@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -27,7 +28,9 @@ public class RankingResource {
 
 	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 	private final Firestore db = firestore.getService();
-
+	
+	private final Gson g = new Gson();
+	
 	public RankingResource() {
 	}
 
@@ -52,7 +55,7 @@ public class RankingResource {
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.addProperty("tokenID", at.tokenID);
 
-				return Response.ok().build();
+				return Response.ok().entity(g.toJson(res)).build();
 			} catch (Exception e) {
 				return Response.status(Status.NOT_FOUND).entity("User doesn't exist.").build();
 			}
@@ -86,7 +89,7 @@ public class RankingResource {
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.addProperty("tokenID", at.tokenID);
 
-				return Response.ok().build();
+				return Response.ok().entity(g.toJson(res)).build();
 			} catch (Exception e) {
 				return Response.status(Status.NOT_FOUND).entity("User doesn't exist.").build();
 			}
