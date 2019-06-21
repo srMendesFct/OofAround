@@ -35,7 +35,7 @@ function home() {
   }
 }
 
-captureDataCreatePointOfInterest = function () {
+captureDataCreatePointOfInterest = function (event) {
   var fileReader = new FileReader();
   var file = document.getElementById("fileID").files[0];
   var s;
@@ -60,15 +60,16 @@ captureDataCreatePointOfInterest = function () {
       crossDomain: true,
       success: function (Response) {
         alert('Ponto criado');
-        //window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
         alert('Falha ao criar ponto');
-        //window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       data: JSON.stringify(values) // post data || get data
     });
   }
+  event.preventDefault();
 };
 
 function logout() {
@@ -78,18 +79,17 @@ function logout() {
 };
 
 window.onload = function () {
-  console.log("merda");
   home();
   var date = new Date();
   var token = localStorage.getItem('expiration');
   var longday = date.getTime();
-  console.log("caralho");
   if (longday > token) {
     localStorage.clear();
     window.location.href = "https://oofaround.appspot.com/";
   } 
   else {
     localStorage.setItem('expiration', date.getTime() + 300000);
-    console.log("foda-se");
+    var s = $('form[name="Criar ponto"]');
+    s[0].onsubmit = captureDataCreatePointOfInterest;
   }
 }
