@@ -31,4 +31,13 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>CronServlet</servlet-name>
+		<servlet-class>pt.oofaround.cronjobs.CronJobs</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CronServlet</servlet-name>
+		<url-pattern>/crontasks/rankingcron</url-pattern>
+	</servlet-mapping>
+
 </web-app>

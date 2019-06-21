@@ -1,6 +1,6 @@
 <cronentries>
 	<cron>
-		<url>/rest/crontask/ranking</url>
+		<url>/crontasks/rankingcron</url>
 		<description>hourly ranking job</description>
 		<schedule>every 168 hours</schedule>
 	</cron>

@@ -23,4 +23,18 @@ public class RankingData {
 		this.limit = Integer.parseInt(limit);
 		this.lastUsername = lastUsername;
 	}
+	
+	public RankingData(String tokenID, String usernameR, String role) {
+		this.tokenID = tokenID;
+		this.usernameR = usernameR;
+		this.role = role;
+	}
+
+	public RankingData(String tokenID, String usernameR, String role, String username) {
+		this.tokenID = tokenID;
+		this.usernameR = usernameR;
+		this.role = role;
+		this.username = username;
+	}
+
 }
