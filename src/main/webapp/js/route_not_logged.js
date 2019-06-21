@@ -9,7 +9,7 @@ captureDataGetUserInfo = function (values) {
     var values = {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
-        username: localStorage.getItem('username'),
+        usernameR: localStorage.getItem('username'),
     };
     $.ajax({
         type: "POST",
