@@ -141,9 +141,9 @@ public class LocationResource {
 				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
 				res.addProperty("region", document.getString("region"));
-				//res.addProperty("score", document.getLong("score"));
-				//res.addProperty("nbrVisits", document.getLong("nbrVisits"));
-				//res.addProperty("placeID", document.getString("placeID"));
+				// res.addProperty("score", document.getLong("score"));
+				// res.addProperty("nbrVisits", document.getLong("nbrVisits"));
+				// res.addProperty("placeID", document.getString("placeID"));
 			}
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -163,8 +163,6 @@ public class LocationResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
 			CollectionReference locations = db.collection("locations");
-			Query query;
-			ApiFuture<QuerySnapshot> querySnapshot;
 			List<QueryDocumentSnapshot> docs;
 			JsonObject res = new JsonObject();
 
@@ -172,58 +170,71 @@ public class LocationResource {
 
 				if (data.lastName.equalsIgnoreCase("")) {
 
-					if (data.category.equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
+					if (data.categoriesGet[0] == null && data.region.equalsIgnoreCase("")) {
 
-						query = locations; // .order by ranking quando ranking for implementado
+						// .order by ranking quando ranking for implementado
+						docs = locations.get().get().getDocuments();
 
-					} else if (data.category.equalsIgnoreCase("")) {
+					} else if (data.categoriesGet[0] == null) {
 
-						query = locations.whereEqualTo("region", data.region);
+						docs = locations.whereEqualTo("region", data.region).get().get().getDocuments();
 
 					} else if (data.region.equalsIgnoreCase("")) {
-
-						query = locations.whereEqualTo("category", data.category);
+						docs = locations.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments();
+						for (int i = 1; i < data.categoriesGet.length; i++) {
+							docs.addAll(locations.whereEqualTo("category", data.categoriesGet[i]).get().get()
+									.getDocuments());
+						}
 
 					} else {
 
-						query = locations.whereEqualTo("region", data.region).whereEqualTo("region", data.region);
+						docs = locations.whereEqualTo("region", data.region)
+								.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments();
+						for (int i = 1; i < data.categoriesGet.length; i++) {
+							docs.addAll(locations.whereEqualTo("region", data.region)
+									.whereEqualTo("category", data.categoriesGet[i]).get().get().getDocuments());
+						}
 
 					}
-
-					querySnapshot = query.get();
-					docs = querySnapshot.get().getDocuments();
 					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
 							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score"));
 
 				} else {
 
-					// TODO para varios
-					query = locations.whereEqualTo("name", data.lastName);
-					querySnapshot = query.get();
-					docs = querySnapshot.get().getDocuments();
+					docs = locations.whereEqualTo("name", data.lastName).get().get().getDocuments();
 					QueryDocumentSnapshot lastDoc = docs.get(0);
 
 					if (data.category.equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
 
-						query = locations.orderBy("nbrVisits"); // .order by ranking quando ranking for implementado
+						docs = locations.orderBy("nbrVisits").get().get().getDocuments();
 
 					} else if (data.category.equalsIgnoreCase("")) {
 
-						query = locations.whereEqualTo("region", data.region).startAfter(lastDoc).limit(data.limit);
+						docs = locations.orderBy("nbrVisits").whereEqualTo("region", data.region).startAfter(lastDoc)
+								.limit(data.limit).get().get().getDocuments();
 
 					} else if (data.region.equalsIgnoreCase("")) {
 
-						query = locations.whereEqualTo("category", data.category).startAfter(lastDoc).limit(data.limit);
+						docs = locations.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc)
+								.limit(data.limit).get().get().getDocuments();
+						for (int i = 1; i < data.categoriesGet.length; i++) {
+							docs.addAll(locations.whereEqualTo("category", data.categoriesGet[i]).startAfter(lastDoc)
+									.limit(data.limit).get().get().getDocuments());
+						}
 
 					} else {
 
-						query = locations.whereEqualTo("region", data.region).whereEqualTo("region", data.region)
-								.startAfter(lastDoc).limit(data.limit);
+						docs = locations.orderBy("nbrVisits").whereEqualTo("region", data.region)
+								.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc).limit(data.limit)
+								.get().get().getDocuments();
+						for (int i = 1; i < data.categoriesGet.length; i++) {
+							docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
+									.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
+									.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
+						}
 
 					}
 
-					querySnapshot = query.get();
-					docs = querySnapshot.get().getDocuments();
 					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
 							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score"));
 

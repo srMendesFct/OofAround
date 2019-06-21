@@ -17,6 +17,7 @@ public class LocationData {
 	public String lastName;
 	public String region;
 	public long score;
+	public String[] categoriesGet;
 	// Open hours and cupons later
 
 	public LocationData() {
@@ -42,14 +43,14 @@ public class LocationData {
 	}
 
 	// paginated/collective get
-	public LocationData(String tokenID, String usernameR, String role, int limit, String lastName, String category,
+	public LocationData(String tokenID, String usernameR, String role, int limit, String lastName, String[] category,
 			String region) {
 		this.tokenID = tokenID;
 		this.usernameR = usernameR;
 		this.role = role;
 		this.limit = limit;
 		this.lastName = lastName;
-		this.category = category;
+		this.categoriesGet = category;
 		this.region = region;
 	}
 
