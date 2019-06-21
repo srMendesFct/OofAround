@@ -79,7 +79,7 @@ function logout() {
 
 window.onload = function () {
   console.log("merda");
-  openCity();
+  home();
   var date = new Date();
   var token = localStorage.getItem('expiration');
   var longday = date.getTime();
