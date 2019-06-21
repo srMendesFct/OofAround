@@ -45,12 +45,13 @@ captureDataCreatePointOfInterest = function (event) {
     var send = window.btoa(s);
     var values = {}
     values['image'] = send,
-      values['usernameR'] = localStorage.getItem('username');
+    values['usernameR'] = localStorage.getItem('username');
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
     $.each($('form[name="Criar ponto"]').serializeArray(), function (i, field) {
       values[field.name] = field.value;
     });
+    console.log(JSON.stringify(values));
     $.ajax({
       type: "POST",
       url: "https://oofaround.appspot.com/rest/location/create",
@@ -59,11 +60,11 @@ captureDataCreatePointOfInterest = function (event) {
       crossDomain: true,
       success: function (Response) {
         alert('Ponto criado');
-        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+        //window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
         alert('Falha ao criar ponto');
-        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+        //window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       data: JSON.stringify(values) // post data || get data
     });
@@ -89,9 +90,5 @@ window.onload = function () {
     localStorage.setItem('expiration', date.getTime() + 300000);
     var frmsl = $('form[name="Criar ponto"]');
     frmsl[0].onsubmit = captureDataCreatePointOfInterest;
-    setupCallbacks();
   }
-}
-
-setupCallbacks = function () {
 }
