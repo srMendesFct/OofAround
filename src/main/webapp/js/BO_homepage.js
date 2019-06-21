@@ -78,17 +78,18 @@ function logout() {
 };
 
 window.onload = function () {
+  console.log("merda");
   openCity();
-  var frmsl = $('form[name="Criar ponto"]');
   var date = new Date();
   var token = localStorage.getItem('expiration');
   var longday = date.getTime();
+  console.log("caralho");
   if (longday > token) {
     localStorage.clear();
     window.location.href = "https://oofaround.appspot.com/";
   } 
   else {
     localStorage.setItem('expiration', date.getTime() + 300000);
-    frmsl[0].onsubmit = captureDataCreatePointOfInterest();
+    console.log("foda-se");
   }
 }
