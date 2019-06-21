@@ -29,13 +29,13 @@ window.onload = function () {
     var longday = date.getTime();
     document.getElementById("profilePic").src = 'data:image/jpeg;base64, ' + image;
     document.getElementById("user").innerHTML = user;
-    /*if (longday > token) {
+    if (longday > token) {
         localStorage.clear();
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
-    }*/
+    }
 };
 
 setupCallback = function () {

@@ -22,8 +22,4 @@ setupCallback = function () {
         alert("Sessão terminada.")
         window.location.href = "https://oofaround.appspot.com/";
     });
-
-    document.getElementById("PI").addEventListener("click", function() {
-        window.location.href = "https://oofaround.appspot.com/points_of_interest_logged.html";
-    });
 }
