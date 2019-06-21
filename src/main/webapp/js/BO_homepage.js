@@ -35,7 +35,7 @@ function home() {
   }
 }
 
-captureDataCreatePointOfInterest = function (event) {
+captureDataCreatePointOfInterest = function () {
   var fileReader = new FileReader();
   var file = document.getElementById("fileID").files[0];
   var s;
@@ -69,7 +69,6 @@ captureDataCreatePointOfInterest = function (event) {
       data: JSON.stringify(values) // post data || get data
     });
   }
-  event.preventDefault();
 };
 
 function logout() {
@@ -80,15 +79,16 @@ function logout() {
 
 window.onload = function () {
   openCity();
+  var frmsl = $('form[name="Criar ponto"]');
   var date = new Date();
   var token = localStorage.getItem('expiration');
   var longday = date.getTime();
   if (longday > token) {
     localStorage.clear();
     window.location.href = "https://oofaround.appspot.com/";
-  } else {
+  } 
+  else {
     localStorage.setItem('expiration', date.getTime() + 300000);
-    var frmsl = $('form[name="Criar ponto"]');
-    frmsl[0].onsubmit = captureDataCreatePointOfInterest;
+    frmsl[0].onsubmit = captureDataCreatePointOfInterest();
   }
 }
