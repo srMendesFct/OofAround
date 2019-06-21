@@ -45,7 +45,7 @@ captureDataCreatePointOfInterest = function (event) {
     var send = window.btoa(s);
     var values = {}
     values['image'] = send,
-    values['usernameR'] = localStorage.getItem('username');
+      values['usernameR'] = localStorage.getItem('username');
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
     $.each($('form[name="Criar ponto"]').serializeArray(), function (i, field) {
@@ -79,10 +79,19 @@ window.onload = function () {
   if (longday > token) {
     localStorage.clear();
     window.location.href = "https://oofaround.appspot.com/";
-  } 
-  else {
+  } else {
     localStorage.setItem('expiration', date.getTime() + 300000);
     var frmsl = $('form[name="Criar ponto"]');
     frmsl[0].onsubmit = captureDataCreatePointOfInterest;
+    setupCallbacks();
   }
+}
+
+setupCallbacks = function () {
+
+  document.getElementById("TS").addEventListener("click", function () {
+    localStorage.clear();
+    alert("Sessão terminada.")
+    window.location.href = "https://oofaround.appspot.com/";
+});
 }
