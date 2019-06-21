@@ -81,7 +81,7 @@ public class CronJobs extends HttpServlet {
 								docData.put("username", user.get("username"));
 								docData.put("score", user.get("score"));
 
-								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i))
+								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i+1))
 										.set(docData, SetOptions.merge());
 								future.get();
 							}
@@ -103,7 +103,7 @@ public class CronJobs extends HttpServlet {
 								docData.put("username", user.get("username"));
 								docData.put("score", user.get("score"));
 
-								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i))
+								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i+1))
 										.set(docData, SetOptions.merge());
 								future.get();
 							}
@@ -116,7 +116,7 @@ public class CronJobs extends HttpServlet {
 							docData.put("username", user.get("username"));
 							docData.put("score", user.get("score"));
 
-							db.collection("rankings").document(String.valueOf(i++)).set(docData).get();
+							db.collection("rankings").document(String.valueOf(++i)).set(docData).get();
 						}
 					} else if (compValue < 0) {
 
@@ -134,7 +134,7 @@ public class CronJobs extends HttpServlet {
 								docData.put("username", user.get("username"));
 								docData.put("score", user.get("score"));
 
-								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i))
+								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i+1))
 										.set(docData, SetOptions.merge());
 								future.get();
 							}

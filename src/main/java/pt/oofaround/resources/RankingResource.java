@@ -41,7 +41,7 @@ public class RankingResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getRank")) {
 			try {
-				List<QueryDocumentSnapshot> rankingDocs = db.collection("ranking")
+				List<QueryDocumentSnapshot> rankingDocs = db.collection("rankings")
 						.whereEqualTo("username", data.usernameR).get().get().getDocuments();
 
 				JsonObject res = new JsonObject();
@@ -70,7 +70,7 @@ public class RankingResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllRanks")) {
 			try {
-				List<QueryDocumentSnapshot> rankingDocs = db.collection("ranking").limit(100).get().get().getDocuments();
+				List<QueryDocumentSnapshot> rankingDocs = db.collection("rankings").limit(100).get().get().getDocuments();
 
 				JsonObject res = new JsonObject(); 
 				JsonObject jObj;
