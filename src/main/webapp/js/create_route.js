@@ -48,7 +48,7 @@ function initMap() {
     var newLoc = {
       name: "hum",
       category: "undefined",
-      placeId: getPlaceId(event.latLng),
+      placeId: "pId",
       latitude: event.latLng.lat(),
       longitude: event.latLng.lng()
     }
