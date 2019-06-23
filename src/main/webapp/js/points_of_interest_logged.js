@@ -64,10 +64,6 @@ setupCallback = function () {
     frms[0].onsubmit = captureDataChangePassword;*/
     frmsl[0].onsubmit = captureDataGetPointsOfInterest;
 
-    document.getElementById("searchP").addEventListener("click", function () {
-        
-    });
-
     document.getElementById("logout").addEventListener("click", function () {
         localStorage.clear();
         alert("Sessão terminada.")
