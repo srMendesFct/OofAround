@@ -12,10 +12,10 @@ captureDataGetPointsOfInterest = function (event) {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
         usernameR: localStorage.getItem('username'),
-        limit = limit,
-        lastName = lastName,
-        region = document.getElementById("distrito").value,
-        categoriesGet = res
+        limit: limit,
+        lastName: lastName,
+        region: document.getElementById("distrito").value,
+        categoriesGet: res
     };
     console.log(JSON.stringify(values));
     $.ajax({
