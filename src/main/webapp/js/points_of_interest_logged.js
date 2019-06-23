@@ -1,24 +1,44 @@
-captureDataGetUserInfo = function (values) {
+var limit;
+var lastName;
+
+captureDataGetPointsOfInterest = function (event) {
+    var x = document.getElementsByClassName("ed");
+    var res = "";
+    for(i = 0; i<x.length; i++) {
+        if(x[i].checked) {
+            res = res + ", " + x[i].value;
+        }
+    }
     var values = {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
-        username: localStorage.getItem('username'),
+        usernameR: localStorage.getItem('username'),
+        limit = 5,
+        lastName = "",
+        region = document.getElementById("distrito").value,
+        categoriesGet = res
     };
+    console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
-        url: "https://oofaround.appspot.com/rest/userinfo/self",
+        url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
             tabcontent = document.getElementsByClassName("dente");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            lastName = 0; //buscar o ultimo elemento
+            alert("nice");
         },
-        error: function (Response) {},
+        error: function (Response) {
+            alert('merda');
+        },
         data: JSON.stringify(values) // post data || get data
     });
+    event.preventDefault();
 };
 
 window.onload = function () {
@@ -43,7 +63,7 @@ setupCallback = function () {
     var frmsl = $('form[name="Alterar Dados"]');
     /*var frms = $('form[name="Alterar Password"]');
     frms[0].onsubmit = captureDataChangePassword;*/
-    frmsl[0].onsubmit = captureDataChangeUserInfo;
+    frmsl[0].onsubmit = captureDataGetPointsOfInterest;
 
     document.getElementById("searchP").addEventListener("click", function () {
         tabcontent = document.getElementsByClassName("dente");
