@@ -5,7 +5,7 @@ captureDataGetPointsOfInterest = function (event) {
     var res = "";
     for (i = 0; i < x.length; i++) {
         if (x[i].checked) {
-            res = res + ", " + x[i].value;
+            res[i] = x[i].value;
         }
     }
     var values = {
@@ -15,7 +15,7 @@ captureDataGetPointsOfInterest = function (event) {
         limit: limit,
         lastName: lastName,
         region: document.getElementById("distrito").value,
-        categoriesGet: res
+        categoriesGet: JSON.stringify(res)
     };
     console.log(JSON.stringify(values));
     $.ajax({
