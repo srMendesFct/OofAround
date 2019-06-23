@@ -59,7 +59,7 @@ window.onload = function () {
 
 setupCallback = function () {
 
-    var frmsl = $('form[name="Alterar Dados"]');
+    var frmsl = $('form[name="categorias"]');
     /*var frms = $('form[name="Alterar Password"]');
     frms[0].onsubmit = captureDataChangePassword;*/
     frmsl[0].onsubmit = captureDataGetPointsOfInterest;
