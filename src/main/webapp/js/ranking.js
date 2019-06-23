@@ -31,7 +31,7 @@
                  var user = Response.scores[i].username;
                  var score = Response.scores[i].score;
                  a.setAttribute("align", "center");
-                 a.innerHTML = i + " " + user + " " + score;
+                 a.innerHTML = user + " " + score;
                  li.appendChild(a);
                  ul.appendChild(li);
              }
