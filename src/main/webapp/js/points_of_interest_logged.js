@@ -65,10 +65,7 @@ setupCallback = function () {
     frmsl[0].onsubmit = captureDataGetPointsOfInterest;
 
     document.getElementById("searchP").addEventListener("click", function () {
-        tabcontent = document.getElementsByClassName("dente");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
+        
     });
 
     document.getElementById("logout").addEventListener("click", function () {
