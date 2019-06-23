@@ -1,11 +1,10 @@
-var limit;
-var lastName;
-
 captureDataGetPointsOfInterest = function (event) {
+    var limit = 5;
+    var lastName = "";
     var x = document.getElementsByClassName("ed");
     var res = "";
-    for(i = 0; i<x.length; i++) {
-        if(x[i].checked) {
+    for (i = 0; i < x.length; i++) {
+        if (x[i].checked) {
             res = res + ", " + x[i].value;
         }
     }
@@ -13,8 +12,8 @@ captureDataGetPointsOfInterest = function (event) {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
         usernameR: localStorage.getItem('username'),
-        limit = 5,
-        lastName = "",
+        limit = limit,
+        lastName = lastName,
         region = document.getElementById("distrito").value,
         categoriesGet = res
     };
