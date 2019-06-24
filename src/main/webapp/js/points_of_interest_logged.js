@@ -73,17 +73,19 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
-                header_2.style.fontSize = "10px"
+                header_2.style.fontSize = "16px"
                 header_2.innerHTML = "Morada: " + Response.locations[i].address;
                 div_2.appendChild(header_2);
 
                 var header_3 = document.createElement("h4");
                 header_3.style.textAlign = "left";
+                header_3.style.fontSize = "16px"
                 header_3.innerHTML = "Categoria: " + z;
                 div_2.appendChild(header_3);
 
                 var header_4 = document.createElement("h4");
                 header_4.style.textAlign = "left";
+                header_4.style.fontSize = "16px"
                 header_4.innerHTML = "Região: " + Response.locations[i].region;
                 div_2.appendChild(header_4);
 
@@ -93,13 +95,13 @@ captureDataGetPointsOfInterest = function (event) {
                 div_2.appendChild(p);
 
                 var button = document.createElement("button");
-                button.dataToggle = "modal";
-                button.dataTarget = "#loginForm";
+                button.setAttribute("data-toggle", "modal");
+                button.setAttribute("data-target", "#loginForm");
                 button.style.marginBottom = "3px";
                 button.innerHTML = "Saber Mais";
                 p.appendChild(button);
             }
-            lastName = 0; //buscar o ultimo elemento
+            lastName = Response.locations[i].name;
             console.log(Response);
             alert("Pesquisa com Sucesso");
         },
