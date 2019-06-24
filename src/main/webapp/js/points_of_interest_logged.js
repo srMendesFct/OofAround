@@ -154,7 +154,7 @@ captureDataGetPointsOfInterest = function (event) {
                 div_8.appendChild(label);
 
                 var br = document.createElement("br");
-                document.getElementById("berna_modal").appendChild(br);
+                div_7.appendChild(br);
 
                 var div_9 = document.createElement("div");
                 div_9.setAttribute("class", "md-form mb-4");
