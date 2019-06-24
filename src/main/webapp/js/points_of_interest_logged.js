@@ -5,7 +5,7 @@ captureDataGetPointsOfInterest = function (event) {
     var res = {}
     for (var i = 0; i < x.length; i++) {
         if (x[i].checked) {
-            res = res + x[i].value;
+            res[i] = x[i].value;
         }
     }
     var values = {
