@@ -100,6 +100,34 @@ captureDataChangeUserInfo = function (event) {
     event.preventDefault();
 };
 
+captureDataChangePassword = function (event) {
+    var values = {};
+    values["tokenID"] = localStorage.getItem('token');
+    values["role"] = localStorage.getItem('role');
+    values["usernameR"] = localStorage.getItem('username');
+    $.each($('form[name="Alterar Password"]').serializeArray(), function (i, field) {
+        values[field.name] = field.value;
+    });
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/userinfo/alterself",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+            captureDataGetUserInfo();
+            alert("Alteração efetuada com sucesso.");
+            window.location.href = "https://oofaround.appspot.com/settings.html";
+        },
+        error: function (Response) {
+            alert("Falha ao alterar os dados.");
+            window.location.href = "https://oofaround.appspot.com/settings.html";
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+    event.preventDefault();
+};
+
 window.onload = function () {
     var user = localStorage.getItem('username');
     var image = localStorage.getItem('image');
@@ -131,8 +159,8 @@ window.onload = function () {
 setupCallback = function () {
 
     var frmsl = $('form[name="Alterar Dados"]');
-    /*var frms = $('form[name="Alterar Password"]');
-    frms[0].onsubmit = captureDataChangePassword;*/
+    var frms = $('form[name="Alterar Password"]');
+    frms[0].onsubmit = captureDataChangePassword;
     frmsl[0].onsubmit = captureDataChangeUserInfo;
 
     document.getElementById("delete").addEventListener("click", function () {
