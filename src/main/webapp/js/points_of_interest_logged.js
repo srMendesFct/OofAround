@@ -27,35 +27,35 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            var z = Response.locations[i].category;
 
             for(i = 0; i < Response.locations.length; i++) {
+                var z = Response.locations[i].category;
                 if( z == "Sport") {
-                    return "Desporto";
+                    z = "Desporto";
                 }
                 else if (z == "Culture") {
-                    return "Cultura";
+                    z = "Cultura";
                 }
                 else if (z == "NightLife") {
-                    return "Vida Noturna";
+                    z = "Vida Noturna";
                 }
                 else if (z == "Leisure") {
-                    return "Lazer";
+                    z = "Lazer";
                 }
                 else if (z == "Animal & WildLife") {
-                    return "Animais e Vida Selvagem";
+                    z = "Animais e Vida Selvagem";
                 }
                 else if (z == "Outdoor & Pets") {
-                    return "Ar livre e Animais Domésticos";
+                    z = "Ar livre e Animais Domésticos";
                 }
                 else if (z == "Beach") {
-                    return "Praias";
+                    z = "Praias";
                 }
                 else if (z == "Food & Drink") {
-                    return "Comes e Bebes";
+                    z = "Comes e Bebes";
                 }
                 else if (z == "Landscaping") {
-                    return "Paisagens";
+                    z = "Paisagens";
                 }
             
                 var div = document.createElement("div");
@@ -79,7 +79,7 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var header_3 = document.createElement("h4");
                 header_3.style.textAlign = "left";
-                header_3.innerHTML = "Categoria: " + Response.locations[i].category;
+                header_3.innerHTML = "Categoria: " + z;
                 div_2.appendChild(header_3);
 
                 var header_4 = document.createElement("h4");
