@@ -3,6 +3,8 @@ package pt.oofaround.support;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
+import javax.ws.rs.core.MediaType;
+
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;
@@ -53,17 +55,18 @@ public class MediaSupport {
 		return (Integer) document.get("numberPhotos");
 	}
 	
-	public static void uploadJson() {
+	@SuppressWarnings("unused")
+	public static void uploadJson(byte[] storageArray) {
 		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
 				.build();
 
 		Storage storageDB = storage.getService();
 
 		BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
-		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(MediaType.APPLICATION_JSON).build();
 
 		Gson g = new Gson();
 
-		//Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());
+		Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());
 	}
 }

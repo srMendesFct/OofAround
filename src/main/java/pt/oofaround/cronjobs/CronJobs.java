@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
@@ -82,6 +83,18 @@ public class CronJobs extends HttpServlet {
 
 						storageArray.add(storageObj);
 					}
+					
+					StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+							.build();
+
+					Storage storageDB = storage.getService();
+
+					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
+					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(MediaType.APPLICATION_JSON).build();
+
+					Gson g = new Gson();
+
+					Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());
 
 					Map<String, Object> docData;
 

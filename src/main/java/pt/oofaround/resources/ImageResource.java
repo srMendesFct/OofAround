@@ -59,7 +59,7 @@ public class ImageResource {
 	public Response uploadImage(UploadImageData data) throws InterruptedException, ExecutionException {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "uploadImage")) {
 
-			MediaSupport.uploadImage(data.name + "_profile", data.image);
+			MediaSupport.uploadImage(data.usernameR + "_profile", data.image);
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			JsonObject token = new JsonObject();
@@ -144,29 +144,29 @@ public class ImageResource {
 			Storage db = storage.getService();
 
 			try {
-			BlobId blobId = BlobId.of(BUCKET, data.name);
+				BlobId blobId = BlobId.of(BUCKET, data.name);
 
-			Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+				Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-			// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+				// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
 
-			String s = Base64.getEncoder().encodeToString(blob.getContent());
+				String s = Base64.getEncoder().encodeToString(blob.getContent());
 
-			AuthToken at = new AuthToken(data.usernameR, data.role);
-			JsonObject token = new JsonObject();
-			token.addProperty("image", s);
-			token.addProperty("username", at.username);
-			token.addProperty("role", at.role);
-			token.addProperty("tokenID", at.tokenID);
-			return Response.ok(g.toJson(token)).build();
-			
-			}catch(Exception e) {
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JsonObject token = new JsonObject();
+				token.addProperty("image", s);
+				token.addProperty("username", at.username);
+				token.addProperty("role", at.role);
+				token.addProperty("tokenID", at.tokenID);
+				return Response.ok(g.toJson(token)).build();
+
+			} catch (Exception e) {
 				BlobId blobId = BlobId.of(BUCKET, "profile_generic.png");
 
 				Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
 				String s = Base64.getEncoder().encodeToString(blob.getContent());
-				
+
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				JsonObject token = new JsonObject();
 				token.addProperty("image", s);
@@ -188,7 +188,7 @@ public class ImageResource {
 			StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 
 			Storage db = storage.getService();
-			
+
 			BlobId blobId = BlobId.of(BUCKET, data.name);
 			db.delete(blobId);
 
