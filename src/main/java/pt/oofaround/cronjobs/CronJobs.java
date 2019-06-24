@@ -69,7 +69,7 @@ public class CronJobs extends HttpServlet {
 					List<QueryDocumentSnapshot> rankingDocs = db.collection("rankings").orderBy("score").get().get()
 							.getDocuments();
 
-					/*QueryDocumentSnapshot userStorage;
+					QueryDocumentSnapshot userStorage;
 					JsonArray storageArray = new JsonArray();
 					JsonObject storageObj;
 
@@ -82,18 +82,6 @@ public class CronJobs extends HttpServlet {
 
 						storageArray.add(storageObj);
 					}
-
-					StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
-							.build();
-
-					Storage storageDB = storage.getService();
-
-					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray");
-					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("application/json").build();
-
-					Gson g = new Gson();
-
-					Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());*/
 
 					Map<String, Object> docData;
 

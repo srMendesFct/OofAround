@@ -15,6 +15,7 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.google.gson.Gson;
 
 public class MediaSupport {
 
@@ -50,5 +51,19 @@ public class MediaSupport {
 		QueryDocumentSnapshot document = querySnapshot.get().getDocuments().get(0);
 
 		return (Integer) document.get("numberPhotos");
+	}
+	
+	public static void uploadJson() {
+		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+				.build();
+
+		Storage storageDB = storage.getService();
+
+		BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
+		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+
+		Gson g = new Gson();
+
+		//Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());
 	}
 }

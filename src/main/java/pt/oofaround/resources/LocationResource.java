@@ -1,6 +1,7 @@
 package pt.oofaround.resources;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -154,7 +155,6 @@ public class LocationResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
-
 	@POST
 	@Path("/getcategoryregion")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -171,26 +171,32 @@ public class LocationResource {
 
 				if (data.lastName.equalsIgnoreCase("")) {
 
-					if (data.categoriesGet[0] == null && data.region.equalsIgnoreCase("")) {
+					if (data.categoriesGet[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
 
 						// .order by ranking quando ranking for implementado
 						docs = locations.get().get().getDocuments();
 
-					} else if (data.categoriesGet[0] == null) {
+					} else if (data.categoriesGet[0].equalsIgnoreCase("")) {
 
 						docs = locations.whereEqualTo("region", data.region).get().get().getDocuments();
 
 					} else if (data.region.equalsIgnoreCase("")) {
-						docs = locations.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments();
+						docs = new LinkedList<QueryDocumentSnapshot>();
+						docs.addAll(
+								locations.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments());
+
 						for (int i = 1; i < data.categoriesGet.length; i++) {
+
 							docs.addAll(locations.whereEqualTo("category", data.categoriesGet[i]).get().get()
 									.getDocuments());
+
 						}
 
 					} else {
+						docs = new LinkedList<QueryDocumentSnapshot>();
+						docs.addAll(locations.whereEqualTo("region", data.region)
+								.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments());
 
-						docs = locations.whereEqualTo("region", data.region)
-								.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments();
 						for (int i = 1; i < data.categoriesGet.length; i++) {
 							docs.addAll(locations.whereEqualTo("region", data.region)
 									.whereEqualTo("category", data.categoriesGet[i]).get().get().getDocuments());
@@ -205,34 +211,35 @@ public class LocationResource {
 					docs = locations.whereEqualTo("name", data.lastName).get().get().getDocuments();
 					QueryDocumentSnapshot lastDoc = docs.get(0);
 
-					if (data.category.equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
+					if (data.categoriesGet[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
 
 						docs = locations.orderBy("nbrVisits").get().get().getDocuments();
 
-					} else if (data.category.equalsIgnoreCase("")) {
+					} else if (data.categoriesGet[0].equalsIgnoreCase("")) {
 
 						docs = locations.orderBy("nbrVisits").whereEqualTo("region", data.region).startAfter(lastDoc)
 								.limit(data.limit).get().get().getDocuments();
 
 					} else if (data.region.equalsIgnoreCase("")) {
-
-						docs = locations.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc)
-								.limit(data.limit).get().get().getDocuments();
+						docs = new LinkedList<QueryDocumentSnapshot>();
+						docs.addAll(locations.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc)
+								.limit(data.limit).get().get().getDocuments());
 						for (int i = 1; i < data.categoriesGet.length; i++) {
 							docs.addAll(locations.whereEqualTo("category", data.categoriesGet[i]).startAfter(lastDoc)
 									.limit(data.limit).get().get().getDocuments());
 						}
 
 					} else {
+						docs = new LinkedList<QueryDocumentSnapshot>();
 
-						docs = locations.orderBy("nbrVisits").whereEqualTo("region", data.region)
+						docs.addAll(locations.orderBy("nbrVisits").whereEqualTo("region", data.region)
 								.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc).limit(data.limit)
-								.get().get().getDocuments();
+								.get().get().getDocuments());
 						for (int i = 1; i < data.categoriesGet.length; i++) {
 							docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
 									.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
 									.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
-						}
+						}	
 
 					}
 
