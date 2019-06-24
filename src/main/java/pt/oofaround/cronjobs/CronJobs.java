@@ -19,10 +19,18 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.Query.Direction;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
 public class CronJobs extends HttpServlet {
@@ -31,6 +39,7 @@ public class CronJobs extends HttpServlet {
 	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 	private final Firestore db = firestore.getService();
 
+	@SuppressWarnings("unused")
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		try {
 
@@ -51,7 +60,7 @@ public class CronJobs extends HttpServlet {
 			if (flag) {
 
 				docRef.update("flag", false);
-				
+
 				List<QueryDocumentSnapshot> userDocs = db.collection("users").orderBy("score", Direction.DESCENDING)
 						.get().get().getDocuments();
 
@@ -59,6 +68,32 @@ public class CronJobs extends HttpServlet {
 
 					List<QueryDocumentSnapshot> rankingDocs = db.collection("rankings").orderBy("score").get().get()
 							.getDocuments();
+
+					/*QueryDocumentSnapshot userStorage;
+					JsonArray storageArray = new JsonArray();
+					JsonObject storageObj;
+
+					for (int i = 0; i < 100; i++) {
+						userStorage = rankingDocs.get(i);
+						storageObj = new JsonObject();
+						storageObj.addProperty("username", userStorage.getString("username"));
+						storageObj.addProperty("score", userStorage.getLong("score"));
+						storageObj.addProperty("rank", String.valueOf(i));
+
+						storageArray.add(storageObj);
+					}
+
+					StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+							.build();
+
+					Storage storageDB = storage.getService();
+
+					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray");
+					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("application/json").build();
+
+					Gson g = new Gson();
+
+					Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());*/
 
 					Map<String, Object> docData;
 
@@ -81,8 +116,8 @@ public class CronJobs extends HttpServlet {
 								docData.put("username", user.get("username"));
 								docData.put("score", user.get("score"));
 
-								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i+1))
-										.set(docData, SetOptions.merge());
+								ApiFuture<WriteResult> future = db.collection("rankings")
+										.document(String.valueOf(i + 1)).set(docData, SetOptions.merge());
 								future.get();
 							}
 						}
@@ -103,8 +138,8 @@ public class CronJobs extends HttpServlet {
 								docData.put("username", user.get("username"));
 								docData.put("score", user.get("score"));
 
-								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i+1))
-										.set(docData, SetOptions.merge());
+								ApiFuture<WriteResult> future = db.collection("rankings")
+										.document(String.valueOf(i + 1)).set(docData, SetOptions.merge());
 								future.get();
 							}
 						}
@@ -134,8 +169,8 @@ public class CronJobs extends HttpServlet {
 								docData.put("username", user.get("username"));
 								docData.put("score", user.get("score"));
 
-								ApiFuture<WriteResult> future = db.collection("rankings").document(String.valueOf(i+1))
-										.set(docData, SetOptions.merge());
+								ApiFuture<WriteResult> future = db.collection("rankings")
+										.document(String.valueOf(i + 1)).set(docData, SetOptions.merge());
 								future.get();
 							}
 						}

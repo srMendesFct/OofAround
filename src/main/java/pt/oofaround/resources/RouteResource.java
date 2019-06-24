@@ -183,6 +183,7 @@ public class RouteResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
+	@SuppressWarnings("unused")
 	@POST
 	@Path("/listall")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -259,9 +260,8 @@ public class RouteResource {
 				for (StackTraceElement ss : e.getStackTrace()) {
 					s += "   " + ss.toString();
 				}
-				return Response.status(Status.FORBIDDEN).entity(s).build();
-				// return Response.status(Status.NOT_FOUND).entity("Route doesn't
-				// exist.").build();
+				// return Response.status(Status.FORBIDDEN).entity(s).build();
+				return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
