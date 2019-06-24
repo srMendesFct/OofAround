@@ -27,6 +27,55 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
+            for(i = 0; i < Response.locations.length; i++) {
+                var div = document.createElement("div");
+                div.style.marginLeft = "3px";
+                div.setAttribute("class", "tabcontent");
+                document.getElementById("berna").appendChild(div);
+
+                var div_2 = document.createElement("div");
+                div_2.style.textAlign = "center";
+                div.appendChild(div_2);
+
+                var header = document.createElement("h4");
+                header.innerHTML = Response.locations[i].name;
+                div_2.appendChild(header);
+
+                var header_2 = document.createElement("h4");
+                header_2.style.textAlign = "left";
+                header_2.innerHTML = Response.locations[i].address + ":";
+                div_2.appendChild(header_2);
+
+
+                var header_3 = document.createElement("h4");
+                header_2.style.textAlign = "left";
+                header_2.innerHTML = Response.locations[i].latitude + ":";
+                div_2.appendChild(header_3);
+
+
+                var header_4 = document.createElement("h4");
+                header_2.style.textAlign = "left";
+                header_2.innerHTML = Response.locations[i].longitude + ":";
+                div_2.appendChild(header_4);
+
+
+                var header_5 = document.createElement("h4");
+                header_2.style.textAlign = "left";
+                header_2.innerHTML = Response.locations[i].region + ":";
+                div_2.appendChild(header_5);
+
+
+                var p = document.createElement("p");
+                p.align = "right";
+                div_2.appendChild(p);
+
+                var button = document.createElement("button");
+                button.dataToggle = "modal";
+                button.dataTarget = "#loginForm";
+                button.style.marginBottom = "3px";
+                button.innerHTML = "Saber Mais";
+                p.appendChild(button);
+            }
             lastName = 0; //buscar o ultimo elemento
             console.log(Response);
             alert("Pesquisa com Sucesso");
