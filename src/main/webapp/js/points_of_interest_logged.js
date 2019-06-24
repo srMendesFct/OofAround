@@ -2,7 +2,7 @@ captureDataGetPointsOfInterest = function (event) {
     var limit = 5;
     var lastName = "";
     var x = document.getElementsByClassName("ed");
-    var res = {}
+    var res = []
     for (var i = 0; i < x.length; i++) {
         if (x[i].checked) {
             res[i] = x[i].value;
