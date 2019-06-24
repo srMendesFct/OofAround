@@ -154,6 +154,7 @@ public class LocationResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
+
 	@POST
 	@Path("/getcategoryregion")
 	@Consumes(MediaType.APPLICATION_JSON)

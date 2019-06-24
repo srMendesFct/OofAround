@@ -84,8 +84,7 @@ public class RegisterResource {
 		docData.put("numberPhotos", 0);
 		docData.put("routes", new LinkedList<String>());
 
-		ApiFuture<WriteResult> newUser = users.document(data.username).set(docData);
-		newUser.get();
+		users.document(data.username).set(docData).get();
 		return Response.ok().build();
 	}
 
