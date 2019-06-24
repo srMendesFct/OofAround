@@ -74,8 +74,8 @@ public class CronJobs extends HttpServlet {
 					JsonArray storageArray = new JsonArray();
 					JsonObject storageObj;
 
-					for (int i = 0; i < 100; i++) {
-						userStorage = rankingDocs.get(i);
+					for (int i = 0; i < 100 && i < userDocs.size(); i++) {
+						userStorage = userDocs.get(i);
 						storageObj = new JsonObject();
 						storageObj.addProperty("username", userStorage.getString("username"));
 						storageObj.addProperty("score", userStorage.getLong("score"));
@@ -83,13 +83,13 @@ public class CronJobs extends HttpServlet {
 
 						storageArray.add(storageObj);
 					}
-					
+
 					StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
 							.build();
 
 					Storage storageDB = storage.getService();
 
-					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray");
+					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
 					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
 
 					Gson g = new Gson();

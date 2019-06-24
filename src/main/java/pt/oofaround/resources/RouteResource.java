@@ -183,7 +183,7 @@ public class RouteResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unchecked" })
 	@POST
 	@Path("/listall")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -250,9 +250,46 @@ public class RouteResource {
 							.whereEqualTo("categories." + data.categories[8], 1).get();
 
 				List<String> nameList = new LinkedList<String>();
+				JsonArray jsonArr = new JsonArray();
+				JsonObject res;
+				List<GeoPoint> locationsCoords;
+				List<String> locationsNames;
+				List<String> placeIDs;
+
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-					nameList.add(document.getString("name"));
+					res = new JsonObject();
+					res.addProperty("name", document.getString("name"));
+					res.addProperty("description", document.getString("description"));
+					res.addProperty("creatorUsername", document.getString("creatorUsername"));
+
+					locationsNames = (List<String>) document.get("locationsNames");
+					locationsCoords = (List<GeoPoint>) document.get("locationsCoords");
+					placeIDs = (List<String>) document.get("placeIDs");
+
+					JsonArray array = new JsonArray();
+					JsonObject jsObj;
+
+					for (int i = 0; i < locationsNames.size(); i++) {
+						jsObj = new JsonObject();
+						jsObj.addProperty("name", locationsNames.get(i));
+						jsObj.addProperty("latitude", locationsCoords.get(i).getLatitude());
+						jsObj.addProperty("longitude", locationsCoords.get(i).getLongitude());
+						jsObj.addProperty("placeIDs", placeIDs.get(i));
+						array.add(jsObj);
+					}
+
+					res.add("locations", array);
+					res.add("categories", JsonArraySupport.createOnePropArrayFromFirestoreArray(
+							(List<String>) document.get("categories"), "categories"));
+					res.addProperty("rating", document.getDouble("rating"));
+					res.addProperty("status", document.getString("status"));
+					jsonArr.add(res);
 				}
+
+				res = new JsonObject();
+				res.add("routes", jsonArr);
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.addProperty("tokenID", at.tokenID);
 
 				return Response.ok().entity(g.toJson(nameList)).build();
 			} catch (Exception e) {

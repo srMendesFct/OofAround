@@ -14,6 +14,11 @@ import javax.ws.rs.core.Response.Status;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
+import com.google.cloud.storage.StorageOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -28,9 +33,9 @@ public class RankingResource {
 
 	FirestoreOptions firestore = FirestoreOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
 	private final Firestore db = firestore.getService();
-	
+
 	private final Gson g = new Gson();
-	
+
 	public RankingResource() {
 	}
 
@@ -70,21 +75,34 @@ public class RankingResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllRanks")) {
 			try {
-				List<QueryDocumentSnapshot> rankingDocs = db.collection("rankings").limit(100).get().get().getDocuments();
+				// List<QueryDocumentSnapshot> rankingDocs =
+				// db.collection("rankings").limit(100).get().get().getDocuments();
 
-				JsonObject res = new JsonObject(); 
-				JsonObject jObj;
-				JsonArray ranks = new JsonArray();
+				JsonObject res = new JsonObject();
+				/*
+				 * JsonObject jObj; JsonArray ranks = new JsonArray();
+				 * 
+				 * 
+				 * for (QueryDocumentSnapshot document : rankingDocs) { jObj = new JsonObject();
+				 * jObj.addProperty("username", document.getString("username"));
+				 * jObj.addProperty("score", document.getLong("score"));
+				 * jObj.addProperty("rank", document.getId()); ranks.add(jObj); }
+				 */
 
-				for (QueryDocumentSnapshot document : rankingDocs) {
-					jObj = new JsonObject();
-					jObj.addProperty("username", document.getString("username"));
-					jObj.addProperty("score", document.getLong("score"));
-					jObj.addProperty("rank", document.getId());
-					ranks.add(jObj);
-				}
-				
-				res.add("ranks", ranks);
+				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+						.build();
+
+				Storage storageDB = storage.getService();
+
+				BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
+
+				Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+				JsonArray jArr = new JsonArray();
+
+				jArr.add(new String(blob.getContent()));
+
+				res.add("ranks", jArr);
 
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.addProperty("tokenID", at.tokenID);
