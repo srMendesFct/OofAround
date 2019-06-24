@@ -27,7 +27,37 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
+            var z = Response.locations[i].category;
+
             for(i = 0; i < Response.locations.length; i++) {
+                if( z == "Sport") {
+                    return "Desporto";
+                }
+                else if (z == "Culture") {
+                    return "Cultura";
+                }
+                else if (z == "NightLife") {
+                    return "Vida Noturna";
+                }
+                else if (z == "Leisure") {
+                    return "Lazer";
+                }
+                else if (z == "Animal & WildLife") {
+                    return "Animais e Vida Selvagem";
+                }
+                else if (z == "Outdoor & Pets") {
+                    return "Ar livre e Animais Domésticos";
+                }
+                else if (z == "Beach") {
+                    return "Praias";
+                }
+                else if (z == "Food & Drink") {
+                    return "Comes e Bebes";
+                }
+                else if (z == "Landscaping") {
+                    return "Paisagens";
+                }
+            
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
@@ -43,7 +73,7 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
-                header_2.style.font = "10px"
+                header_2.style.fontSize = "10px"
                 header_2.innerHTML = "Morada: " + Response.locations[i].address;
                 div_2.appendChild(header_2);
 
