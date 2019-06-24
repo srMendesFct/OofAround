@@ -3,9 +3,11 @@ captureDataGetPointsOfInterest = function (event) {
     var lastName = "";
     var x = document.getElementsByClassName("ed");
     var res = []
+    var index = 0;
     for (var i = 0; i < x.length; i++) {
         if (x[i].checked) {
-            res[i] = x[i].value;
+            res[index] = x[i].value;
+            index ++;
         }
     }
     var values = {
@@ -26,10 +28,11 @@ captureDataGetPointsOfInterest = function (event) {
         crossDomain: true,
         success: function (Response) {
             lastName = 0; //buscar o ultimo elemento
-            alert("nice");
+            console.log(Response);
+            alert("Pesquisa com Sucesso");
         },
         error: function (Response) {
-            alert('merda');
+            alert('Falha ao Pesquisar');
         },
         data: JSON.stringify(values) // post data || get data
     });
