@@ -48,21 +48,21 @@ captureDataGetPointsOfInterest = function (event) {
 
 
                 var header_3 = document.createElement("h4");
-                header_2.style.textAlign = "left";
-                header_2.innerHTML = "Latitude:" + Response.locations[i].latitude;
+                header_3.style.textAlign = "left";
+                header_3.innerHTML = "Latitude:" + Response.locations[i].latitude;
                 div_2.appendChild(header_3);
 
 
                 var header_4 = document.createElement("h4");
-                header_2.style.textAlign = "left";
-                header_2.innerHTML = "Longitude:" + Response.locations[i].longitude;
+                header_4.style.textAlign = "left";
+                header_4.innerHTML = "Longitude:" + Response.locations[i].longitude;
                 div_2.appendChild(header_4);
 
 
-                /*var header_5 = document.createElement("h4");
-                header_2.style.textAlign = "left";
-                header_2.innerHTML = "Região:" + Response.locations[i].region;
-                div_2.appendChild(header_5);*/
+                var header_5 = document.createElement("h4");
+                header_5.style.textAlign = "left";
+                header_5.innerHTML = "Região:" + Response.locations[i].region;
+                div_2.appendChild(header_5);
 
 
                 var p = document.createElement("p");
