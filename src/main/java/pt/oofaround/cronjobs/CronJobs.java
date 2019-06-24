@@ -1,6 +1,7 @@
 package pt.oofaround.cronjobs;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
@@ -20,15 +20,15 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.Query.Direction;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.SetOptions;
+import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.SetOptions;
-import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -89,12 +89,12 @@ public class CronJobs extends HttpServlet {
 
 					Storage storageDB = storage.getService();
 
-					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
-					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(MediaType.APPLICATION_JSON).build();
+					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray");
+					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
 
 					Gson g = new Gson();
 
-					Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes());
+					Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes(StandardCharsets.UTF_8));
 
 					Map<String, Object> docData;
 
