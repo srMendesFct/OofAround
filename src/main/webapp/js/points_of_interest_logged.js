@@ -1,3 +1,25 @@
+captureDataGetImage = function () {
+    var values = {
+        name: localStorage.getItem('location'),
+        usernameR: localStorage.getItem('username'),
+        tokenID: localStorage.getItem('token'),
+        role: localStorage.getItem('role')
+    }
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/images/get",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+            localStorage.setItem('image_location', Response.image);
+        },
+        error: function (Response) {
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+};
+
 captureDataGetPointsOfInterest = function (event) {
     var limit = 5;
     var lastName = "";
@@ -19,7 +41,6 @@ captureDataGetPointsOfInterest = function (event) {
         region: document.getElementById("distrito").value,
         categoriesGet: res
     };
-    console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
@@ -29,6 +50,9 @@ captureDataGetPointsOfInterest = function (event) {
         success: function (Response) {
 
             for(i = 0; i < Response.locations.length; i++) {
+                localStorage.setItem('location', Response.locations[i].name);
+                captureDataGetImage();
+                var image = localStorage.getItem('image_location');
                 var z = Response.locations[i].category;
                 if( z == "Sport") {
                     z = "Desporto";
@@ -66,6 +90,11 @@ captureDataGetPointsOfInterest = function (event) {
                 var div_2 = document.createElement("div");
                 div_2.style.textAlign = "center";
                 div.appendChild(div_2);
+
+                var img = document.createElement("img");
+                img.setAttribute("src", 'data:image/jpeg;base64, ' + image);
+                img.setAttribute("class", "img");
+                div_2.appendChild(img);
 
                 var header = document.createElement("h4");
                 header.innerHTML = Response.locations[i].name;
@@ -152,6 +181,11 @@ captureDataGetPointsOfInterest = function (event) {
                 label.setAttribute("data-success", "right");
                 label.innerHTML = Response.locations[i].name;
                 div_8.appendChild(label);
+
+                var img_2 = document.createElement("img");
+                img_2.setAttribute("src", 'data:image/jpeg;base64, ' + image);
+                img_2.setAttribute("class", "imgL");
+                div_8.appendChild(img_2);
 
                 var br = document.createElement("br");
                 div_7.appendChild(br);
@@ -242,7 +276,6 @@ captureDataGetPointsOfInterest = function (event) {
 
                 lastName = Response.locations[i].name;
             }
-            console.log(Response);
             alert("Pesquisa com Sucesso");
         },
         error: function (Response) {
