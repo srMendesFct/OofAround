@@ -224,7 +224,7 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var p_6 = document.createElement("p");
                 p_6.innerHTML = Response.locations[i].region;
-                div_8.appendChild(p_6);
+                div_13.appendChild(p_6);
 
                 var div_14 = document.createElement("div");
                 div_14.setAttribute("class", "md-form mb-4");
