@@ -53,8 +53,8 @@ captureDataGetPointsOfInterest = function (event) {
                 localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
                 var image = localStorage.getItem('image_location');
-                console.log(image);
-                console.log(localStorage.getItem('location'));
+                console.log("imagem: " + image);
+                console.log("nome: " + localStorage.getItem('location'));
                 var z = Response.locations[i].category;
                 if( z == "Sport") {
                     z = "Desporto";
