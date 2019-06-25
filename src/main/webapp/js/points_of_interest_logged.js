@@ -50,11 +50,9 @@ captureDataGetPointsOfInterest = function (event) {
         success: function (Response) {
 
             for(i = 0; i < Response.locations.length; i++) {
-                
-                var image = "";
+
                 localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
-                image = localStorage.getItem('image_location');
                 console.log("imagem: " + image);
                 console.log("nome: " + localStorage.getItem('location'));
                 var z = Response.locations[i].category;
@@ -95,7 +93,7 @@ captureDataGetPointsOfInterest = function (event) {
                 var img = document.createElement("img");
                 img.setAttribute("class", "imgL border");
                 img.setAttribute("align", "left");
-                img.src = 'data:image/jpeg;base64, ' + image;
+                img.src = 'data:image/jpeg;base64, ' + localStorage.getItem('image_location');
                 div.appendChild(img);
 
                 var div_2 = document.createElement("div");
@@ -193,7 +191,8 @@ captureDataGetPointsOfInterest = function (event) {
                 div_8.appendChild(label);
 
                 var img_3 = document.createElement("img");
-                img_3.src = 'data:image/jpeg;base64, ' + image;
+                img_3.setAttribute("class", "imgXL");
+                img_3.src = 'data:image/jpeg;base64, ' + localStorage.getItem('image_location');
                 div_8.appendChild(img_3);
                 
                 var br = document.createElement("br");
