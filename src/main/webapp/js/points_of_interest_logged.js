@@ -13,6 +13,7 @@ captureDataGetImage = function () {
         crossDomain: true,
         success: function (Response) {
             localStorage.setItem('image_location', Response.image);
+            console.log(localStorage.getItem('image_location'));
         },
         error: function (Response) {
         },
@@ -53,6 +54,8 @@ captureDataGetPointsOfInterest = function (event) {
                 localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
                 var image = localStorage.getItem('image_location');
+                console.log(image);
+                console.log(localStorage.getItem('location'));
                 var z = Response.locations[i].category;
                 if( z == "Sport") {
                     z = "Desporto";
@@ -87,14 +90,14 @@ captureDataGetPointsOfInterest = function (event) {
                 div.setAttribute("class", "tabcontent");
                 document.getElementById("berna").appendChild(div);
 
+                var img = document.createElement("img");
+                img.src = 'data:image/jpeg;base64, ' + image;
+                img.setAttribute("class", "img");
+                div.appendChild(img);
+
                 var div_2 = document.createElement("div");
                 div_2.style.textAlign = "center";
                 div.appendChild(div_2);
-
-                var img = document.createElement("img");
-                img.setAttribute("src", 'data:image/jpeg;base64, ' + image);
-                img.setAttribute("class", "img");
-                div_2.appendChild(img);
 
                 var header = document.createElement("h4");
                 header.innerHTML = Response.locations[i].name;
@@ -183,7 +186,7 @@ captureDataGetPointsOfInterest = function (event) {
                 div_8.appendChild(label);
 
                 var img_2 = document.createElement("img");
-                img_2.setAttribute("src", 'data:image/jpeg;base64, ' + image);
+                img_2.src = 'data:image/jpeg;base64, ' + image;
                 img_2.setAttribute("class", "imgL");
                 div_8.appendChild(img_2);
 
