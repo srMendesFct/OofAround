@@ -50,12 +50,15 @@ captureDataGetPointsOfInterest = function (event) {
         success: function (Response) {
 
             for(i = 0; i < Response.locations.length; i++) {
+                
+                var image = "";
                 localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
-                var image = localStorage.getItem('image_location');
+                image = localStorage.getItem('image_location');
                 console.log("imagem: " + image);
                 console.log("nome: " + localStorage.getItem('location'));
                 var z = Response.locations[i].category;
+
                 if( z == "Sport") {
                     z = "Desporto";
                 }
@@ -90,8 +93,9 @@ captureDataGetPointsOfInterest = function (event) {
                 document.getElementById("berna").appendChild(div);
 
                 var img = document.createElement("img");
+                img.setAttribute("class", "imgL border");
+                img.setAttribute("align", "left");
                 img.src = 'data:image/jpeg;base64, ' + image;
-                img.setAttribute("class", "img");
                 div.appendChild(img);
 
                 var div_2 = document.createElement("div");
@@ -101,11 +105,6 @@ captureDataGetPointsOfInterest = function (event) {
                 var header = document.createElement("h4");
                 header.innerHTML = Response.locations[i].name;
                 div_2.appendChild(header);
-
-                var img = document.createElement("img");
-                img.src = 'data:image/jpeg;base64, ' + image;
-                img.setAttribute("class", "img");
-                div_2.appendChild(img);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
@@ -159,8 +158,7 @@ captureDataGetPointsOfInterest = function (event) {
                 div_5.appendChild(div_6);
 
                 var img_2 = document.createElement("img");
-                img_2.src = 'data:image/jpeg;base64, ' + image;
-                img_2.setAttribute("class", "imgL");
+                img_2.src = "img/logo.png";
                 div_6.appendChild(img_2);
 
                 var button_2 = document.createElement("button");
@@ -193,6 +191,10 @@ captureDataGetPointsOfInterest = function (event) {
                 label.setAttribute("data-success", "right");
                 label.innerHTML = Response.locations[i].name;
                 div_8.appendChild(label);
+
+                var img_3 = document.createElement("img");
+                img_3.src = 'data:image/jpeg;base64, ' + image;
+                div_8.appendChild(img_3);
                 
                 var br = document.createElement("br");
                 div_7.appendChild(br);
