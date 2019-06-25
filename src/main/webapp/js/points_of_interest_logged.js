@@ -13,7 +13,6 @@ captureDataGetImage = function () {
         crossDomain: true,
         success: function (Response) {
             localStorage.setItem('image_location', Response.image);
-            console.log(localStorage.getItem('image_location'));
         },
         error: function (Response) {
         },
@@ -103,6 +102,11 @@ captureDataGetPointsOfInterest = function (event) {
                 header.innerHTML = Response.locations[i].name;
                 div_2.appendChild(header);
 
+                var img = document.createElement("img");
+                img.src = 'data:image/jpeg;base64, ' + image;
+                img.setAttribute("class", "img");
+                div_2.appendChild(img);
+
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
                 header_2.style.fontSize = "16px"
@@ -154,6 +158,11 @@ captureDataGetPointsOfInterest = function (event) {
                 div_6.setAttribute("class", "modal-header text-center");
                 div_5.appendChild(div_6);
 
+                var img_2 = document.createElement("img");
+                img_2.src = 'data:image/jpeg;base64, ' + image;
+                img_2.setAttribute("class", "imgL");
+                div_6.appendChild(img_2);
+
                 var button_2 = document.createElement("button");
                 button_2.setAttribute("type", "button");
                 button_2.setAttribute("class", "close");
@@ -184,12 +193,7 @@ captureDataGetPointsOfInterest = function (event) {
                 label.setAttribute("data-success", "right");
                 label.innerHTML = Response.locations[i].name;
                 div_8.appendChild(label);
-
-                var img_2 = document.createElement("img");
-                img_2.src = 'data:image/jpeg;base64, ' + image;
-                img_2.setAttribute("class", "imgL");
-                div_8.appendChild(img_2);
-
+                
                 var br = document.createElement("br");
                 div_7.appendChild(br);
 
