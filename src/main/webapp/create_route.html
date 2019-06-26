@@ -9,84 +9,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
+  <link rel="stylesheet" type="text/css" href="css/navbar.css">
+  <link rel="stylesheet" type="text/css" href="css/footer.css">
+  <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
+  <link rel="stylesheet" type="text/css" href="css/homepage.css">
   <style>
     #map {
    height: 500px;
     }
-    
-    .img {
-            max-width: 67px;
-            max-height: 67px;
-            border-radius: 50%;
-            margin-right: 4px;
-        }
-
-        .dropdownB {
-            margin-right: 4px;
-            padding: 0.5% 0;
-            font-size: 1.1em;
-            background-color: whitesmoke;
-        }
-
-        .letters {
-            margin-left: 3px;
-            color: #e53935;
-            font-size: 15px;
-        }
-
-        .backG {
-            background-color: whitesmoke;
-        }
-
-  .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-      background-color: #e53935;
-      color: #FFF;
-      padding: 0.5% 0;
-      font-size: 1.1em;
-      border: 0;
-    }
-
-    /*logo da navbar*/
-    .navbar-brand {
-      float: left;
-      min-height: 55px;
-      padding: 0 2px 5px;
-    }
-
-    /*cores da caixa da nav bar que se encontra ativa*/
-    .navbar-inverse .navbar-nav .active a,
-    .navbar-inverse .navbar-nav .active a:focus,
-    .navbar-inverse .navbar-nav .active a:hover {
-      color: #FFF;
-      background-color: #e53935;
-    }
-
-    /*cores das palavras da nav bar*/
-    .navbar-inverse .navbar-nav li a {
-      color: #D5D5D5;
-    }
-    
-          .modal .modal-header {
-            background-color: #ff5252;
-        }
-
-        .modal .modal-footer {
-            background-color: #ff5252;
-        }
-
-        .center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    
 </style>
-
-
+</head>
 <body class="backG">
  <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -124,100 +56,7 @@
             </div>
         </div>
     </nav>
-
-
-        <!----------------------------------------MODAL LOGIN FORM--------------------------------->
-  <div class="modal fade" id="loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header text-center">
-              <img src="img/logo.png">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id="login" name="login">
-              <div class="modal-body mx-3">
-                <div class="md-form mb-5">
-                  <label data-error="wrong" data-success="right" for="username">Nome de utilizador:</label>
-                  <input type="text" id="usernameL" name="username" class="form-control validate"
-                    placeholder="Insira o seu nome de utilizador ou email." required>
-                </div>
-                <br>
-                <div class="md-form mb-4">
-                  <label data-error="wrong" data-success="right" for="password">Palavra-passe:</label>
-                  <input type="password" id="passwordL" name="password" class="form-control validate"
-                    placeholder="Insira a sua palavra-passe." required>
-                </div>
-              </div>
-              <div class="modal-footer d-flex justify-content-center">
-                <button type="submit" class="btn btn-default">Login</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!-----------------------------------FINAL DO MODAL LOGIN FORM-------------------------------------------->
-    
-    
-    
-      <!--------------------------------------MODAL REGISTER FORM------------------------------------------>
-      <div class="modal fade" id="registerForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header text-center">
-              <img src="img/logo.png">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id="register" name="register">
-              <div class="modal-body mx-3">
-                <div class="md-form mb-5">
-                  <label data-error="wrong" data-success="right" for="username">Nome de utilizador:</label>
-                  <input type="text" id="usernameR" name="username" class="form-control validate"
-                    placeholder="Insira o seu nome de utilizador." required>
-                </div>
-                <br>
-                <div class="md-form mb-4">
-                  <label data-error="wrong" data-success="right" for="password">Palavra-passe:</label>
-                  <input type="password" id="passwordR" name="password" class="form-control validate"
-                    placeholder="Insira o seu e-mail." required>
-                </div>
-                <br>
-                <div class="md-form mb-4">
-                  <label data-error="wrong" data-success="right" for="email">E-mail:</label>
-                  <input type="email" id="email" name="email" class="form-control validate"
-                    placeholder="Insira a sua palavra-passe." required>
-                </div>
-                <br>
-                <div class="md-form mb-4">
-                  <label data-error="wrong" data-success="right" for="country">País:</label>
-                  <input type="text" id="country" name="country" class="form-control validate" required>
-                </div>
-                <br>
-                <div class="md-form mb-4">
-                  <label data-error="wrong" data-success="right" for="cellphone">Número de telemóvel:</label>
-                  <input type="text" id="cellphone" name="cellphone" class="form-control validate"
-                    placeholder="Insira o seu número de telemóvel." required>
-                </div>
-                <div class="md-form mb-4">
-                  <label data-error="wrong" data-success="right" for="privacy">Tipo de perfil:</label>
-                  <select id="privacy" name="privacy" class="form-control validate">
-                    <option value="false" name="publicP">Público</option>
-                    <option value="true" name="privateP">Privado</option>
-                  </select>
-                </div>
-              </div>
-              <div class="modal-footer d-flex justify-content-center">
-                <button type="submit" class="btn btn-default">Criar Conta</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!---------------------------------FINAL DO MODAL REGISTER FORM------------------------------------>
+  
 
       <div id="createCourse" class="container-fluid">
         <br><br><br><br>

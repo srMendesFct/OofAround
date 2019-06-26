@@ -1,0 +1,19 @@
+.img {
+    max-width: 67px;
+    max-height: 67px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.dropdownB {
+    margin-right: 4px;
+    padding: 0.5% 0;
+    font-size: 1.1em;
+    background-color: whitesmoke;
+}
+
+.letters {
+    margin-left: 3px;
+    color: #e53935;
+    font-size: 15px;
+}

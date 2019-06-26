@@ -1,0 +1,38 @@
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 100%;
+}
+
+.tab button {
+    background-color:#e53935;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 15px;
+    width: 50%;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: rgb(238, 95, 95);
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+    background-color: darkred;
+}
+
+.modal-footer button:hover {
+    background-color: rgb(238, 95, 95);
+}
+
+.modal-footer button.active {
+    background-color: darkred;
+}

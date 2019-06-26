@@ -1,0 +1,29 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: #e53935;
+    color: #FFF;
+    padding: 0.5% 0;
+    font-size: 1.1em;
+    border: 0;
+  }
+
+  /*logo da navbar*/
+  .navbar-brand {
+    float: left;
+    min-height: 55px;
+    padding: 0 2px 5px;
+  }
+
+  /*cores da caixa da nav bar que se encontra ativa*/
+  .navbar-inverse .navbar-nav .active a,
+  .navbar-inverse .navbar-nav .active a:focus,
+  .navbar-inverse .navbar-nav .active a:hover {
+    color: #FFF;
+    background-color: #e53935;
+  }
+
+  /*cores das palavras da nav bar*/
+  .navbar-inverse .navbar-nav li a {
+    color: #D5D5D5;
+  }

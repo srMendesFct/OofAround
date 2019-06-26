@@ -12,88 +12,14 @@
     <link rel="stylesheet" type="text/css" href="./css/ihover.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
+    <link rel="stylesheet" type="text/css" href="css/homepage.css">
     <script src="./js/route.js"></script>
-    
 
-    <style>
-
-    .img_profile {
-            max-width: 67px;
-            max-height: 67px;
-            border-radius: 50%;
-            margin-right: 4px;
-        }
-
-        .dropdownB {
-            margin-right: 4px;
-            padding: 0.5% 0;
-            font-size: 1.1em;
-            background-color: whitesmoke;
-        }
-
-        .letters {
-            margin-left: 3px;
-            color: #e53935;
-            font-size: 15px;
-        }
-
-        .backG {
-            background-color: whitesmoke;
-        }
-
-  .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-      background-color: #e53935;
-      color: #FFF;
-      padding: 0.5% 0;
-      font-size: 1.1em;
-      border: 0;
-    }
-
-    /*logo da navbar*/
-    .navbar-brand {
-      float: left;
-      min-height: 55px;
-      padding: 0 2px 5px;
-    }
-
-    /*cores da caixa da nav bar que se encontra ativa*/
-    .navbar-inverse .navbar-nav .active a,
-    .navbar-inverse .navbar-nav .active a:focus,
-    .navbar-inverse .navbar-nav .active a:hover {
-      color: #FFF;
-      background-color: #e53935;
-    }
-
-    /*cores das palavras da nav bar*/
-    .navbar-inverse .navbar-nav li a {
-      color: #D5D5D5;
-    }
-    
-          .modal .modal-header {
-            background-color: #ff5252;
-        }
-
-        .modal .modal-footer {
-            background-color: #ff5252;
-        }
-
-        footer {
-            width: 100%;
-            background-color: #e53935;
-            padding: 0.2%;
-            color: #FFF;
-        }
-
-        .fa {
-            padding: 20px;
-            font-size: 30px;
-            color: #FFF;
-        }
-
-
-  </style>
+  </head>
+  
 
 <body class="backG">
 
@@ -117,7 +43,7 @@
                 </ul>
                 <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
-                        href="#"><img class="img_profile" id="profilePic"></a>
+                        href="#"><img class="img" id="profilePic"></a>
                     <div class="dropdown-menu dropdownB" aria-labelledby="loginPainel">
                         <a id="user" class="dropdown-item" style="text-decoration: none" style="color: black"></a>
                         <div></div>
@@ -158,7 +84,7 @@
    
       <!-- colored -->
       <div class="ih-item circle colored effect20 top_to_bottom"><a href="points_of_interest_logged.html">
-          <div class="img"><img src="img/interest.jpg" alt="img"></div>
+          <div class="img1"><img src="img/interest.jpg" alt="img"></div>
           <div class="info">
             <div class="info-back">
               <h3>PONTOS DE INTERESSE</h3>
@@ -179,7 +105,7 @@
    
       <!-- normal -->
       <div class="ih-item circle effect20 bottom_to_top"><a href="#">
-          <div class="img"><img src="img/list.jpg" alt="img"></div>
+          <div class="img1"><img src="img/list.jpg" alt="img"></div>
           <div class="info">
             <div class="info-back">
               <h3>PERCURSOS CRIADOS</h3>
@@ -193,7 +119,7 @@
    
       <!-- colored -->
       <div class="ih-item circle colored effect20 bottom_to_top"><a href="delete_route.html">
-          <div class="img"><img src="img/delete.jpg" alt="img"></div>
+          <div class="img1"><img src="img/delete.jpg" alt="img"></div>
           <div class="info">
             <div class="info-back">
               <h3>APAGAR PERCURSO</h3>
