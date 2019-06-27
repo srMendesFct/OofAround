@@ -1,7 +1,7 @@
 .navbar {
     margin-bottom: 0;
     border-radius: 0;
-    background-color: #e53935;
+    background-color: #ffa20d;
     color: #FFF;
     padding: 0.5% 0;
     font-size: 1.1em;
@@ -20,10 +20,11 @@
   .navbar-inverse .navbar-nav .active a:focus,
   .navbar-inverse .navbar-nav .active a:hover {
     color: #FFF;
-    background-color: #e53935;
+    background-color: #ffa20d;
   }
 
   /*cores das palavras da nav bar*/
   .navbar-inverse .navbar-nav li a {
-    color: #D5D5D5;
+    color: #FFF;
+    font-weight: bold
   }
