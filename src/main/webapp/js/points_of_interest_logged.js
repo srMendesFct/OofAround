@@ -56,7 +56,6 @@ captureDataGetPointsOfInterest = function (event) {
 
             for (i = 0; i < Response.locations.length; i++) {
                 var test = captureDataGetImage();
-                console.log(test.Response.image);
                 console.log(image);
                 var z = Response.locations[i].category;
 
