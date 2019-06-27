@@ -42,6 +42,7 @@ public class CuponResource {
 	}
 
 	@POST
+	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createCupon(CuponData data)
 			throws InterruptedException, ExecutionException, WriterException, IOException {
