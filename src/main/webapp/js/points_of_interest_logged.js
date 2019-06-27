@@ -54,7 +54,7 @@ captureDataGetPointsOfInterest = function (event) {
                 tabcontent[i].style.display = "none";
             }
 
-            for (i = 1; i < Response.locations.length; i++) {
+            for (i = 0; i < Response.locations.length; i++) {
                 captureDataGetImage();
                 console.log(captureDataGetImage().Response.image);
                 console.log(image);
