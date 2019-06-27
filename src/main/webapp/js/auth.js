@@ -6,14 +6,6 @@ window.onload = function () {
     frmsr[0].onsubmit = captureDataRegister;
 };
 
-function isEmailValid(email) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-        return (true);
-    }
-    alert("You have entered an invalid email address!");
-    return (false);
-}
-
 captureDataGetUserInfo = function (values) {
     var values = {
         tokenID: localStorage.getItem('token'),
@@ -71,9 +63,7 @@ captureDataRegister = function (event) {
         values[field.name] = field.value;
     });
 
-    var mail = values['email'];
 
-    if(isEmailValid(mail)) {
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/register/user",
@@ -94,10 +84,6 @@ captureDataRegister = function (event) {
         data: JSON.stringify(values) // post data || get data
     });
     event.preventDefault();
-    
-    } else {
-        alert('Por favor introduza um e-mail válido.');
-    }
 };
 
 captureDataLogin = function (event) {
