@@ -57,9 +57,12 @@ captureDataGetPointsOfInterest = function (event) {
             for(i = 0; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
+                console.log(localStorage.getItem('image_location'));
                 list[i] = localStorage.getItem('image_location');
+                console.log(list[i]);
             }
             localStorage.setItem('list', JSON.stringify(list));
+            console.log(localStorage.getItem('list'));
 
             for (i = 0; i < Response.locations.length; i++) {
                 var z = Response.locations[i].category;
