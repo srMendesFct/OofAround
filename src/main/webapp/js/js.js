@@ -1,4 +1,4 @@
-captureDataGetPointsOfInterest = function (event) {
+captureDataGetPointsOfInterest = function () {
     var res = [];
 
     var values = {
@@ -22,7 +22,6 @@ captureDataGetPointsOfInterest = function (event) {
         },
         data: JSON.stringify(values) // post data || get data
     });
-    event.preventDefault();
 };
 
 window.onload = function () {
