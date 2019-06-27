@@ -50,7 +50,7 @@ public class LocationResource {
 	public LocationResource() {
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
+	@SuppressWarnings({ "unused" })
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class LocationResource {
 				return Response.status(420).build(); // name
 			}
 
-			Map<String, Object> docData = new HashMap();
+			Map<String, Object> docData = new HashMap<String, Object>();
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("address", data.address);
@@ -239,7 +239,7 @@ public class LocationResource {
 							docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
 									.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
 									.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
-						}	
+						}
 
 					}
 
