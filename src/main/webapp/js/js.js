@@ -1,5 +1,5 @@
 captureDataGetPointsOfInterest = function () {
-    var res = [];
+    var res = [""];
 
     var values = {
         tokenID: localStorage.getItem('token'),
@@ -15,10 +15,8 @@ captureDataGetPointsOfInterest = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            alert("Pesquisa com Sucesso");
         },
         error: function (Response) {
-            alert('Falha ao Pesquisar');
         },
         data: JSON.stringify(values) // post data || get data
     });
