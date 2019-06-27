@@ -1,4 +1,5 @@
 var image = "";
+
 captureDataGetImage = function () {
     var values = {
         name: localStorage.getItem('location'),
@@ -55,6 +56,7 @@ captureDataGetPointsOfInterest = function (event) {
 
             for (i = 1; i < Response.locations.length; i++) {
                 captureDataGetImage();
+                console.log(captureDataGetImage().Response.image);
                 console.log(image);
                 var z = Response.locations[i].category;
 
