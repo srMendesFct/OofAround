@@ -55,6 +55,7 @@ captureDataGetPointsOfInterest = function (event) {
             }
 
             for (i = 0; i < Response.locations.length; i++) {
+                localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
                 console.log(image);
                 var z = Response.locations[i].category;
