@@ -90,6 +90,7 @@ public class CuponResource {
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getCupon(CuponData data) throws InterruptedException, ExecutionException {
+		//alterar createCupon para getCupon
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createCupon")) {
 			List<QueryDocumentSnapshot> cuponList = db.collection("cupons")
 					.whereEqualTo("locationName", data.locationName).whereEqualTo("value", data.value).get().get()
