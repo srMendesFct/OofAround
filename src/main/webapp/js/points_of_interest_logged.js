@@ -91,7 +91,7 @@ captureDataGetPointsOfInterest = function (event) {
                 document.getElementById("berna").appendChild(div);
 
                 var img = document.createElement("img");
-                img.setAttribute("class", "imgL border");
+                img.setAttribute("class", "imgL");
                 img.setAttribute("align", "left");
                 img.src = 'data:image/jpeg;base64, ' + localStorage.getItem('image_location');
                 div.appendChild(img);
@@ -190,13 +190,16 @@ captureDataGetPointsOfInterest = function (event) {
                 label.innerHTML = Response.locations[i].name;
                 div_8.appendChild(label);
 
+                var br = document.createElement("br");
+                div_8.appendChild(br);
+
                 var img_3 = document.createElement("img");
                 img_3.setAttribute("class", "imgXL");
                 img_3.src = 'data:image/jpeg;base64, ' + localStorage.getItem('image_location');
                 div_8.appendChild(img_3);
                 
-                var br = document.createElement("br");
-                div_7.appendChild(br);
+                var br_2 = document.createElement("br");
+                div_7.appendChild(br_2);
 
                 var div_9 = document.createElement("div");
                 div_9.setAttribute("class", "md-form mb-4");
