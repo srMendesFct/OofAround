@@ -20,7 +20,6 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.StorageOptions;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.util.AuthToken;
@@ -98,11 +97,7 @@ public class RankingResource {
 
 				Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-				JsonArray jArr = new JsonArray();
-
-				jArr.add(new String(blob.getContent()));
-
-				res.add("ranks", jArr);
+				res.addProperty("ranks", new String(blob.getContent()));
 
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.addProperty("tokenID", at.tokenID);
