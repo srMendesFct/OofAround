@@ -192,7 +192,7 @@ public class RouteResource {
 			try {
 				ApiFuture<QuerySnapshot> querySnapshot;
 
-				if (data.categories.length == 0)
+				if (data.categories[0].equalsIgnoreCase(""))
 					querySnapshot = db.collection("routes").get();
 				else if (data.categories.length == 1)
 					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1).get();
