@@ -1,4 +1,5 @@
 window.onload = function () {
+    localStorage.clear();
     var frmsr = $('form[name="register"]');
     var frmsl = $('form[name="login"]');
     frmsl[0].onsubmit = captureDataLogin;

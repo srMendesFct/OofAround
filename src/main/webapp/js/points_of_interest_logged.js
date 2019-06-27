@@ -14,8 +14,7 @@ captureDataGetImage = function () {
         success: function (Response) {
             localStorage.setItem('image_location', Response.image);
         },
-        error: function (Response) {
-        },
+        error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
     });
 };
@@ -29,7 +28,7 @@ captureDataGetPointsOfInterest = function (event) {
     for (var i = 0; i < x.length; i++) {
         if (x[i].checked) {
             res[index] = x[i].value;
-            index ++;
+            index++;
         }
     }
     var values = {
@@ -48,43 +47,45 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
+            var tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            var list = [];
 
             for(i = 0; i < Response.locations.length; i++) {
-
                 localStorage.setItem('location', Response.locations[i].name);
                 captureDataGetImage();
-                console.log(localStorage.getItem('image_location'));
-                console.log("nome: " + localStorage.getItem('location'));
-                var z = Response.locations[i].category;
+                list[i] = localStorage.getItem('image_location');
+            }
+            localStorage.setItem('list', JSON.stringify(list));
 
-                if( z == "Sport") {
+            for (i = 0; i < Response.locations.length; i++) {
+                var z = Response.locations[i].category;
+                var list_2 = JSON.parse(localStorage.getItem('list'));
+                console.log(list_2[i]);
+
+                if (z == "Sport") {
                     z = "Desporto";
-                }
-                else if (z == "Culture") {
+                } else if (z == "Culture") {
                     z = "Cultura";
-                }
-                else if (z == "NightLife") {
+                } else if (z == "NightLife") {
                     z = "Vida Noturna";
-                }
-                else if (z == "Leisure") {
+                } else if (z == "Leisure") {
                     z = "Lazer";
-                }
-                else if (z == "Animal & WildLife") {
+                } else if (z == "Animal & WildLife") {
                     z = "Animais e Vida Selvagem";
-                }
-                else if (z == "Outdoor & Pets") {
+                } else if (z == "Outdoor & Pets") {
                     z = "Ar livre e Animais Domésticos";
-                }
-                else if (z == "Beach") {
+                } else if (z == "Beach") {
                     z = "Praias";
-                }
-                else if (z == "Food & Drink") {
+                } else if (z == "Food & Drink") {
                     z = "Comes e Bebes";
-                }
-                else if (z == "Landscaping") {
+                } else if (z == "Landscaping") {
                     z = "Paisagens";
                 }
-            
+
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
@@ -93,7 +94,7 @@ captureDataGetPointsOfInterest = function (event) {
                 var img = document.createElement("img");
                 img.setAttribute("class", "imgL");
                 img.setAttribute("align", "left");
-                img.src = 'data:image/jpeg;base64, ' + localStorage.getItem('image_location');
+                img.src = 'data:image/jpeg;base64, ' + list_2[i];
                 div.appendChild(img);
 
                 var div_2 = document.createElement("div");
@@ -195,9 +196,9 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var img_3 = document.createElement("img");
                 img_3.setAttribute("class", "imgXL");
-                img_3.src = 'data:image/jpeg;base64, ' + localStorage.getItem('image_location');
+                img_3.src = 'data:image/jpeg;base64, ' + list_2[i];
                 div_8.appendChild(img_3);
-                
+
                 var br_2 = document.createElement("br");
                 div_7.appendChild(br_2);
 
@@ -287,7 +288,6 @@ captureDataGetPointsOfInterest = function (event) {
 
                 lastName = Response.locations[i].name;
             }
-            alert("Pesquisa com Sucesso");
         },
         error: function (Response) {
             alert('Falha ao Pesquisar');
