@@ -54,17 +54,17 @@ captureDataGetPointsOfInterest = function (event) {
 
             var list = [];
 
-            for(i = 0; i < Response.locations.length; i++) {
+            for(i = 1; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
-                captureDataGetImage();
                 console.log(localStorage.getItem('image_location'));
-                list[i] = localStorage.getItem('image_location');
+                captureDataGetImage();
+                list[i-1] = localStorage.getItem('image_location');
                 console.log(list[i]);
             }
             localStorage.setItem('list', JSON.stringify(list));
             console.log(localStorage.getItem('list'));
 
-            for (i = 0; i < Response.locations.length; i++) {
+            for (i = 1; i < Response.locations.length; i++) {
                 var z = Response.locations[i].category;
                 var list_2 = JSON.parse(localStorage.getItem('list'));
                 console.log(list_2[i]);
