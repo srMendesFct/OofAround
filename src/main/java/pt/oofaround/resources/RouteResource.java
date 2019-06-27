@@ -192,7 +192,7 @@ public class RouteResource {
 			try {
 				ApiFuture<QuerySnapshot> querySnapshot;
 
-				if (data.categories == null)
+				if (data.categories.length == 0)
 					querySnapshot = db.collection("routes").get();
 				else if (data.categories.length == 1)
 					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1).get();
@@ -279,8 +279,14 @@ public class RouteResource {
 					}
 
 					res.add("locations", array);
-					res.add("categories", JsonArraySupport.createOnePropArrayFromFirestoreArray(
-							(List<String>) document.get("categories"), "categories"));
+					Map<String, Integer> catMap = (HashMap<String, Integer>) document.get("categories");
+					JsonArray jArr = new JsonArray();
+					for(String s : catMap.keySet()) {
+						jsObj = new JsonObject();
+						jsObj.addProperty("category", s);
+						jArr.add(jsObj);
+					}
+					res.add("categories", jArr);
 					res.addProperty("rating", document.getDouble("rating"));
 					res.addProperty("status", document.getString("status"));
 					jsonArr.add(res);
@@ -291,14 +297,14 @@ public class RouteResource {
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.addProperty("tokenID", at.tokenID);
 
-				return Response.ok().entity(g.toJson(nameList)).build();
+				return Response.ok().entity(g.toJson(res)).build();
 			} catch (Exception e) {
 				String s = "";
 				for (StackTraceElement ss : e.getStackTrace()) {
-					s += "   " + ss.toString();
+					s += "\n" + ss.toString();
 				}
 				// return Response.status(Status.FORBIDDEN).entity(s).build();
-				return Response.status(Status.NOT_FOUND).entity("Route doesn't exist.").build();
+				return Response.status(Status.NOT_FOUND).entity(s).build();
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();

@@ -2,6 +2,8 @@ package pt.oofaround.resources;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -97,12 +99,17 @@ public class RankingResource {
 
 				Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-				res.addProperty("ranks", new String(blob.getContent()));
-
+				JSONArray jArr = new JSONArray(new String(blob.getContent()));
+				
+				JSONObject jRes = new JSONObject();
+				
+				jRes.put("ranks", jArr);
+				
 				AuthToken at = new AuthToken(data.usernameR, data.role);
-				res.addProperty("tokenID", at.tokenID);
+				jRes.put("tokenID", at.tokenID);
+				//res.addProperty("tokenID", at.tokenID);
 
-				return Response.ok().entity(g.toJson(res)).build();
+				return Response.ok().entity(jRes.toString()).build();
 			} catch (Exception e) {
 				return Response.status(Status.NOT_FOUND).entity("User doesn't exist.").build();
 			}
