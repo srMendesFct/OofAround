@@ -2,8 +2,6 @@ package pt.oofaround.resources;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -12,6 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
@@ -76,19 +77,6 @@ public class RankingResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllRanks")) {
 			try {
-				// List<QueryDocumentSnapshot> rankingDocs =
-				// db.collection("rankings").limit(100).get().get().getDocuments();
-
-				JsonObject res = new JsonObject();
-				/*
-				 * JsonObject jObj; JsonArray ranks = new JsonArray();
-				 * 
-				 * 
-				 * for (QueryDocumentSnapshot document : rankingDocs) { jObj = new JsonObject();
-				 * jObj.addProperty("username", document.getString("username"));
-				 * jObj.addProperty("score", document.getLong("score"));
-				 * jObj.addProperty("rank", document.getId()); ranks.add(jObj); }
-				 */
 
 				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
 						.build();
@@ -100,14 +88,14 @@ public class RankingResource {
 				Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
 				JSONArray jArr = new JSONArray(new String(blob.getContent()));
-				
+
 				JSONObject jRes = new JSONObject();
-				
+
 				jRes.put("ranks", jArr);
-				
+
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				jRes.put("tokenID", at.tokenID);
-				//res.addProperty("tokenID", at.tokenID);
+				// res.addProperty("tokenID", at.tokenID);
 
 				return Response.ok().entity(jRes.toString()).build();
 			} catch (Exception e) {

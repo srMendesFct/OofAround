@@ -10,12 +10,13 @@ public class CuponData {
 	public String usernameR;
 	public String role;
 	public String description;
+	public String region;
 
 	public CuponData() {
 	}
 
 	public CuponData(String locationName, String latitude, String longitude, double value, String tokenID,
-			String usernameR, String role, String description) {
+			String usernameR, String role, String description, String region) {
 		this.locationName = locationName;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -24,6 +25,7 @@ public class CuponData {
 		this.usernameR = usernameR;
 		this.role = role;
 		this.description = description;
+		this.region = region;
 	}
 
 }

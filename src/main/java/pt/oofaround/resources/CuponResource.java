@@ -3,6 +3,7 @@ package pt.oofaround.resources;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -57,11 +58,11 @@ public class CuponResource {
 
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix bitMatrix = qrCodeWriter.encode(data.locationName + " " + data.value + " " + data.description,
-					BarcodeFormat.QR_CODE, 300, 300);
+					BarcodeFormat.QR_CODE, 250, 250);
 
 			ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
 			MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-			MediaSupport.uploadImage(data.locationName + String.valueOf(data.value) + "_qrcode",
+			MediaSupport.uploadImage(data.locationName.trim() + String.valueOf(data.value) + "_qrcode",
 					pngOutputStream.toByteArray());
 
 			Map<String, Object> docData = new HashMap<String, Object>();
@@ -70,6 +71,7 @@ public class CuponResource {
 			docData.put("latitude", data.latitude);
 			docData.put("longitude", data.longitude);
 			docData.put("description", data.description);
+			docData.put("region", data.region);
 
 			cupons.document().set(docData);
 
@@ -79,6 +81,38 @@ public class CuponResource {
 			res.put("tokenID", at.tokenID);
 
 			return Response.ok().entity(res.toString()).build();
+		} else {
+			return Response.status(Status.FORBIDDEN).build();
+		}
+	}
+
+	@POST
+	@Path("/get")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getCupon(CuponData data) throws InterruptedException, ExecutionException {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createCupon")) {
+			List<QueryDocumentSnapshot> cuponList = db.collection("cupons")
+					.whereEqualTo("locationName", data.locationName).whereEqualTo("value", data.value).get().get()
+					.getDocuments();
+			if (cuponList.isEmpty()) {
+				return Response.status(Status.NOT_FOUND).build();
+			} else {
+				JSONObject res = new JSONObject();
+				for (QueryDocumentSnapshot document : cuponList) {
+					res.put("locationName", document.getString("locationName"));
+					res.put("latitude", document.getString("latitude"));
+					res.put("longitude", document.getString("longitude"));
+					res.put("region", document.getString("region"));
+					res.put("description", document.getString("description"));
+					res.put("value", document.getDouble("value"));
+					res.put("qrlink", data.locationName.trim() + String.valueOf(data.value) + "_qrcode");
+				}
+
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.put("tokenID", at.tokenID);
+
+				return Response.ok().entity(res.toString()).build();
+			}
 		} else {
 			return Response.status(Status.FORBIDDEN).build();
 		}
