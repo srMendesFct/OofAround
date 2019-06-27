@@ -1,4 +1,4 @@
-var image = "";
+var image;
 
 captureDataGetImage = function () {
     var values = {
@@ -15,6 +15,7 @@ captureDataGetImage = function () {
         crossDomain: true,
         success: function (Response) {
             image = Response.image;
+            console.log(image);
         },
         error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
@@ -53,6 +54,7 @@ captureDataGetPointsOfInterest = function (event) {
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
+
 
             for (i = 0; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
