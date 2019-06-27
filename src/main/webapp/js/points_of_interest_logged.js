@@ -1,3 +1,4 @@
+var image = "";
 captureDataGetImage = function () {
     var values = {
         name: localStorage.getItem('location'),
@@ -12,7 +13,7 @@ captureDataGetImage = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            localStorage.setItem('image_location', Response.image);
+            image = Response.image;
         },
         error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
@@ -52,22 +53,10 @@ captureDataGetPointsOfInterest = function (event) {
                 tabcontent[i].style.display = "none";
             }
 
-            var list = [];
-
-            for(i = 1; i < Response.locations.length; i++) {
-                localStorage.setItem('location', Response.locations[i].name);
-                console.log(localStorage.getItem('image_location'));
-                captureDataGetImage();
-                list[i-1] = localStorage.getItem('image_location');
-                console.log(list[i]);
-            }
-            localStorage.setItem('list', JSON.stringify(list));
-            console.log(localStorage.getItem('list'));
-
             for (i = 1; i < Response.locations.length; i++) {
+                captureDataGetImage();
+                console.log(image);
                 var z = Response.locations[i].category;
-                var list_2 = JSON.parse(localStorage.getItem('list'));
-                console.log(list_2[i]);
 
                 if (z == "Sport") {
                     z = "Desporto";
@@ -97,7 +86,7 @@ captureDataGetPointsOfInterest = function (event) {
                 var img = document.createElement("img");
                 img.setAttribute("class", "imgL");
                 img.setAttribute("align", "left");
-                img.src = 'data:image/jpeg;base64, ' + list_2[i];
+                img.src = 'data:image/jpeg;base64, ' + image;
                 div.appendChild(img);
 
                 var div_2 = document.createElement("div");
@@ -199,7 +188,7 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var img_3 = document.createElement("img");
                 img_3.setAttribute("class", "imgXL");
-                img_3.src = 'data:image/jpeg;base64, ' + list_2[i];
+                img_3.src = 'data:image/jpeg;base64, ' + image;
                 div_8.appendChild(img_3);
 
                 var br_2 = document.createElement("br");
