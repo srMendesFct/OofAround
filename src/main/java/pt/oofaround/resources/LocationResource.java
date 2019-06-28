@@ -256,7 +256,7 @@ public class LocationResource {
 			} catch (Exception e) {
 				String s = "";
 				for (StackTraceElement ss : e.getStackTrace()) {
-					s += "   " + ss.toString();
+					s += "\n" + ss.toString();
 				}
 				return Response.status(Status.FORBIDDEN).entity(s).build();
 			}

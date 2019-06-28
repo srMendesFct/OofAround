@@ -79,7 +79,7 @@ public class JsonArraySupport {
 			// jsObj.put(property8, document1.get(property8).toString());
 			// jsObj.put(property9, document1.get(property9).toString());
 
-			blobId = BlobId.of("oofaround.appspot.com", property1);
+			blobId = BlobId.of("oofaround.appspot.com", document1.get(property1).toString());
 
 			blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
