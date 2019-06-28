@@ -53,6 +53,8 @@ captureDataGetRoutes = function (event) {
                         z = "Comes e Bebes";
                     } else if (z == "Landscaping") {
                         z = "Paisagens";
+                    } else if (z == "Religion") {
+                        z = "Religião";
                     }
 
                     x[j] = z;
@@ -216,7 +218,7 @@ captureDataGetRoutes = function (event) {
                 div_15.appendChild(label_8);
 
                 var p_8 = document.createElement("p");
-                p_8.innerHTML = Response.routes[i].description;
+                p_8.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_8);
             }
 
