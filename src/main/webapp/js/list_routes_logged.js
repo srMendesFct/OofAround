@@ -32,7 +32,7 @@ captureDataGetRoutes = function (event) {
 
             for (i = 0; i < Response.routes.length; i++) {
                 var x = [];
-                for (j = 0; j < Response.routes.categories.length; j++) {
+                for (j = 0; j < Response.routes[i].categories.length; j++) {
                     var z = Response.routes[i].categories[j].category;
 
                     if (z == "Sport") {
