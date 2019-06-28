@@ -28,8 +28,8 @@ captureDataGetRoutes = function (event) {
                 tabcontent[i].style.display = "none";
             }
 
-            for (i = 0; i < Response.locations.length; i++) {
-                /*var z = Response.locations[i].category;
+            /*for (i = 0; i < Response.locations.length; i++) {
+                var z = Response.locations[i].category;
 
                 if (z == "Sport") {
                     z = "Desporto";
@@ -249,10 +249,11 @@ captureDataGetRoutes = function (event) {
 
                 var p_7 = document.createElement("p");
                 p_7.innerHTML = Response.locations[i].description;
-                div_14.appendChild(p_7);*/
+                div_14.appendChild(p_7);
 
-                console.log(Response);
-            }
+            }*/
+            console.log(Response);
+
         },
         error: function (Response) {
             alert('Falha ao Pesquisar');
