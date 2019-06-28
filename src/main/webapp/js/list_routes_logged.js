@@ -28,27 +28,32 @@ captureDataGetRoutes = function (event) {
                 tabcontent[i].style.display = "none";
             }
 
-            /*for (i = 0; i < Response.locations.length; i++) {
-                var z = Response.locations[i].category;
+            for (i = 0; i < Response.routes.length; i++) {
+                var x = [];
+                for (j = 0; i < Response.routes.categories[i].length; j++) {
+                    var z = Response.routes[i].category;
 
-                if (z == "Sport") {
-                    z = "Desporto";
-                } else if (z == "Culture") {
-                    z = "Cultura";
-                } else if (z == "NightLife") {
-                    z = "Vida Noturna";
-                } else if (z == "Leisure") {
-                    z = "Lazer";
-                } else if (z == "Animal & WildLife") {
-                    z = "Animais e Vida Selvagem";
-                } else if (z == "Outdoor & Pets") {
-                    z = "Ar livre e Animais Domésticos";
-                } else if (z == "Beach") {
-                    z = "Praias";
-                } else if (z == "Food & Drink") {
-                    z = "Comes e Bebes";
-                } else if (z == "Landscaping") {
-                    z = "Paisagens";
+                    if (z == "Sport") {
+                        z = "Desporto";
+                    } else if (z == "Culture") {
+                        z = "Cultura";
+                    } else if (z == "NightLife") {
+                        z = "Vida Noturna";
+                    } else if (z == "Leisure") {
+                        z = "Lazer";
+                    } else if (z == "Animal & WildLife") {
+                        z = "Animais e Vida Selvagem";
+                    } else if (z == "Outdoor & Pets") {
+                        z = "Ar livre e Animais Domésticos";
+                    } else if (z == "Beach") {
+                        z = "Praias";
+                    } else if (z == "Food & Drink") {
+                        z = "Comes e Bebes";
+                    } else if (z == "Landscaping") {
+                        z = "Paisagens";
+                    }
+
+                    x[i] = z;
                 }
 
                 var div = document.createElement("div");
@@ -56,37 +61,31 @@ captureDataGetRoutes = function (event) {
                 div.setAttribute("class", "tabcontent");
                 document.getElementById("berna").appendChild(div);
 
-                var img = document.createElement("img");
-                img.setAttribute("class", "imgL");
-                img.setAttribute("align", "left");
-                img.src = 'data:image/jpeg;base64, ' + image;
-                div.appendChild(img);
-
                 var div_2 = document.createElement("div");
                 div_2.style.textAlign = "center";
                 div.appendChild(div_2);
 
                 var header = document.createElement("h4");
-                header.innerHTML = Response.locations[i].name;
+                header.innerHTML = Response.routes[i].name;
                 div_2.appendChild(header);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
                 header_2.style.fontSize = "16px"
-                header_2.innerHTML = "Morada: " + Response.locations[i].address;
+                header_2.innerHTML = "Rating: " + Response.routes[i].rating;
                 div_2.appendChild(header_2);
 
                 var header_3 = document.createElement("h4");
                 header_3.style.textAlign = "left";
                 header_3.style.fontSize = "16px"
-                header_3.innerHTML = "Categoria: " + z;
+                header_3.innerHTML = "Categorias: " + x;
                 div_2.appendChild(header_3);
 
-                var header_4 = document.createElement("h4");
+                /*var header_4 = document.createElement("h4");
                 header_4.style.textAlign = "left";
                 header_4.style.fontSize = "16px"
-                header_4.innerHTML = "Região: " + Response.locations[i].region;
-                div_2.appendChild(header_4);
+                header_4.innerHTML = "Região: " + Response.routes[i].region;
+                div_2.appendChild(header_4);*/
 
                 var p = document.createElement("p");
                 p.align = "right";
@@ -153,16 +152,11 @@ captureDataGetRoutes = function (event) {
                 var label = document.createElement("label");
                 label.setAttribute("data-error", "wrong");
                 label.setAttribute("data-success", "right");
-                label.innerHTML = Response.locations[i].name;
+                label.innerHTML = Response.routes[i].name;
                 div_8.appendChild(label);
 
                 var br = document.createElement("br");
                 div_8.appendChild(br);
-
-                var img_3 = document.createElement("img");
-                img_3.setAttribute("class", "imgXL");
-                img_3.src = 'data:image/jpeg;base64, ' + image;
-                div_8.appendChild(img_3);
 
                 var br_2 = document.createElement("br");
                 div_7.appendChild(br_2);
@@ -178,7 +172,7 @@ captureDataGetRoutes = function (event) {
                 div_9.appendChild(label_2);
 
                 var p_2 = document.createElement("p");
-                p_2.innerHTML = Response.locations[i].address;
+                p_2.innerHTML = Response.routes[i].rating;
                 div_9.appendChild(p_2);
 
                 var div_10 = document.createElement("div");
@@ -188,42 +182,14 @@ captureDataGetRoutes = function (event) {
                 var label_3 = document.createElement("label");
                 label_3.setAttribute("data-error", "wrong");
                 label_3.setAttribute("data-success", "right");
-                label_3.innerHTML = "Categoria:";
+                label_3.innerHTML = "Categorias:";
                 div_10.appendChild(label_3);
 
                 var p_3 = document.createElement("p");
-                p_3.innerHTML = Response.locations[i].category;
+                p_3.innerHTML = x;
                 div_10.appendChild(p_3);
 
-                var div_11 = document.createElement("div");
-                div_11.setAttribute("class", "md-form mb-4");
-                div_7.appendChild(div_11);
-
-                var label_4 = document.createElement("label");
-                label_4.setAttribute("data-error", "wrong");
-                label_4.setAttribute("data-success", "right");
-                label_4.innerHTML = "Latitude:";
-                div_11.appendChild(label_4);
-
-                var p_4 = document.createElement("p");
-                p_4.innerHTML = Response.locations[i].latitude;
-                div_11.appendChild(p_4);
-
-                var div_12 = document.createElement("div");
-                div_12.setAttribute("class", "md-form mb-4");
-                div_7.appendChild(div_12);
-
-                var label_5 = document.createElement("label");
-                label_5.setAttribute("data-error", "wrong");
-                label_5.setAttribute("data-success", "right");
-                label_5.innerHTML = "Longitude:";
-                div_12.appendChild(label_5);
-
-                var p_5 = document.createElement("p");
-                p_5.innerHTML = Response.locations[i].longitude;
-                div_12.appendChild(p_5);
-
-                var div_13 = document.createElement("div");
+                /*var div_13 = document.createElement("div");
                 div_13.setAttribute("class", "md-form mb-4");
                 div_7.appendChild(div_13);
 
@@ -235,7 +201,7 @@ captureDataGetRoutes = function (event) {
 
                 var p_6 = document.createElement("p");
                 p_6.innerHTML = Response.locations[i].region;
-                div_13.appendChild(p_6);
+                div_13.appendChild(p_6);*/
 
                 var div_14 = document.createElement("div");
                 div_14.setAttribute("class", "md-form mb-4");
@@ -248,11 +214,23 @@ captureDataGetRoutes = function (event) {
                 div_14.appendChild(label_7);
 
                 var p_7 = document.createElement("p");
-                p_7.innerHTML = Response.locations[i].description;
+                p_7.innerHTML = Response.routes[i].description;
                 div_14.appendChild(p_7);
 
-            }*/
-            console.log(Response);
+                var div_15 = createElement("div");
+                div_15.setAttribute("class", "md-form mb-4");
+                div_7.appendChild(div_15);
+
+                var label_8 = document.createElement("label");
+                label_8.setAttribute("data-error", "wrong");
+                label_8.setAttribute("data-success", "right");
+                label_8.innerHTML = "Criado por:";
+                div_15.appendChild(label_8);
+
+                var p_8 = document.createElement("p");
+                p_8.innerHTML = Response.routes[i].description;
+                div_15.appendChild(p_8);
+            }
 
         },
         error: function (Response) {
