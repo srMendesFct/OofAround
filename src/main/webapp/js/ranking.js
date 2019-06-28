@@ -14,7 +14,7 @@ captureDataRanking = function () {
             console.log(Response);
             var rank = 0;
             for (var i = 0; i < Response.ranks.length; i++) {
-                rank = parseInt(Response.ranks[i].rank)++;
+                console.log(parseInt(Response.ranks[i].rank));
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
