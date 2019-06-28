@@ -32,7 +32,9 @@ captureDataGetRoutes = function (event) {
 
             for (i = 0; i < Response.routes.length; i++) {
                 var x = [];
-                for (var z of Response.routes[i].categories) {
+                for (j = 0; j < Response.routes.categories.length; j++) {
+                    var z = Response.routes[i].categories[j].category;
+
                     if (z == "Sport") {
                         z = "Desporto";
                     } else if (z == "Culture") {
@@ -52,7 +54,8 @@ captureDataGetRoutes = function (event) {
                     } else if (z == "Landscaping") {
                         z = "Paisagens";
                     }
-                    x.push(z);
+
+                    x[j] = z;
                 }
 
                 var div = document.createElement("div");
@@ -160,20 +163,6 @@ captureDataGetRoutes = function (event) {
                 var br_2 = document.createElement("br");
                 div_7.appendChild(br_2);
 
-                var div_9 = document.createElement("div");
-                div_9.setAttribute("class", "md-form mb-4");
-                div_7.appendChild(div_9);
-
-                var label_2 = document.createElement("label");
-                label_2.setAttribute("data-error", "wrong");
-                label_2.setAttribute("data-success", "right");
-                label_2.innerHTML = "Morada:";
-                div_9.appendChild(label_2);
-
-                var p_2 = document.createElement("p");
-                p_2.innerHTML = Response.routes[i].rating;
-                div_9.appendChild(p_2);
-
                 var div_10 = document.createElement("div");
                 div_10.setAttribute("class", "md-form mb-4");
                 div_7.appendChild(div_10);
@@ -216,7 +205,7 @@ captureDataGetRoutes = function (event) {
                 p_7.innerHTML = Response.routes[i].description;
                 div_14.appendChild(p_7);
 
-                var div_15 = createElement("div");
+                var div_15 = document.createElement("div");
                 div_15.setAttribute("class", "md-form mb-4");
                 div_7.appendChild(div_15);
 
