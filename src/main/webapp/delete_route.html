@@ -2,22 +2,22 @@
 <html lang="en">
 
 <head>
-  <title>OofAround</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/navbar.css">
-  <link rel="stylesheet" type="text/css" href="css/footer.css">
-  <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
-  <link rel="stylesheet" type="text/css" href="css/homepage.css">
-  <script src="./js/delete_route.js"></script>
+    <title>OofAround</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
+    <link rel="stylesheet" type="text/css" href="css/homepage.css">
+    <script src="./js/delete_route.js"></script>
 </head>
 
 <body class="backG">
- <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -54,23 +54,41 @@
         </div>
     </nav>
 
-      <div id="createCourse" class="container-fluid">
+    <div id="createCourse" class="container-fluid">
         <br><br><br><br>
-        <div>
+        <div class="row">
             <div class="col-lg-2">
                 <form id="deleteCourseForm" name="deleteCourseForm">
                     <div class="md-form mb-5">
                         <label>Insira o nome do percurso a eliminar:</label>
                         <br>
                         <input type="text" id="deleteCourseName" name="name" class="form-control validate"
-                          placeholder="Nome do percurso" required>
-                      </div>
-                      <div class="md-form mb-5">
-                          <br>
+                            placeholder="Nome do percurso" required>
+                    </div>
+                    <div class="md-form mb-5">
+                        <br>
                         <button type="submit" id="submitD" class="btn btn-danger">Eliminar</button>
                 </form>
             </div>
-          </div>
         </div>
+    </div>
+
+    <br>
+    
+    <footer id="ourFooter" class="container-fluid text-center" style="height: 75%">
+        <div class="row">
+            <div class="col-md-4">
+                <img class="uh" src="img/equipa.png">
+            </div>
+            <div class="col-md-4">
+                <h3>SIGAM-NOS NAS REDES</h3>
+                <br>
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-instagram"></a>
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>
