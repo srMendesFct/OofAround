@@ -12,8 +12,9 @@ captureDataRanking = function () {
         crossDomain: true,
         success: function (Response) {
             console.log(Response);
-            for (var i = 0; i < Response.ranks.length; ++i) {
-                var rank = Response.ranks[i].rank + 1;
+            var rank = 0;
+            for (var i = 0; i < Response.ranks.length; i++) {
+                rank = parseInt(Response.ranks[i].rank)++;
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
