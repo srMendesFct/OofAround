@@ -13,6 +13,7 @@ captureDataRanking = function () {
         success: function (Response) {
             console.log(Response);
             for (var i = 0; i < Response.ranks.length; ++i) {
+                var rank = Response.ranks[i].rank + 1;
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
@@ -22,7 +23,7 @@ captureDataRanking = function () {
                 div.appendChild(div_2);
 
                 var header = document.createElement("h4");
-                header.innerHTML = "Posição: " + Response.ranks[i].rank + 1;
+                header.innerHTML = "Posição: " + rank;
                 div_2.appendChild(header);
 
                 var header_2 = document.createElement("h4");
