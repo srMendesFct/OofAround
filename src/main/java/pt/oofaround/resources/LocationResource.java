@@ -238,6 +238,7 @@ public class LocationResource {
 								.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc).limit(data.limit)
 								.get().get().getDocuments());
 						for (int i = 1; i < data.categoriesGet.length; i++) {
+							
 							docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
 									.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
 									.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
