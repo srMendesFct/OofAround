@@ -18,7 +18,7 @@ captureDataGetRoutes = function (event) {
     console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
-        url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
+        url: "https://oofaround.appspot.com/rest/route/listall",
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
