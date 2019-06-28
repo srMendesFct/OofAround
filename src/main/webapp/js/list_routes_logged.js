@@ -60,6 +60,7 @@ captureDataGetRoutes = function (event) {
                     x[j] = z;
                 }
 
+                
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
