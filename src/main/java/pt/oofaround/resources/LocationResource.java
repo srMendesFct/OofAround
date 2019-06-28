@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONObject;
+
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -165,7 +167,7 @@ public class LocationResource {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getLocationsByCatAndRegion")) {
 			CollectionReference locations = db.collection("locations");
 			List<QueryDocumentSnapshot> docs;
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 
 			try {
 
@@ -203,8 +205,8 @@ public class LocationResource {
 						}
 
 					}
-					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score"));
+					res.put("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
+							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image"));
 
 				} else {
 
@@ -243,14 +245,14 @@ public class LocationResource {
 
 					}
 
-					res.add("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score"));
+					res.put("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
+							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image"));
 
 				}
 				AuthToken at = new AuthToken(data.usernameR, data.role);
-				res.addProperty("tokenID", at.tokenID);
+				res.put("tokenID", at.tokenID);
 
-				return Response.ok(g.toJson(res)).build();
+				return Response.ok(res.toString()).build();
 			} catch (Exception e) {
 				String s = "";
 				for (StackTraceElement ss : e.getStackTrace()) {
