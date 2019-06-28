@@ -24,7 +24,7 @@ captureDataGetRoutes = function (event) {
         crossDomain: true,
         success: function (Response) {
             console.log(Response);
-            
+
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
@@ -32,9 +32,7 @@ captureDataGetRoutes = function (event) {
 
             for (i = 0; i < Response.routes.length; i++) {
                 var x = [];
-                for (j = 0; i < Response.routes.categories[i].length; j++) {
-                    var z = Response.routes[i].category;
-
+                for (var z of Response.routes[i].categories) {
                     if (z == "Sport") {
                         z = "Desporto";
                     } else if (z == "Culture") {
@@ -54,8 +52,7 @@ captureDataGetRoutes = function (event) {
                     } else if (z == "Landscaping") {
                         z = "Paisagens";
                     }
-
-                    x[i] = z;
+                    x.push(z);
                 }
 
                 var div = document.createElement("div");
