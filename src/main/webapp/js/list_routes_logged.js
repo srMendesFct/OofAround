@@ -15,7 +15,6 @@ captureDataGetRoutes = function (event) {
         //region: document.getElementById("distrito").value,
         categories: res
     };
-    console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/route/listall",
@@ -23,7 +22,6 @@ captureDataGetRoutes = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            console.log(Response);
 
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -60,7 +58,6 @@ captureDataGetRoutes = function (event) {
                     x[j] = z;
                 }
 
-                
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");

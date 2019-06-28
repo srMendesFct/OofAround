@@ -12,32 +12,31 @@ captureDataRanking = function () {
         crossDomain: true,
         success: function (Response) {
             console.log(Response);
-            /*for (var i = 0; i < Response.scores.length; ++i) {
+            for (var i = 0; i < Response.ranks.length; ++i) {
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
                 document.getElementById("berna").appendChild(div);
 
                 var div_2 = document.createElement("div");
-                div_2.style.textAlign = "center";
                 div.appendChild(div_2);
 
                 var header = document.createElement("h4");
-                header.innerHTML = Response.routes[i].name;
+                header.innerHTML = "Posição: " + Response.ranks[i].rank + 1;
                 div_2.appendChild(header);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
                 header_2.style.fontSize = "16px"
-                header_2.innerHTML = "Rating: " + Response.routes[i].rating;
+                header_2.innerHTML = Response.ranks[i].username;
                 div_2.appendChild(header_2);
 
                 var header_3 = document.createElement("h4");
                 header_3.style.textAlign = "left";
                 header_3.style.fontSize = "16px"
-                header_3.innerHTML = "Categorias: " + x;
+                header_3.innerHTML = "Pontos: " + Response.ranks[i].score;
                 div_2.appendChild(header_3);
-            }*/
+            }
 
         },
         error: function (response) {},
