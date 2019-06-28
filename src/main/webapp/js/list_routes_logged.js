@@ -13,7 +13,7 @@ captureDataGetRoutes = function (event) {
         role: localStorage.getItem('role'),
         usernameR: localStorage.getItem('username'),
         //region: document.getElementById("distrito").value,
-        categoriesGet: res
+        categories: res
     };
     console.log(JSON.stringify(values));
     $.ajax({
