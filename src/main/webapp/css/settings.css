@@ -30,9 +30,9 @@
 }
 
 .modal-footer button:hover {
-    background-color: rgb(238, 95, 95);
+    background-color:rgb(167, 103, 0);
 }
 
 .modal-footer button.active {
-    background-color: darkred;
+    background-color:rgb(167, 103, 0); 
 }
