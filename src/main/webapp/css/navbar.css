@@ -15,6 +15,10 @@
     padding: 0 2px 5px;
   }
 
+  .navbar a:hover {
+    background-color: #000;
+  }
+
   /*cores da caixa da nav bar que se encontra ativa*/
   .navbar-inverse .navbar-nav .active a,
   .navbar-inverse .navbar-nav .active a:focus,
@@ -26,5 +30,4 @@
   /*cores das palavras da nav bar*/
   .navbar-inverse .navbar-nav li a {
     color: #FFF;
-    font-weight: bold
   }
