@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONObject;
+
 import com.google.api.core.ApiFuture;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.firestore.CollectionReference;
@@ -104,7 +106,7 @@ public class ImageResource {
 	}
 
 	@POST
-	@Path("/getList")
+	@Path("/getlist")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getList(UploadImageData data) throws InterruptedException, ExecutionException {
 
@@ -114,20 +116,31 @@ public class ImageResource {
 			Storage db = storage.getService();
 
 			Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.name + "/"));
-			Iterator<Blob> it = list.iterateAll().iterator();
-			List<String> blobs = new LinkedList<String>();
-			// it.next();
-			while (it.hasNext())
-				blobs.add(it.next().getName());
 
-			// Blob blob = db.get(BlobId.of(BUCKET, data.username + "/" + "0"));
+			List<String> pictures = new LinkedList<String>();
+			Iterator<Blob> it = list.iterateAll().iterator();
+			it.next();
+			Blob b;
+			while(it.hasNext()) {
+				b = it.next();
+				pictures.add(Base64.getEncoder().encodeToString(b.getContent()));
+			}
+
+			while (list.hasNextPage()) {
+				list = list.getNextPage();
+
+				for (Blob blob : list.iterateAll()) {
+					pictures.add(Base64.getEncoder().encodeToString(blob.getContent()));
+				}
+			}
+
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			JsonObject token = new JsonObject();
-			token.add("names", JsonArraySupport.createOnePropArrayFromFirestoreArray(blobs, "name"));
-			token.addProperty("username", at.username);
-			token.addProperty("role", at.role);
-			token.addProperty("tokenID", at.tokenID);
-			return Response.ok(g.toJson(token)).build();
+			JSONObject token = new JSONObject();
+			token.put("images", JsonArraySupport.createOnePropArrayFromFirestore(pictures, "image"));
+			token.put("username", at.username);
+			token.put("role", at.role);
+			token.put("tokenID", at.tokenID);
+			return Response.ok(token.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}

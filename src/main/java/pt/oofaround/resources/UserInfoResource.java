@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONObject;
+
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;
@@ -58,30 +60,30 @@ public class UserInfoResource {
 		LOG.fine("Listing user" + data.usernameR);
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getUserInfo")) {
-			CollectionReference users = db.collection("users");
-			Query query = users.whereEqualTo("username", data.usernameR);
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-			JsonObject res = new JsonObject();
+			ApiFuture<QuerySnapshot> querySnapshot = db.collection("users").whereEqualTo("username", data.usernameR)
+					.get();
+
+			JSONObject res = new JSONObject();
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				res.addProperty("score", document.get("score").toString());
-				res.addProperty("username", document.getString("username"));
-				res.addProperty("email", document.getString("email"));
-				res.addProperty("country", document.getString("country"));
-				res.addProperty("cellphone", document.getString("cellphone"));
+				res.put("score", document.get("score").toString());
+				res.put("username", document.getString("username"));
+				res.put("email", document.getString("email"));
+				res.put("country", document.getString("country"));
+				res.put("cellphone", document.getString("cellphone"));
 				List<String> routes = (List<String>) document.get("routes");
 				if (routes != null)
-					res.add("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
+					res.put("routes", JsonArraySupport.createOnePropArrayFromFirestore(routes, "routeName"));
 				// comment
 				if (document.getBoolean("privacy"))
-					res.addProperty("privacy", "private");
+					res.put("privacy", "private");
 				else
-					res.addProperty("privacy", "public");
+					res.put("privacy", "public");
 			}
 			// AuthToken at = new AuthToken(data.usernameR, data.role);
 			// res.addProperty("tokenID", at.tokenID);
 
-			return Response.ok(g.toJson(res)).build();
+			return Response.ok(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}

@@ -49,6 +49,19 @@ public class JsonArraySupport {
 		}
 		return array;
 	}
+	
+	public static JSONArray createOnePropArrayFromFirestore(List<String> docs, String property) {
+
+		JSONArray array = new JSONArray();
+		JSONObject jsObj;
+
+		for (String document1 : docs) {
+			jsObj = new JSONObject();
+			jsObj.put(property, document1);
+			array.put(jsObj);
+		}
+		return array;
+	}
 
 	public static JSONArray createLocationPropArray(List<QueryDocumentSnapshot> docs, String property1,
 			String property2, String property3, String property4, String property5, String property6, String property7,

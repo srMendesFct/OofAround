@@ -2,6 +2,7 @@ package pt.oofaround.cronjobs;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
@@ -28,10 +32,8 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.StorageOptions;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
 public class CronJobs extends HttpServlet {
@@ -62,6 +64,11 @@ public class CronJobs extends HttpServlet {
 
 				docRef.update("flag", false);
 
+				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+						.build();
+
+				Storage storageDB = storage.getService();
+
 				List<QueryDocumentSnapshot> userDocs = db.collection("users").orderBy("score", Direction.DESCENDING)
 						.get().get().getDocuments();
 
@@ -71,30 +78,40 @@ public class CronJobs extends HttpServlet {
 							.getDocuments();
 
 					QueryDocumentSnapshot userStorage;
-					JsonArray storageArray = new JsonArray();
-					JsonObject storageObj;
+					JSONArray storageArray = new JSONArray();
+					JSONObject storageObj;
 
 					for (int i = 0; i < 100 && i < userDocs.size(); i++) {
 						userStorage = userDocs.get(i);
-						storageObj = new JsonObject();
-						storageObj.addProperty("username", userStorage.getString("username"));
-						storageObj.addProperty("score", userStorage.getLong("score"));
-						storageObj.addProperty("rank", String.valueOf(i));
+						storageObj = new JSONObject();
+						storageObj.put("username", userStorage.getString("username"));
+						storageObj.put("score", userStorage.getLong("score"));
+						storageObj.put("rank", String.valueOf(i+1));
 
-						storageArray.add(storageObj);
+						try {
+							BlobId blobId = BlobId.of("oofaround.appspot.com",
+									userStorage.getString("username") + "_profile");
+
+							Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+							storageObj.put("image", Base64.getEncoder().encodeToString(blob.getContent()));
+						} catch (Exception e) {
+							BlobId blobId = BlobId.of("oofaround.appspot.com", "profile_generic.png");
+
+							Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+							String s = Base64.getEncoder().encodeToString(blob.getContent());
+
+							storageObj.put("image",  Base64.getEncoder().encodeToString(blob.getContent()));
+						}
+
+						storageArray.put(storageObj);
 					}
-
-					StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
-							.build();
-
-					Storage storageDB = storage.getService();
 
 					BlobId blobId = BlobId.of("oofaround.appspot.com", "topRankArray.json");
 					BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
 
-					Gson g = new Gson();
-
-					Blob blob = storageDB.create(blobInfo, g.toJson(storageArray).getBytes(StandardCharsets.UTF_8));
+					Blob blob = storageDB.create(blobInfo, storageArray.toString().getBytes(StandardCharsets.UTF_8));
 
 					Map<String, Object> docData;
 

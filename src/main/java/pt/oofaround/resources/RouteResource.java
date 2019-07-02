@@ -24,13 +24,13 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.GeoPoint;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.RouteData;
@@ -59,6 +59,16 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {
 
+			List<QueryDocumentSnapshot> rList = db.collection("users").whereEqualTo("username", data.creatorUsername)
+					.get().get().getDocuments();
+
+			for (QueryDocumentSnapshot document : rList) {
+				List<String> routeList = (List<String>) document.get("routes");
+				routeList.add(data.name);
+				document.getReference().update("routes", routeList);
+
+			}
+
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.usernameR).get();
 
@@ -69,18 +79,22 @@ public class RouteResource {
 			JsonObject res = new JsonObject();
 			Map<String, Object> docData = new HashMap();
 			Set<String> cats = new HashSet<String>();
+			Set<String> regions = new HashSet<String>();
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
 			Map<String, Integer> catMap = new HashMap<String, Integer>();
 
 			for (int i = 0; i < data.locationNames.length; i++) {
-				if (data.locationNames[i].category != "undefined")
+				if (data.locationNames[i].category != "undefined") {
 					cats.add(data.locationNames[i].category);
+					regions.add(data.locationNames[i].region);
+				}
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
 				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
 				catMap.putIfAbsent(data.locationNames[i].category, 1);
+
 			}
 
 			docData.put("name", data.name);
@@ -109,6 +123,7 @@ public class RouteResource {
 			return Response.status(Status.FORBIDDEN).build();
 	}
 
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -120,6 +135,14 @@ public class RouteResource {
 
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 					document.getReference().delete().get();
+				}
+
+				querySnapshot = db.collection("users").whereEqualTo("username", data.usernameR).get();
+
+				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					List<String> routeList = (List<String>) document.get("routes");
+					routeList.remove(data.name);
+					document.getReference().update("routes", routeList);
 				}
 
 				return Response.ok().build();
@@ -170,8 +193,26 @@ public class RouteResource {
 				}
 
 				res.add("locations", array);
-				res.add("categories", JsonArraySupport
-						.createOnePropArrayFromFirestoreArray((List<String>) document.get("categories"), "categories"));
+
+				Map<String, Integer> map = (HashMap<String, Integer>) document.get("categories");
+				JsonArray jArr = new JsonArray();
+				for (String s : map.keySet()) {
+					jsObj = new JsonObject();
+					jsObj.addProperty("category", s);
+					jArr.add(jsObj);
+				}
+				res.add("categories", jArr);
+
+				map = (HashMap<String, Integer>) document.get("regions");
+
+				jArr = new JsonArray();
+				for (String s : map.keySet()) {
+					jsObj = new JsonObject();
+					jsObj.addProperty("region", s);
+					jArr.add(jsObj);
+				}
+
+				res.add("regions", jArr);
 				res.addProperty("rating", document.getDouble("rating"));
 				res.addProperty("status", document.getString("status"));
 			}
@@ -279,14 +320,25 @@ public class RouteResource {
 					}
 
 					res.add("locations", array);
-					Map<String, Integer> catMap = (HashMap<String, Integer>) document.get("categories");
+					Map<String, Integer> map = (HashMap<String, Integer>) document.get("categories");
 					JsonArray jArr = new JsonArray();
-					for(String s : catMap.keySet()) {
+					for (String s : map.keySet()) {
 						jsObj = new JsonObject();
 						jsObj.addProperty("category", s);
 						jArr.add(jsObj);
 					}
 					res.add("categories", jArr);
+
+					map = (HashMap<String, Integer>) document.get("regions");
+
+					jArr = new JsonArray();
+					for (String s : map.keySet()) {
+						jsObj = new JsonObject();
+						jsObj.addProperty("region", s);
+						jArr.add(jsObj);
+					}
+
+					res.add("regions", jArr);
 					res.addProperty("rating", document.getDouble("rating"));
 					res.addProperty("status", document.getString("status"));
 					jsonArr.add(res);
