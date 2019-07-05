@@ -24,6 +24,11 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.BlobGetOption;
+import com.google.cloud.storage.StorageOptions;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -102,6 +107,7 @@ public class CuponResource {
 				return Response.status(Status.NOT_FOUND).build();
 			} else {
 				JSONObject res = new JSONObject();
+
 				for (QueryDocumentSnapshot document : cuponList) {
 					res.put("locationName", document.getString("locationName"));
 					res.put("latitude", document.getString("latitude"));
@@ -252,11 +258,18 @@ public class CuponResource {
 							.whereEqualTo("categories." + data.categories[7], 1)
 							.whereEqualTo("categories." + data.categories[8], 1).get();
 			}
-			
+
 			JSONArray jArr = new JSONArray();
 			JSONObject jObj;
-			
-			for(QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+
+			StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+			Storage storageDB = storage.getService();
+
+			BlobId blobId;
+			Blob blob;
+
+			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				jObj = new JSONObject();
 				jObj.put("locationName", document.get("locationName"));
 				jObj.put("value", document.get("value"));
@@ -264,15 +277,21 @@ public class CuponResource {
 				jObj.put("longitude", document.get("longitude"));
 				jObj.put("description", document.get("description"));
 				jObj.put("region", document.get("region"));
+
+				blobId = BlobId.of("oofaround.appspot.com",
+						document.getString("locationName").trim() + String.valueOf(document.get("value")) + "_qrcode");
+				blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+				jObj.put("qrCode", blob.getContent().toString());
+
 				jArr.put(jObj);
 			}
-			
+
 			jObj = new JSONObject();
 			jObj.put("cupons", jArr);
-			
+
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			jObj.put("tokenID", at.tokenID);
-			
 
 			return Response.ok().build();
 		} else
