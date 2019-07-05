@@ -1,11 +1,9 @@
 package pt.oofaround.resources;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -78,22 +76,20 @@ public class RouteResource {
 
 			JsonObject res = new JsonObject();
 			Map<String, Object> docData = new HashMap();
-			Set<String> cats = new HashSet<String>();
-			Set<String> regions = new HashSet<String>();
+			Map<String, Integer> regionMap = new HashMap();
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
 			Map<String, Integer> catMap = new HashMap<String, Integer>();
 
 			for (int i = 0; i < data.locationNames.length; i++) {
-				if (data.locationNames[i].category != "undefined") {
-					cats.add(data.locationNames[i].category);
-					regions.add(data.locationNames[i].region);
+				if (!data.locationNames[i].category.equalsIgnoreCase("undefined")) {
+					catMap.putIfAbsent(data.locationNames[i].category, 1);
+					regionMap.putIfAbsent(data.locationNames[i].region, 1);
 				}
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
 				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
-				catMap.putIfAbsent(data.locationNames[i].category, 1);
 
 			}
 
@@ -103,7 +99,7 @@ public class RouteResource {
 			docData.put("locationsCoords", locationsList);
 			docData.put("locationsNames", names);
 			docData.put("placeIDs", placeIDs);
-
+			docData.put("regions", regionMap);
 			docData.put("categories", catMap);
 			docData.put("rating", (double) 0);
 			docData.put("numberRates", 0);
@@ -320,7 +316,7 @@ public class RouteResource {
 					}
 
 					res.add("locations", array);
-					Map<String, Integer> map = (HashMap<String, Integer>) document.get("categories");
+					Map<String, Integer> map = (Map<String, Integer>) document.get("categories");
 					JsonArray jArr = new JsonArray();
 					for (String s : map.keySet()) {
 						jsObj = new JsonObject();
@@ -329,9 +325,10 @@ public class RouteResource {
 					}
 					res.add("categories", jArr);
 
-					map = (HashMap<String, Integer>) document.get("regions");
+					map = (Map<String, Integer>) document.get("regions");
 
 					jArr = new JsonArray();
+
 					for (String s : map.keySet()) {
 						jsObj = new JsonObject();
 						jsObj.addProperty("region", s);

@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.api.core.ApiFuture;
@@ -117,30 +118,40 @@ public class ImageResource {
 
 			Page<Blob> list = db.list(BUCKET, BlobListOption.prefix(data.name + "/"));
 
-			List<String> pictures = new LinkedList<String>();
-			Iterator<Blob> it = list.iterateAll().iterator();
-			it.next();
-			Blob b;
-			while(it.hasNext()) {
-				b = it.next();
-				pictures.add(Base64.getEncoder().encodeToString(b.getContent()));
-			}
-
-			while (list.hasNextPage()) {
-				list = list.getNextPage();
-
-				for (Blob blob : list.iterateAll()) {
-					pictures.add(Base64.getEncoder().encodeToString(blob.getContent()));
+			try {
+				List<String> pictures = new LinkedList<String>();
+				Iterator<Blob> it = list.iterateAll().iterator();
+				it.next();
+				Blob b;
+				while (it.hasNext()) {
+					b = it.next();
+					pictures.add(Base64.getEncoder().encodeToString(b.getContent()));
 				}
-			}
 
-			AuthToken at = new AuthToken(data.usernameR, data.role);
-			JSONObject token = new JSONObject();
-			token.put("images", JsonArraySupport.createOnePropArrayFromFirestore(pictures, "image"));
-			token.put("username", at.username);
-			token.put("role", at.role);
-			token.put("tokenID", at.tokenID);
-			return Response.ok(token.toString()).build();
+				while (list.hasNextPage()) {
+					list = list.getNextPage();
+
+					for (Blob blob : list.iterateAll()) {
+						pictures.add(Base64.getEncoder().encodeToString(blob.getContent()));
+					}
+				}
+
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JSONObject token = new JSONObject();
+				token.put("images", JsonArraySupport.createOnePropArrayFromFirestore(pictures, "image"));
+				token.put("username", at.username);
+				token.put("role", at.role);
+				token.put("tokenID", at.tokenID);
+				return Response.ok(token.toString()).build();
+			} catch (Exception e) {
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				JSONObject token = new JSONObject();
+				token.put("images", new JSONArray());
+				token.put("username", at.username);
+				token.put("role", at.role);
+				token.put("tokenID", at.tokenID);
+				return Response.ok(token.toString()).build();
+			}
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}

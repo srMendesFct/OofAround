@@ -15,12 +15,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -90,7 +93,7 @@ public class CuponResource {
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getCupon(CuponData data) throws InterruptedException, ExecutionException {
-		//alterar createCupon para getCupon
+		// alterar createCupon para getCupon
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createCupon")) {
 			List<QueryDocumentSnapshot> cuponList = db.collection("cupons")
 					.whereEqualTo("locationName", data.locationName).whereEqualTo("value", data.value).get().get()
@@ -117,6 +120,163 @@ public class CuponResource {
 		} else {
 			return Response.status(Status.FORBIDDEN).build();
 		}
+	}
+
+	@POST
+	@Path("/list")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response listByRegionCat(CuponData data) throws InterruptedException, ExecutionException {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "listByRegionCat")) {
+			ApiFuture<QuerySnapshot> querySnapshot;
+			if (data.region.equalsIgnoreCase("")) {
+				if (data.categories[0].equalsIgnoreCase(""))
+					querySnapshot = db.collection("routes").get();
+				else if (data.categories.length == 1)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1).get();
+				else if (data.categories.length == 2)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1).get();
+				else if (data.categories.length == 3)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1).get();
+				else if (data.categories.length == 4)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1).get();
+				else if (data.categories.length == 5)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1).get();
+				else if (data.categories.length == 6)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1).get();
+				else if (data.categories.length == 7)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1).get();
+				else if (data.categories.length == 8)
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1)
+							.whereEqualTo("categories." + data.categories[7], 1).get();
+				else
+					querySnapshot = db.collection("routes").whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1)
+							.whereEqualTo("categories." + data.categories[7], 1)
+							.whereEqualTo("categories." + data.categories[8], 1).get();
+			} else {
+				if (data.categories[0].equalsIgnoreCase(""))
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region).get();
+				else if (data.categories.length == 1)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1).get();
+				else if (data.categories.length == 2)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1).get();
+				else if (data.categories.length == 3)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1).get();
+				else if (data.categories.length == 4)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1).get();
+				else if (data.categories.length == 5)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1).get();
+				else if (data.categories.length == 6)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1).get();
+				else if (data.categories.length == 7)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1).get();
+				else if (data.categories.length == 8)
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1)
+							.whereEqualTo("categories." + data.categories[7], 1).get();
+				else
+					querySnapshot = db.collection("routes").whereEqualTo("region", data.region)
+							.whereEqualTo("categories." + data.categories[0], 1)
+							.whereEqualTo("categories." + data.categories[1], 1)
+							.whereEqualTo("categories." + data.categories[2], 1)
+							.whereEqualTo("categories." + data.categories[3], 1)
+							.whereEqualTo("categories." + data.categories[4], 1)
+							.whereEqualTo("categories." + data.categories[5], 1)
+							.whereEqualTo("categories." + data.categories[6], 1)
+							.whereEqualTo("categories." + data.categories[7], 1)
+							.whereEqualTo("categories." + data.categories[8], 1).get();
+			}
+			
+			JSONArray jArr = new JSONArray();
+			JSONObject jObj;
+			
+			for(QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				jObj = new JSONObject();
+				jObj.put("locationName", document.get("locationName"));
+				jObj.put("value", document.get("value"));
+				jObj.put("latitude", document.get("latitude"));
+				jObj.put("longitude", document.get("longitude"));
+				jObj.put("description", document.get("description"));
+				jObj.put("region", document.get("region"));
+				jArr.put(jObj);
+			}
+			
+			jObj = new JSONObject();
+			jObj.put("cupons", jArr);
+			
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			jObj.put("tokenID", at.tokenID);
+			
+
+			return Response.ok().build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
 	}
 
 }

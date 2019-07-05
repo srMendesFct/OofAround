@@ -83,8 +83,17 @@ public class RegisterResource {
 		docData.put("score", 0);
 		docData.put("numberPhotos", 0);
 		docData.put("routes", new LinkedList<String>());
+		docData.put("doneRoutes", new LinkedList<String>());
 
 		users.document(data.username).set(docData).get();
+
+		ApiFuture<QuerySnapshot> flagSnapshot = db.collection("flag")
+				.whereEqualTo(com.google.cloud.firestore.FieldPath.documentId(), "ranking").get();
+
+		for (DocumentSnapshot document : flagSnapshot.get().getDocuments()) {
+			document.getReference().update("flag", true);
+		}
+
 		return Response.ok().build();
 	}
 

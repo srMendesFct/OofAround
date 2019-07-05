@@ -11,6 +11,7 @@ public class CuponData {
 	public String role;
 	public String description;
 	public String region;
+	public String[] categories;
 
 	public CuponData() {
 	}
@@ -26,6 +27,14 @@ public class CuponData {
 		this.role = role;
 		this.description = description;
 		this.region = region;
+	}
+
+	public CuponData(String tokenID, String usernameR, String role, String region, String[] categories) {
+		this.tokenID = tokenID;
+		this.usernameR = usernameR;
+		this.role = role;
+		this.region = region;
+		this.categories = categories;
 	}
 
 }
