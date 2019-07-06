@@ -83,7 +83,6 @@ public class RouteResource {
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
 			Map<String, Integer> catMap = new HashMap<String, Integer>();
-			int score = 0;
 
 			for (int i = 0; i < data.locationNames.length; i++) {
 				if (!data.locationNames[i].category.equalsIgnoreCase("undefined")) {
@@ -93,10 +92,9 @@ public class RouteResource {
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
 				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
-				i += data.locationNames[i].score;
 
 			}
-			docData.put("score", score);
+
 			docData.put("name", data.name);
 			docData.put("description", data.description);
 			docData.put("creatorUsername", data.creatorUsername);
@@ -483,19 +481,13 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "doneBy")) {
 
-			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
-					.whereEqualTo("creatorUsername", data.creatorUsername).get();
-			long score = 0;
-			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				score = document.getLong("score");
-			}
-
-			querySnapshot = db.collection("users").whereEqualTo("username", data.usernameR).get();
+			ApiFuture<QuerySnapshot> querySnapshot = db.collection("users").whereEqualTo("username", data.usernameR)
+					.get();
 
 			JSONObject res = new JSONObject();
 
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				score += document.getLong("score");
+				long score = document.getLong("score") + data.score;
 				List<String> routes = (List<String>) document.get("doneRoutes");
 				routes.add(data.name + " " + data.creatorUsername);
 				document.getReference().update("score", score, "doneRoutes", routes);

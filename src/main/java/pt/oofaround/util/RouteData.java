@@ -12,6 +12,7 @@ public class RouteData {
 	public String rating;
 	public String[] categories;
 	public String region;
+	public long score;
 
 	public RouteData() {
 	}
@@ -41,6 +42,15 @@ public class RouteData {
 		this.role = role;
 		this.usernameR = usernameR;
 		this.creatorUsername = creatorUsername;
+	}
+	
+	public RouteData(String name, String tokenID, String role, String usernameR, String creatorUsername, long score) {
+		this.name = name;
+		this.tokenID = tokenID;
+		this.role = role;
+		this.usernameR = usernameR;
+		this.creatorUsername = creatorUsername;
+		this.score = score;
 	}
 
 	public RouteData(String tokenID, String role, String usernameR) {

@@ -145,9 +145,9 @@ public class LocationResource {
 				res.addProperty("longitude", document.getString("longitude"));
 				res.addProperty("category", document.getString("category"));
 				res.addProperty("region", document.getString("region"));
-				// res.addProperty("score", document.getLong("score"));
+				res.addProperty("score", document.getLong("score"));
 				// res.addProperty("nbrVisits", document.getLong("nbrVisits"));
-				// res.addProperty("placeID", document.getString("placeID"));
+				res.addProperty("placeID", document.getString("placeID"));
 			}
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
