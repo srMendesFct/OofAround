@@ -27,4 +27,8 @@ public class ChangePasswordData {
 		this.role = role;
 		this.usernameR = usernameR;
 	}
+	
+	public ChangePasswordData(String usernameR) {
+		this.usernameR = usernameR;
+	}
 }

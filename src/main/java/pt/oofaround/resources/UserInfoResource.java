@@ -233,6 +233,8 @@ public class UserInfoResource {
 		db.collection("recovery").document().set(map);
 
 		db.collection("flag").document("recovery").update("flag", true);
+		
+		EmailSupport.sendRecoverCode(db.collection("users").document(data.usernameR).get().get().getString("email"), recoverCode);
 
 		return Response.ok().build();
 	}
@@ -244,7 +246,7 @@ public class UserInfoResource {
 
 		ApiFuture<QuerySnapshot> querySnapshot = db.collection("recovery").whereEqualTo("id", data.recoverCode).get();
 		
-		String username = null;
+		String username = "";
 		
 		for(QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 			if(document.getLong("expires") < System.currentTimeMillis()) {
@@ -253,12 +255,11 @@ public class UserInfoResource {
 			}
 			else {
 				username = document.getString("username");
-				document.getReference().delete();
 			}
 		}
 				
 		
-		if (data.password.equals(data.confirmPassword)) {
+		if (data.password.equals(data.confirmPassword) && !username.equals("")) {
 			Map<String, Object> docData = new HashMap<String, Object>();
 			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
 
@@ -267,13 +268,6 @@ public class UserInfoResource {
 			ApiFuture<WriteResult> alterInfo = db.collection("users").document(username).set(docData,
 					SetOptions.merge());
 			alterInfo.get();
-
-			JSONObject res = new JSONObject();
-
-			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.put("tokenID", at.tokenID);
-			
-			EmailSupport.sendRecoverCode(db.collection("users").document("username").get().get().getString("email"), data.recoverCode);
 
 			return Response.ok().build();
 		} else

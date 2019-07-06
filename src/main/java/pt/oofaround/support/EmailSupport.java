@@ -22,9 +22,9 @@ public class EmailSupport {
 		try {
 			Message msg = new MimeMessage(session);
 
-			msg.setFrom(new InternetAddress("register@oofaround.appspotmail.com"));
+			msg.setFrom(new InternetAddress("recovery@oofaround.appspotmail.com"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			msg.setSubject("Registration");
+			msg.setSubject("Password Recovery");
 			msg.setText("Thank you for registering your account, " + username + ".");
 			Transport.send(msg);
 		} catch (AddressException e) {
@@ -44,7 +44,7 @@ public class EmailSupport {
 			msg.setFrom(new InternetAddress("register@oofaround.appspotmail.com"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			msg.setSubject("Registration");
-			msg.setText("Your recovery code is " + code + ".");
+			msg.setText("Your recovery code is " + code);
 			Transport.send(msg);
 		} catch (AddressException e) {
 		} catch (MessagingException e) {
