@@ -15,9 +15,6 @@
     padding: 0 2px 5px;
   }
 
-  .navbar a:hover {
-    background-color: #000;
-  }
 
   /*cores da caixa da nav bar que se encontra ativa*/
   .navbar-inverse .navbar-nav .active a,
