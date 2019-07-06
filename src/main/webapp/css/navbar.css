@@ -31,3 +31,7 @@
   .navbar-inverse .navbar-nav li a {
     color: #FFF;
   }
+
+  html * {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   }
