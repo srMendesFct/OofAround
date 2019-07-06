@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.api.core.ApiFuture;
@@ -206,7 +207,7 @@ public class LocationResource {
 
 					}
 					res.put("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image"));
+							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image", "placeID", "region"));
 
 				} else {
 
@@ -247,7 +248,7 @@ public class LocationResource {
 					}
 
 					res.put("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image"));
+							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image", "placeID", "region"));
 
 				}
 				AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -327,30 +328,32 @@ public class LocationResource {
 			CollectionReference locations = db.collection("locations");
 
 			ApiFuture<QuerySnapshot> querySnapshot = locations.get();
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
 
 			// res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude",
 			// "longitude", "category"));
 
-			JsonArray array = new JsonArray();
-			JsonObject jsObj;
+			JSONArray array = new JSONArray();
+			JSONObject jsObj;
 
 			for (QueryDocumentSnapshot document1 : docs) {
-				jsObj = new JsonObject();
-				jsObj.addProperty("latitude", document1.get("latitude").toString());
-				jsObj.addProperty("longitude", document1.get("longitude").toString());
-				jsObj.addProperty("category", document1.get("category").toString());
-				jsObj.addProperty("placeID", document1.getString("placeID"));
-				array.add(jsObj);
+				jsObj = new JSONObject();
+				jsObj.put("latitude", document1.get("latitude").toString());
+				jsObj.put("longitude", document1.get("longitude").toString());
+				jsObj.put("category", document1.get("category").toString());
+				jsObj.put("placeID", document1.getString("placeID"));
+				jsObj.put("region", document1.getString("region"));
+				jsObj.put("score", document1.get("score"));
+				array.put(jsObj);
 			}
 
-			res.add("locations", array);
+			res.put("locations", array);
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.addProperty("tokenID", at.tokenID);
+			res.put("tokenID", at.tokenID);
 
-			return Response.ok(g.toJson(res)).build();
+			return Response.ok(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}

@@ -49,7 +49,7 @@ public class JsonArraySupport {
 		}
 		return array;
 	}
-	
+
 	public static JSONArray createOnePropArrayFromFirestore(List<String> docs, String property) {
 
 		JSONArray array = new JSONArray();
@@ -65,7 +65,7 @@ public class JsonArraySupport {
 
 	public static JSONArray createLocationPropArray(List<QueryDocumentSnapshot> docs, String property1,
 			String property2, String property3, String property4, String property5, String property6, String property7,
-			String property8, String property9, String property10) {
+			String property8, String property9, String property10, String property11, String property12) {
 
 		JSONArray array = new JSONArray();
 		JSONObject jsObj;
@@ -90,7 +90,9 @@ public class JsonArraySupport {
 			jsObj.put(property6, document1.get(property6).toString());
 			jsObj.put(property7, document1.get(property7).toString());
 			// jsObj.put(property8, document1.get(property8).toString());
-			// jsObj.put(property9, document1.get(property9).toString());
+			jsObj.put(property9, document1.get(property9).toString());
+			jsObj.put(property11, document1.get(property11));
+			jsObj.put(property12, document1.get(property12));
 
 			blobId = BlobId.of("oofaround.appspot.com", document1.get(property1).toString());
 

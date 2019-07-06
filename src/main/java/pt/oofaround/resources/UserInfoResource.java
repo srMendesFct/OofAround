@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.api.core.ApiFuture;
@@ -99,19 +100,59 @@ public class UserInfoResource {
 			Query query = users.whereEqualTo("username", data.usernameR);
 			ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				List<String> routes = (List<String>) document.get("routes");
 				if (routes != null)
-					res.add("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
+					res.put("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
 				else {
 					return Response.status(Status.NO_CONTENT).build();
 				}
 			}
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.addProperty("tokenID", at.tokenID);
+			res.put("tokenID", at.tokenID);
 
-			return Response.ok(g.toJson(res)).build();
+			return Response.ok(res.toString()).build();
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
+
+	@SuppressWarnings("unchecked")
+	@POST
+	@Path("/doneroutes")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getDoneRoutes(UserData data) throws InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getDoneRoutes")) {
+			CollectionReference users = db.collection("users");
+			Query query = users.whereEqualTo("username", data.usernameR);
+			ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+			JSONObject res = new JSONObject();
+			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				List<String> routes = (List<String>) document.get("doneRoutes");
+				if (routes != null) {
+
+					String[] split;
+					JSONArray jArr = new JSONArray();
+					JSONObject jObj;
+
+					for (String s : routes) {
+						jObj = new JSONObject();
+						split = s.split(" ");
+						jObj.put("name", split[0]);
+						jObj.put("creatorUsername", split[1]);
+						jArr.put(jObj);
+					}
+					res.put("doneRoutes", jArr);
+				} else {
+					return Response.status(Status.NO_CONTENT).build();
+				}
+			}
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.put("tokenID", at.tokenID);
+
+			return Response.ok(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
