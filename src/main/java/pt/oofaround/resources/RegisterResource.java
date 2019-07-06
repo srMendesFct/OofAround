@@ -27,6 +27,7 @@ import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import pt.oofaround.support.EmailSupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.RegisterData;
@@ -93,6 +94,8 @@ public class RegisterResource {
 		for (DocumentSnapshot document : flagSnapshot.get().getDocuments()) {
 			document.getReference().update("flag", true);
 		}
+		
+		EmailSupport.sendEmailRegistration(data.email, data.username);
 
 		return Response.ok().build();
 	}

@@ -31,10 +31,12 @@ import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import pt.oofaround.support.EmailSupport;
 import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
 import pt.oofaround.util.ChangePasswordData;
+import pt.oofaround.util.RecoverPasswordData;
 import pt.oofaround.util.UserData;
 
 @Path("/userinfo")
@@ -182,7 +184,6 @@ public class UserInfoResource {
 		return Response.ok().entity(g.toJson(res)).build();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@POST
 	@Path("/alterpassword")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -194,7 +195,7 @@ public class UserInfoResource {
 
 			if (db.collection("users").document(data.usernameR).get().get().getString("password").equals(passEnc)) {
 
-				Map<String, Object> docData = new HashMap();
+				Map<String, Object> docData = new HashMap<String, Object>();
 				passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
 
 				docData.put("password", passEnc);
@@ -203,16 +204,80 @@ public class UserInfoResource {
 						SetOptions.merge());
 				alterInfo.get();
 
-				JsonObject res = new JsonObject();
+				JSONObject res = new JSONObject();
 
-				// AuthToken at = new AuthToken(data.usernameR, data.role);
-				// res.addProperty("tokenID", at.tokenID);
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.put("tokenID", at.tokenID);
 
-				return Response.ok().entity(g.toJson(res)).build();
+				return Response.ok().entity(res.toString()).build();
 			} else
 				return Response.status(Status.FORBIDDEN).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/getrecovercode")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getRecoverCode(ChangePasswordData data) throws InterruptedException, ExecutionException {
+
+		String recoverCode = Hashing.sha256()
+				.hashBytes((data.usernameR + String.valueOf(System.currentTimeMillis())).getBytes()).toString();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("username", data.usernameR);
+		map.put("id", recoverCode);
+		map.put("expires", System.currentTimeMillis() + 300000);
+
+		db.collection("recovery").document().set(map);
+
+		db.collection("flag").document("recovery").update("flag", true);
+
+		return Response.ok().build();
+	}
+
+	@POST
+	@Path("/recoverpassword")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response recoverPassword(RecoverPasswordData data) throws InterruptedException, ExecutionException {
+
+		ApiFuture<QuerySnapshot> querySnapshot = db.collection("recovery").whereEqualTo("id", data.recoverCode).get();
+		
+		String username = null;
+		
+		for(QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			if(document.getLong("expires") < System.currentTimeMillis()) {
+				document.getReference().delete();
+				return Response.status(403).build();
+			}
+			else {
+				username = document.getString("username");
+				document.getReference().delete();
+			}
+		}
+				
+		
+		if (data.password.equals(data.confirmPassword)) {
+			Map<String, Object> docData = new HashMap<String, Object>();
+			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
+
+			docData.put("password", passEnc);
+
+			ApiFuture<WriteResult> alterInfo = db.collection("users").document(username).set(docData,
+					SetOptions.merge());
+			alterInfo.get();
+
+			JSONObject res = new JSONObject();
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.put("tokenID", at.tokenID);
+			
+			EmailSupport.sendRecoverCode(db.collection("users").document("username").get().get().getString("email"), data.recoverCode);
+
+			return Response.ok().build();
+		} else
+			return Response.status(Status.EXPECTATION_FAILED).build();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
