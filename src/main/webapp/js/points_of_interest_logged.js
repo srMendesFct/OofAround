@@ -80,6 +80,8 @@ captureDataGetPointsOfInterest = function (event) {
                     z = "Comes e Bebes";
                 } else if (z == "Landscaping") {
                     z = "Paisagens";
+                }else if (z == "Religion") {
+                    z = "Religião"
                 }
 
                 var div = document.createElement("div");
