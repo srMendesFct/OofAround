@@ -48,7 +48,6 @@ captureDataGetImage = function () {
         crossDomain: true,
         success: function (Response) {
             localStorage.setItem('image', Response.image);
-            alert("Sessão iniciada.");
             window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
         },
         error: function (Response) {
@@ -73,7 +72,6 @@ captureDataRegister = function (event) {
         success: function (Response) {},
         error: function (Response) {
             if (Response.status == 200) {
-                alert("Registo efetuado com sucesso.");
                 window.location.href = "https://oofaround.appspot.com/";
             } else {
                 alert("Registo falhado.");
@@ -108,7 +106,6 @@ captureDataLogin = function (event) {
                 captureDataGetUserInfo();
             }
             else {
-                alert('Sessão Iniciada.');
                 window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
             }
             

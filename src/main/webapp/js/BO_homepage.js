@@ -59,7 +59,6 @@ captureDataCreatePointOfInterest = function (event) {
       dataType: 'json', // data type        
       crossDomain: true,
       success: function (Response) {
-        alert('Ponto criado');
         window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
@@ -74,7 +73,6 @@ captureDataCreatePointOfInterest = function (event) {
 
 function logout() {
   localStorage.clear();
-  alert("Sessão terminada.")
   window.location.href = "https://oofaround.appspot.com/";
 };
 

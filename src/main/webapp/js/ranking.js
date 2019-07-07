@@ -11,7 +11,6 @@ captureDataRanking = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            console.log(Response);
             for (var i = 0; i < Response.ranks.length; i++) {
                 var rank = i + 1;
                 var div = document.createElement("div");

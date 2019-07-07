@@ -131,7 +131,6 @@ captureDataCreateCourse = function () {
     dataType: 'json',
     crossDomain: 'true',
     success: function (response) {
-      alert('Percurso criado!');
     },
     error: function (response) {
       alert('Erro!')
@@ -170,7 +169,6 @@ captureDataMonuments = function (event) {
     dataType: 'json',
     crossDomain: 'true',
     success: function (response) {
-      alert("g");
 
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
@@ -185,7 +183,6 @@ captureDataMonuments = function (event) {
       }
     },
     error: function (response) {
-      alert("gay");
     },
     data: JSON.stringify(values)
   });

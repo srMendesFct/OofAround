@@ -15,7 +15,6 @@ captureDeleteRoute = function () {
       dataType: 'json',
       crossDomain: 'true',
       success: function (response) {
-        alert('Percurso eliminado!');
       },
       error: function (response) {
         alert('Erro!')

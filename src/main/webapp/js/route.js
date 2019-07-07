@@ -19,7 +19,6 @@ window.onload = function init() {
 setupCallback = function () {
     document.getElementById("logout").addEventListener("click", function () {
         localStorage.clear();
-        alert("Sessão terminada.")
         window.location.href = "https://oofaround.appspot.com/";
     });
 }

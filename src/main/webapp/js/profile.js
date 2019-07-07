@@ -20,7 +20,6 @@ captureDataChangePic = function () {
             dataType: 'json', // data type        
             crossDomain: true,
             success: function (Response) {
-                alert('Imagem alterada');
                 localStorage.setItem('image', send);
                 window.location.href = "https://oofaround.appspot.com/profile.html";
             },

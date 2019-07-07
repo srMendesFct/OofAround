@@ -36,7 +36,6 @@ captureDataDeleteUser = function () {
         error: function (Response) {
             if (Response.status == 200) {
                 localStorage.clear();
-                alert("Conta eliminada com sucesso.")
             } else {
                 alert("Falha ao eliminar conta");
             }
@@ -88,7 +87,6 @@ captureDataChangeUserInfo = function (event) {
         crossDomain: true,
         success: function (Response) {
             captureDataGetUserInfo();
-            alert("Alteração efetuada com sucesso.");
             window.location.href = "https://oofaround.appspot.com/settings.html";
         },
         error: function (Response) {
@@ -116,7 +114,6 @@ captureDataChangePassword = function (event) {
         crossDomain: true,
         success: function (Response) {
             captureDataGetUserInfo();
-            alert("Alteração efetuada com sucesso.");
             window.location.href = "https://oofaround.appspot.com/settings.html";
         },
         error: function (Response) {
@@ -170,7 +167,6 @@ setupCallback = function () {
 
     document.getElementById("logout").addEventListener("click", function () {
         localStorage.clear();
-        alert("Sessão terminada.")
         window.location.href = "https://oofaround.appspot.com/";
     });
 };
