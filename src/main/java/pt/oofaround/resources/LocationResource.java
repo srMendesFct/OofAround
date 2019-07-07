@@ -127,6 +127,32 @@ public class LocationResource {
 	}
 
 	@POST
+	@Path("/guest/get")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getGuestLocation(LocationData data) throws InterruptedException, ExecutionException {
+
+		CollectionReference locations = db.collection("locations");
+		Query query = locations.whereEqualTo("name", data.name);
+
+		ApiFuture<QuerySnapshot> querySnapshot = query.get();
+		JsonObject res = new JsonObject();
+		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			res.addProperty("name", document.getString("name"));
+			res.addProperty("description", document.getString("description"));
+			res.addProperty("address", document.getString("address"));
+			res.addProperty("latitude", document.getString("latitude"));
+			res.addProperty("longitude", document.getString("longitude"));
+			res.addProperty("category", document.getString("category"));
+			res.addProperty("region", document.getString("region"));
+			res.addProperty("score", document.getLong("score"));
+			res.addProperty("nbrVisits", document.getLong("nbrVisits"));
+			res.addProperty("placeID", document.getString("placeID"));
+		}
+
+		return Response.ok(g.toJson(res)).build();
+	}
+
+	@POST
 	@Path("/getfromcoord")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getFromCoordinates(LocationData data) throws InterruptedException, ExecutionException {
@@ -206,8 +232,10 @@ public class LocationResource {
 						}
 
 					}
-					res.put("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image", "placeID", "region"));
+					res.put("locations",
+							JsonArraySupport.createLocationPropArray(docs, "name", "description", "address", "latitude",
+									"longitude", "category", "region", "nbrVisits", "score", "image", "placeID",
+									"region"));
 
 				} else {
 
@@ -239,7 +267,7 @@ public class LocationResource {
 								.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc).limit(data.limit)
 								.get().get().getDocuments());
 						for (int i = 1; i < data.categoriesGet.length; i++) {
-							
+
 							docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
 									.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
 									.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
@@ -247,8 +275,10 @@ public class LocationResource {
 
 					}
 
-					res.put("locations", JsonArraySupport.createLocationPropArray(docs, "name", "description",
-							"address", "latitude", "longitude", "category", "region", "nbrVisits", "score", "image", "placeID", "region"));
+					res.put("locations",
+							JsonArraySupport.createLocationPropArray(docs, "name", "description", "address", "latitude",
+									"longitude", "category", "region", "nbrVisits", "score", "image", "placeID",
+									"region"));
 
 				}
 				AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -264,6 +294,104 @@ public class LocationResource {
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
+
+	@POST
+	@Path("/guest/getcategoryregion")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getGuestLocationsByCatAndRegion(LocationData data) throws InterruptedException, ExecutionException {
+
+		CollectionReference locations = db.collection("locations");
+		List<QueryDocumentSnapshot> docs;
+		JSONObject res = new JSONObject();
+
+		try {
+
+			if (data.lastName.equalsIgnoreCase("")) {
+
+				if (data.categoriesGet[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
+
+					// .order by ranking quando ranking for implementado
+					docs = locations.get().get().getDocuments();
+
+				} else if (data.categoriesGet[0].equalsIgnoreCase("")) {
+
+					docs = locations.whereEqualTo("region", data.region).get().get().getDocuments();
+
+				} else if (data.region.equalsIgnoreCase("")) {
+					docs = new LinkedList<QueryDocumentSnapshot>();
+					docs.addAll(locations.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments());
+
+					for (int i = 1; i < data.categoriesGet.length; i++) {
+
+						docs.addAll(
+								locations.whereEqualTo("category", data.categoriesGet[i]).get().get().getDocuments());
+
+					}
+
+				} else {
+					docs = new LinkedList<QueryDocumentSnapshot>();
+					docs.addAll(locations.whereEqualTo("region", data.region)
+							.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments());
+
+					for (int i = 1; i < data.categoriesGet.length; i++) {
+						docs.addAll(locations.whereEqualTo("region", data.region)
+								.whereEqualTo("category", data.categoriesGet[i]).get().get().getDocuments());
+					}
+
+				}
+				res.put("locations",
+						JsonArraySupport.createLocationPropArray(docs, "name", "description", "address", "latitude",
+								"longitude", "category", "region", "nbrVisits", "score", "image", "placeID", "region"));
+
+			} else {
+
+				docs = locations.whereEqualTo("name", data.lastName).get().get().getDocuments();
+				QueryDocumentSnapshot lastDoc = docs.get(0);
+
+				if (data.categoriesGet[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
+
+					docs = locations.orderBy("nbrVisits").get().get().getDocuments();
+
+				} else if (data.categoriesGet[0].equalsIgnoreCase("")) {
+
+					docs = locations.orderBy("nbrVisits").whereEqualTo("region", data.region).startAfter(lastDoc)
+							.limit(data.limit).get().get().getDocuments();
+
+				} else if (data.region.equalsIgnoreCase("")) {
+					docs = new LinkedList<QueryDocumentSnapshot>();
+					docs.addAll(locations.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc)
+							.limit(data.limit).get().get().getDocuments());
+					for (int i = 1; i < data.categoriesGet.length; i++) {
+						docs.addAll(locations.whereEqualTo("category", data.categoriesGet[i]).startAfter(lastDoc)
+								.limit(data.limit).get().get().getDocuments());
+					}
+
+				} else {
+					docs = new LinkedList<QueryDocumentSnapshot>();
+
+					docs.addAll(locations.orderBy("nbrVisits").whereEqualTo("region", data.region)
+							.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc).limit(data.limit).get()
+							.get().getDocuments());
+					for (int i = 1; i < data.categoriesGet.length; i++) {
+
+						docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
+								.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
+								.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
+					}
+
+				}
+
+				res.put("locations",
+						JsonArraySupport.createLocationPropArray(docs, "name", "description", "address", "latitude",
+								"longitude", "category", "region", "nbrVisits", "score", "image", "placeID", "region"));
+
+			}
+
+			return Response.ok(res.toString()).build();
+		} catch (Exception e) {
+			return Response.status(Status.FORBIDDEN).build();
+		}
 	}
 
 	@SuppressWarnings("unused")
@@ -356,6 +484,39 @@ public class LocationResource {
 			return Response.ok(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
+	}
+	
+	@POST
+	@Path("/guest/getall")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getGuestAllLocations(TokenData data) throws InterruptedException, ExecutionException {
+
+			CollectionReference locations = db.collection("locations");
+
+			ApiFuture<QuerySnapshot> querySnapshot = locations.get();
+			JSONObject res = new JSONObject();
+			List<QueryDocumentSnapshot> docs = querySnapshot.get().getDocuments();
+
+			// res.add("locations", JsonArraySupport.createThreePropArray(docs, "latitude",
+			// "longitude", "category"));
+
+			JSONArray array = new JSONArray();
+			JSONObject jsObj;
+
+			for (QueryDocumentSnapshot document1 : docs) {
+				jsObj = new JSONObject();
+				jsObj.put("latitude", document1.get("latitude").toString());
+				jsObj.put("longitude", document1.get("longitude").toString());
+				jsObj.put("category", document1.get("category").toString());
+				jsObj.put("placeID", document1.getString("placeID"));
+				jsObj.put("region", document1.getString("region"));
+				jsObj.put("score", document1.get("score"));
+				array.put(jsObj);
+			}
+
+			res.put("locations", array);
+
+			return Response.ok(res.toString()).build();
 	}
 
 	@POST

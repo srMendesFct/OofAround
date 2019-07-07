@@ -1,9 +1,7 @@
 
 package pt.oofaround.resources;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -20,16 +18,12 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.Query.Direction;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
-import pt.oofaround.util.RankingData;
 import pt.oofaround.util.TokenData;
 
 @Path("/list")
@@ -105,7 +99,7 @@ public class ListingResource {
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
-	@POST
+	/*@POST
 	@Path("/publicranking")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getPublicRankings(RankingData data)
@@ -173,63 +167,5 @@ public class ListingResource {
 			}
 		} else
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
-	}
-
-	@POST
-	@Path("/rankingtest")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getTestRanking(RankingData data) throws InterruptedException, ExecutionException, TimeoutException {
-		LOG.fine("Listing users");
-
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getPublicRankings")) {
-			CollectionReference users = db.collection("users");
-			Query query = users.whereEqualTo("username", data.username);
-			ApiFuture<QuerySnapshot> querySnapshot = query.get();
-
-			JsonObject res = new JsonObject();
-			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				res.addProperty("ownScore", document.get("score").toString());
-			}
-
-			try {
-				Query sortedUsers;
-				ApiFuture<QuerySnapshot> queryRes;
-				List<QueryDocumentSnapshot> docs;
-
-				if (data.lastRequest == 0) {
-					sortedUsers = users.orderBy("score", Direction.DESCENDING).whereEqualTo("privacy", false)
-							.limit(data.limit);
-					queryRes = sortedUsers.get();
-					docs = queryRes.get().getDocuments();
-					for (QueryDocumentSnapshot document1 : docs) {
-						res.addProperty(document1.getString("username"), document1.get("score").toString());
-					}
-				} else {
-					sortedUsers = users.whereEqualTo("username", data.lastUsername);
-					queryRes = sortedUsers.get();
-					docs = queryRes.get().getDocuments();
-					QueryDocumentSnapshot lastDoc = docs.get(0);
-					sortedUsers = users.orderBy("score", Direction.DESCENDING).whereEqualTo("privacy", false)
-							.startAfter(lastDoc).limit(data.limit);
-					queryRes = sortedUsers.get();
-					docs = queryRes.get().getDocuments();
-					for (QueryDocumentSnapshot document1 : docs) {
-						res.addProperty(document1.getString("username"), document1.get("score").toString());
-					}
-				}
-
-				AuthToken at = new AuthToken(data.usernameR, data.role);
-				res.addProperty("tokenID", at.tokenID);
-
-				return Response.ok(g.toJson(res)).build();
-			} catch (Exception e) {
-				String s = "";
-				for (StackTraceElement ss : e.getStackTrace()) {
-					s += "   " + ss.toString();
-				}
-				return Response.status(Status.FORBIDDEN).entity(s).build();
-			}
-		} else
-			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
-	}
+	}*/
 }
