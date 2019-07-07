@@ -15,98 +15,135 @@
   <link rel="stylesheet" type="text/css" href="css/homepage.css">
   <style>
     #map {
-   height: 500px;
+      height: 500px;
     }
-</style>
+  </style>
 </head>
+
 <body class="backG">
- <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="homepage_logged.html"><img src="img/logo.png"></a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="homepage_logged.html">Home</a></li>
-                    <li><a href="route.html">Percursos</a></li>
-                    <li><a href="ranking.html">Ranking</a></li>
-                    <li><a href="#ourFooter">Sobre Nós</a></li>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="homepage_logged.html"><img src="img/logo.png"></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-left">
+          <li class="active"><a href="homepage_logged.html">Home</a></li>
+          <li><a href="route.html">Percursos</a></li>
+          <li><a href="ranking.html">Ranking</a></li>
+          <li><a href="#ourFooter">Sobre Nós</a></li>
 
-                </ul>
-                <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
-                        href="#"><img class="img" id="profilePic"></a>
-                    <div class="dropdown-menu" aria-labelledby="loginPainel">
-                        <a id="user" class=" dropdown-item disabled"></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="profile.html">Perfil</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="settings.html">Definições</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="https://oofaround.appspot.com/" role="button"
-                            id="logout">Terminar sessão</a>
-                    </div>
-                </li>
-
-            </div>
-        </div>
-    </nav>
-  
-
-      <div id="createCourse" class="container-fluid">
-        <br><br><br><br>
-        <div>
-          <div class="row">
-                <div class="col-lg-9">
-                        <div id="map"></div>
-            </div>
-            <div class="col-xs-2">
-                <form id="courseForm" name="courseForm">
-                    <div class="md-form mb-5">
-                        <label>Nome do percurso:</label>
-                        <input type="text" id="courseName" name="name" class="form-control validate"
-                          placeholder="Insira o nome do seu percurso." required>
-                      </div>
-                      <div class="md-form mb-5">
-                          <label>Descrição do percurso::</label>
-                          <input type="text" id="courseDescription" name="description" class="form-control validate"
-                            placeholder="Insira uma descrição para o seu percurso." required>
-                        </div>
-                        <button type="submit" class="btn btn-default">Criar</button>
-                </form>
-
-                <input type="submit" id="submitF">Confirmar pontos selecionados</input>
-            </div>
+        </ul>
+        <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button" href="#"><img
+              class="img" id="profilePic"></a>
+          <div class="dropdown-menu" aria-labelledby="loginPainel">
+            <a id="user" class=" dropdown-item disabled"></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="profile.html">Perfil</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="settings.html">Definições</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://oofaround.appspot.com/" role="button" id="logout">Terminar sessão</a>
           </div>
-        </div>
-<script type="text/javascript" src="./js/create_route.js"></script>	
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiPZQSt7k2Hhi9YvZnpHl8ibIaL81fb24
+        </li>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="dente" style="text-align: center">
+    <h2>Pontos de Interesse</h1>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <label>Distrito</label>
+          <select id="distrito">
+            <option>-- Escolha o Distrito--</option>
+            <option value="">Todos</option>
+            <option value="Lisboa">Lisboa</option>
+            <option value="Porto">Porto</option>
+          </select>
+          <br><br><br>
+          <label>Categorias</label>
+          <form name="categorias">
+            <input class="ed" type="checkbox" name="Nenhuma" value=""> Nenhuma
+            <input class="ed" type="checkbox" name="Desporto" value="Sport"> Desporto
+            <input class="ed" type="checkbox" name="Vida Noturna" value="NightLife"> Vida Noturna
+            <input class="ed" type="checkbox" name="Cultura" value="Culture"> Cultura
+            <input class="ed" type="checkbox" name="Lazer" value="Leisure"> Lazer<br>
+            <input class="ed" type="checkbox" name="Animais e Vida Selvagem" value="Animal & Wildlife">
+            Animais e
+            Vida
+            Selvagem
+            <input class="ed" type="checkbox" name="Ar livre e Animais Domésticos" value="Outdoor & Pets"> Ar livre
+            e
+            Animais Domésticos<br>
+            <input class="ed" type="checkbox" name="Praias" value="Beach">Praias
+            <input class="ed" type="checkbox" name="Comes e Bebes" value="Food & Drink"> Comes e Bebes
+            <input class="ed" type="checkbox" name="Paisagens" value="Landscaping"> Paisagens
+            <input class="ed" type="checkbox" name="Religião" value="Religion"> Religião<br>
+            <div class="modal-footer">
+              <button id="searchP" type="submit" class="btn btn-default center">Pesquisar</button>
+            </div>
+          </form>
+          <br><br>
+
+          <div id="createCourse" class="container-fluid">
+            <br><br><br><br>
+            <div>
+              <div class="row">
+                <div class="col-lg-9">
+                  <div id="map"></div>
+                </div>
+                <div class="col-xs-2">
+                  <form id="courseForm" name="courseForm">
+                    <div class="md-form mb-5">
+                      <label>Nome do percurso:</label>
+                      <input type="text" id="courseName" name="name" class="form-control validate"
+                        placeholder="Insira o nome do seu percurso." required>
+                    </div>
+                    <div class="md-form mb-5">
+                      <label>Descrição do percurso::</label>
+                      <input type="text" id="courseDescription" name="description" class="form-control validate"
+                        placeholder="Insira uma descrição para o seu percurso." required>
+                    </div>
+                    <button type="submit" class="btn btn-default">Criar</button>
+                  </form>
+
+                  <input type="submit" id="submitF">Confirmar pontos selecionados</input>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript" src="./js/create_route.js"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiPZQSt7k2Hhi9YvZnpHl8ibIaL81fb24
 &callback=initMap"></script>
 
-<footer id="ourFooter" class="container-fluid text-center">
-        <div class="row">
-          <div class="col-sm-4">
-            <img class="uh" src="img/equipa.png">
-          </div>
-          <div class="col-sm-4">
-            <h3>Contacta-nos</h3>
-            <br>
-            <h4>oofaround.support@gmail.com</h4>
-          </div>
-          <div class="col-sm-4">
-              <h3>Encontra-nos</h3>
-              <br>
-              <h4>Faculdade de Ciências e Tecnologia - Edifício II
-                  2829-516 Caparica
-                  Portugal</h4>
-            </div>
-        </div>  
-  </footer>
+            <footer id="ourFooter" class="container-fluid text-center">
+              <div class="row">
+                <div class="col-sm-4">
+                  <img class="uh" src="img/equipa.png">
+                </div>
+                <div class="col-sm-4">
+                  <h3>Contacta-nos</h3>
+                  <br>
+                  <h4>oofaround.support@gmail.com</h4>
+                </div>
+                <div class="col-sm-4">
+                  <h3>Encontra-nos</h3>
+                  <br>
+                  <h4>Faculdade de Ciências e Tecnologia - Edifício II
+                    2829-516 Caparica
+                    Portugal</h4>
+                </div>
+              </div>
+            </footer>
 
 </body>
+
 </html>

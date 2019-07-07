@@ -142,15 +142,26 @@ captureDataCreateCourse = function () {
 }
 
 captureDataMonuments = function () {
+  var limit = 5;
+  var lastName = "";
+  var x = document.getElementsByClassName("ed");
+  var res = []
+  var index = 0;
+  for (var i = 0; i < x.length; i++) {
+    if (x[i].checked) {
+      res[index] = x[i].value;
+      index++;
+    }
+  }
   var values = {
     tokenID: localStorage.getItem('token'),
-    usernameR: localStorage.getItem('username'),
     role: localStorage.getItem('role'),
-    limit: "",
-    lastName: "",
-    category: "",
-    region: ""
-  }
+    usernameR: localStorage.getItem('username'),
+    limit: limit,
+    lastName: lastName,
+    region: document.getElementById("distrito").value,
+    categoriesGet: res
+  };
 
   $.ajax({
     type: "POST",
@@ -212,8 +223,10 @@ window.onload = function () {
     window.location.href = "https://oofaround.appspot.com/";
   } else {
     localStorage.setItem('expiration', date.getTime() + 300000);
-    captureDataMonuments();
     var form_c = $('form[name="courseForm"]');
     form_c[0].onsubmit = captureDataCreateCourse;
+    var frmsl = $('form[name="categorias"]');
+    frmsl[0].onsubmit = captureDataMonuments;
+    ;
   }
 }

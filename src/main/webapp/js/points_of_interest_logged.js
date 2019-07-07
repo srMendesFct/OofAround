@@ -1,27 +1,3 @@
-var image;
-
-captureDataGetImage = function () {
-    var values = {
-        name: localStorage.getItem('location'),
-        usernameR: localStorage.getItem('username'),
-        tokenID: localStorage.getItem('token'),
-        role: localStorage.getItem('role'),
-    }
-    $.ajax({
-        type: "POST",
-        url: "https://oofaround.appspot.com/rest/images/get",
-        contentType: "application/json;charset=utf-8",
-        dataType: 'json', // data type        
-        crossDomain: true,
-        success: function (Response) {
-            image = Response.image;
-            console.log(image);
-        },
-        error: function (Response) {},
-        data: JSON.stringify(values) // post data || get data
-    });
-};
-
 captureDataGetPointsOfInterest = function (event) {
     var limit = 5;
     var lastName = "";
@@ -58,8 +34,6 @@ captureDataGetPointsOfInterest = function (event) {
 
             for (i = 0; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
-                captureDataGetImage();
-                console.log(image);
                 var z = Response.locations[i].category;
 
                 if (z == "Sport") {
