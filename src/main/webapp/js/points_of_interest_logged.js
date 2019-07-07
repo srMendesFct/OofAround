@@ -87,12 +87,6 @@ captureDataGetPointsOfInterest = function (event) {
                 div.setAttribute("class", "tabcontent");
                 document.getElementById("berna").appendChild(div);
 
-                var img = document.createElement("img");
-                img.setAttribute("class", "imgL");
-                img.setAttribute("align", "left");
-                img.src = 'data:image/jpeg;base64, ' + Response.locations[i].image;
-                div.appendChild(img);
-
                 var div_2 = document.createElement("div");
                 div_2.style.textAlign = "center";
                 div.appendChild(div_2);
@@ -100,6 +94,12 @@ captureDataGetPointsOfInterest = function (event) {
                 var header = document.createElement("h4");
                 header.innerHTML = Response.locations[i].name;
                 div_2.appendChild(header);
+
+                var img = document.createElement("img");
+                img.setAttribute("class", "imgL");
+                img.setAttribute("align", "left");
+                img.src = 'data:image/jpeg;base64, ' + Response.locations[i].image;
+                div_2.appendChild(img);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
