@@ -78,8 +78,6 @@ public class JsonArraySupport {
 
 		Blob blob;
 
-		if (docs.isEmpty())
-			throw new NotFoundException();
 		for (QueryDocumentSnapshot document1 : docs) {
 			jsObj = new JSONObject();
 			jsObj.put(property1, document1.get(property1).toString());
@@ -102,6 +100,7 @@ public class JsonArraySupport {
 
 			array.put(jsObj);
 		}
+		
 		return array;
 	}
 
