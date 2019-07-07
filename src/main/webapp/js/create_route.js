@@ -141,7 +141,7 @@ captureDataCreateCourse = function () {
 
 }
 
-captureDataMonuments = function () {
+captureDataMonuments = function (event) {
   var limit = 5;
   var lastName = "";
   var x = document.getElementsByClassName("ed");
@@ -189,6 +189,7 @@ captureDataMonuments = function () {
     },
     data: JSON.stringify(values)
   });
+  event.preventDefault();
 }
 
 function setInfo(markerNumber, name, address, latitude, longitude) {
