@@ -170,6 +170,8 @@ captureDataMonuments = function () {
     dataType: 'json',
     crossDomain: 'true',
     success: function (response) {
+      alert("g");
+
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
 
@@ -182,7 +184,9 @@ captureDataMonuments = function () {
         setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude);
       }
     },
-    error: function (response) {},
+    error: function (response) {
+      alert("gay");
+    },
     data: JSON.stringify(values)
   });
 }
