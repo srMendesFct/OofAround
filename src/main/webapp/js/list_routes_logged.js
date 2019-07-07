@@ -12,7 +12,7 @@ captureDataGetRoutes = function (event) {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
         usernameR: localStorage.getItem('username'),
-        //region: document.getElementById("distrito").value,
+        region: document.getElementById("distrito").value,
         categories: res
     };
     $.ajax({
@@ -41,7 +41,7 @@ captureDataGetRoutes = function (event) {
                         z = "Vida Noturna";
                     } else if (z == "Leisure") {
                         z = "Lazer";
-                    } else if (z == "Animal & WildLife") {
+                    } else if (z == "Animal & Wildlife") {
                         z = "Animais e Vida Selvagem";
                     } else if (z == "Outdoor & Pets") {
                         z = "Ar livre e Animais Domésticos";
@@ -83,11 +83,11 @@ captureDataGetRoutes = function (event) {
                 header_3.innerHTML = "Categorias: " + x;
                 div_2.appendChild(header_3);
 
-                /*var header_4 = document.createElement("h4");
+                var header_4 = document.createElement("h4");
                 header_4.style.textAlign = "left";
                 header_4.style.fontSize = "16px"
                 header_4.innerHTML = "Região: " + Response.routes[i].region;
-                div_2.appendChild(header_4);*/
+                div_2.appendChild(header_4);
 
                 var p = document.createElement("p");
                 p.align = "right";
@@ -177,7 +177,7 @@ captureDataGetRoutes = function (event) {
                 p_3.innerHTML = x;
                 div_10.appendChild(p_3);
 
-                /*var div_13 = document.createElement("div");
+                var div_13 = document.createElement("div");
                 div_13.setAttribute("class", "md-form mb-4");
                 div_7.appendChild(div_13);
 
@@ -189,7 +189,7 @@ captureDataGetRoutes = function (event) {
 
                 var p_6 = document.createElement("p");
                 p_6.innerHTML = Response.locations[i].region;
-                div_13.appendChild(p_6);*/
+                div_13.appendChild(p_6);
 
                 var div_14 = document.createElement("div");
                 div_14.setAttribute("class", "md-form mb-4");

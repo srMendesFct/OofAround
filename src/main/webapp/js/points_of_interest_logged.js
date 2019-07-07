@@ -5,7 +5,7 @@ captureDataGetImage = function () {
         name: localStorage.getItem('location'),
         usernameR: localStorage.getItem('username'),
         tokenID: localStorage.getItem('token'),
-        role: localStorage.getItem('role')
+        role: localStorage.getItem('role'),
     }
     $.ajax({
         type: "POST",
@@ -70,7 +70,7 @@ captureDataGetPointsOfInterest = function (event) {
                     z = "Vida Noturna";
                 } else if (z == "Leisure") {
                     z = "Lazer";
-                } else if (z == "Animal & WildLife") {
+                } else if (z == "Animal & Wildlife") {
                     z = "Animais e Vida Selvagem";
                 } else if (z == "Outdoor & Pets") {
                     z = "Ar livre e Animais Domésticos";
@@ -80,18 +80,14 @@ captureDataGetPointsOfInterest = function (event) {
                     z = "Comes e Bebes";
                 } else if (z == "Landscaping") {
                     z = "Paisagens";
+                }else if (z == "Religion") {
+                    z = "Religião"
                 }
 
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
                 document.getElementById("berna").appendChild(div);
-
-                var img = document.createElement("img");
-                img.setAttribute("class", "imgL");
-                img.setAttribute("align", "left");
-                img.src = 'data:image/jpeg;base64, ' + image;
-                div.appendChild(img);
 
                 var div_2 = document.createElement("div");
                 div_2.style.textAlign = "center";
@@ -100,6 +96,12 @@ captureDataGetPointsOfInterest = function (event) {
                 var header = document.createElement("h4");
                 header.innerHTML = Response.locations[i].name;
                 div_2.appendChild(header);
+
+                var img = document.createElement("img");
+                img.setAttribute("class", "imgL");
+                img.setAttribute("align", "left");
+                img.src = 'data:image/jpeg;base64, ' + Response.locations[i].image;
+                div_2.appendChild(img);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
@@ -192,7 +194,7 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var img_3 = document.createElement("img");
                 img_3.setAttribute("class", "imgXL");
-                img_3.src = 'data:image/jpeg;base64, ' + image;
+                img_3.src = 'data:image/jpeg;base64, ' + Response.locations[i].image;
                 div_8.appendChild(img_3);
 
                 var br_2 = document.createElement("br");
