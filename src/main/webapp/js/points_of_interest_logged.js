@@ -70,7 +70,7 @@ captureDataGetPointsOfInterest = function (event) {
                     z = "Vida Noturna";
                 } else if (z == "Leisure") {
                     z = "Lazer";
-                } else if (z == "Animal & WildLife") {
+                } else if (z == "Animal & Wildlife") {
                     z = "Animais e Vida Selvagem";
                 } else if (z == "Outdoor & Pets") {
                     z = "Ar livre e Animais Domésticos";
