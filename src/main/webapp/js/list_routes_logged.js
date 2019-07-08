@@ -79,7 +79,7 @@ captureDataGetRoutes = function (event) {
                     x[j] = z;
                 }
 
-                for (j = 0; j < Response.routes[i].categories.length; j++) {
+                for (j = 0; j < Response.routes[i].regions.length; j++) {
                     var z = Response.routes[i].regions[j].region;
 
                     y[j] = z;
@@ -312,7 +312,7 @@ captureDataGetRoutesByUser = function (event) {
                     x[j] = z;
                 }
 
-                for (j = 0; j < Response.routes[i].categories.length; j++) {
+                for (j = 0; j < Response.routes[i].regions.length; j++) {
                     var z = Response.routes[i].regions[j].region;
 
                     y[j] = z;
@@ -554,7 +554,7 @@ teste = function () {
                         x[j] = z;
                     }
 
-                    for (j = 0; j < Response.routes[i].categories.length; j++) {
+                    for (j = 0; j < Response.routes[i].regions.length; j++) {
                         var z = Response.routes[i].regions[j].region;
 
                         y[j] = z;
