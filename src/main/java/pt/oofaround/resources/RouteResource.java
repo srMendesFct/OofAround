@@ -433,7 +433,7 @@ public class RouteResource {
 				List<GeoPoint> locationsCoords;
 				List<String> locationsNames;
 				List<String> placeIDs;
-				String image = "";
+				String image = new String();
 
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 					res = new JSONObject();
@@ -458,13 +458,9 @@ public class RouteResource {
 
 							Storage db = storage.getService();
 
-							BlobId blobId;
+							BlobId blobId = BlobId.of("oofaround.appspot.com", locationsNames.get(i));
 
-							Blob blob;
-
-							blobId = BlobId.of("oofaround.appspot.com", locationsNames.get(i));
-
-							blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+							Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
 							image = Base64.getEncoder().encodeToString(blob.getContent());
 						}
