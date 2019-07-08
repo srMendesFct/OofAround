@@ -1,3 +1,4 @@
+marosca = 100;
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -133,19 +134,21 @@ captureDataGetRoutes = function (event) {
 
                 var button = document.createElement("button");
                 button.setAttribute("data-toggle", "modal");
-                button.setAttribute("data-target", "#loginForm" + i);
+                button.setAttribute("data-target", "#loginForm" + marosca);
                 button.style.marginBottom = "3px";
                 button.innerHTML = "Saber Mais";
                 p.appendChild(button);
 
                 var div_3 = document.createElement("div");
                 div_3.setAttribute("class", "modal fade");
-                div_3.setAttribute("id", "loginForm" + i);
+                div_3.setAttribute("id", "loginForm" + marosca);
                 div_3.setAttribute("tabindex", "-1");
                 div_3.setAttribute("role", "dialog");
                 div_3.setAttribute("aria-labelledby", "myModalLabel");
                 div_3.setAttribute("aria-hidden", "true");
                 document.getElementById("body").appendChild(div_3);
+
+                marosca = marosca + 1;
 
                 var div_4 = document.createElement("div");
                 div_4.setAttribute("class", "modal-dialog");
@@ -609,19 +612,21 @@ captureDataGetRoutesByUser = function () {
 
                     var button = document.createElement("button");
                     button.setAttribute("data-toggle", "modal");
-                    button.setAttribute("data-target", "#loginForm" + i);
+                    button.setAttribute("data-target", "#loginForm" + marosca);
                     button.style.marginBottom = "3px";
                     button.innerHTML = "Saber Mais";
                     p.appendChild(button);
 
                     var div_3 = document.createElement("div");
                     div_3.setAttribute("class", "modal fade");
-                    div_3.setAttribute("id", "loginForm" + i);
+                    div_3.setAttribute("id", "loginForm" + marosca);
                     div_3.setAttribute("tabindex", "-1");
                     div_3.setAttribute("role", "dialog");
                     div_3.setAttribute("aria-labelledby", "myModalLabel");
                     div_3.setAttribute("aria-hidden", "true");
                     document.getElementById("body").appendChild(div_3);
+
+                    marosca = marosca + 1;
 
                     var div_4 = document.createElement("div");
                     div_4.setAttribute("class", "modal-dialog");

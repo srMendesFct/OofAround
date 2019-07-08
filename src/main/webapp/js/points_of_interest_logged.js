@@ -28,10 +28,9 @@ captureDataGetPointsOfInterest = function (event) {
         crossDomain: true,
         success: function (Response) {
             
-            var tabcontent = document.getElementById("berna");
-            while (tabcontent.firstChild != null) {
-                console.log("apaga");
-                tabcontent.removeChild(tabcontent.firstChild);
+            var tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
 
             for (i = 0; i < Response.locations.length; i++) {
@@ -205,7 +204,7 @@ captureDataGetPointsOfInterest = function (event) {
                 div_10.appendChild(label_3);
 
                 var p_3 = document.createElement("p");
-                p_3.innerHTML = Response.locations[i].category;
+                p_3.innerHTML = z;
                 div_10.appendChild(p_3);
 
                 var div_11 = document.createElement("div");
