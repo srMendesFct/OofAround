@@ -43,7 +43,7 @@ captureDataGetRoutes = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-
+            console.log(Response);
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
@@ -116,6 +116,7 @@ captureDataGetRoutes = function (event) {
 
                 var img = document.createElement("img");
                 img.src = "img/edit-pencil-icon-vector-13483315.jpg";
+                img.setAttribute("class", "imgXS");
                 p.appendChild(img);
 
                 var button = document.createElement("button");
@@ -341,10 +342,12 @@ captureDataGetRoutesByUser = function (event) {
 
                 var img = document.createElement("img");
                 img.src = "img/edit-pencil-icon-vector-13483315.jpg";
+                img.setAttribute("class", "imgXS");
                 p.appendChild(img);
 
                 var img_2 = document.createElement("img");
                 img_2.src = "img/cross.jpg";
+                img_2.setAttribute("class", "imgXS");
                 p.appendChild(img_2);
 
                 var button = document.createElement("button");
@@ -509,6 +512,6 @@ setupCallback = function () {
     });
 
     document.getElementById("byUser").addEventListener("click", function () {
-        captureDataGetRoutesByUser;
+        captureDataGetRoutesByUser("event");
     });
 };
