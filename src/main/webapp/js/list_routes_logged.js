@@ -2,8 +2,13 @@ function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
-    // Get all elements with class="pure-form" and hide them
+    // Get all elements with class="dente" and hide them
     tabcontent = document.getElementsByClassName("dente");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tabcontent = document.getElementsByClassName("random");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
@@ -523,6 +528,9 @@ teste = function () {
             var counter = 0;
             for (i = 0; i < Response.routes.length; i++) {
                 if (localStorage.getItem('username') == Response.routes[i].creatorUsername) {
+                    console.log(localStorage.getItem('username'));
+                    console.log(Response.routes[i].creatorUsername);
+
                     counter = counter + 1;
                     var x = [];
                     var y = [];
@@ -753,6 +761,7 @@ window.onload = function () {
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
+        teste();
     }
 };
 
@@ -767,6 +776,5 @@ setupCallback = function () {
 
     document.getElementById("byUser").addEventListener("click", function () {
         //captureDataGetRoutesByUser();
-        teste();
     });
 };
