@@ -114,6 +114,10 @@ captureDataGetRoutes = function (event) {
                 p.align = "right";
                 div_2.appendChild(p);
 
+                var img = document.createElement("img");
+                img.src = "img/edit-pencil-icon-vector-13483315.jpg";
+                p.appendChild(img);
+
                 var button = document.createElement("button");
                 button.setAttribute("data-toggle", "modal");
                 button.setAttribute("data-target", "#loginForm" + i);
@@ -372,9 +376,9 @@ captureDataGetRoutesByUser = function (event) {
                 div_6.setAttribute("class", "modal-header text-center");
                 div_5.appendChild(div_6);
 
-                var img_2 = document.createElement("img");
-                img_2.src = "img/logo.png";
-                div_6.appendChild(img_2);
+                var img_3 = document.createElement("img");
+                img_3.src = "img/logo.png";
+                div_6.appendChild(img_3);
 
                 var button_2 = document.createElement("button");
                 button_2.setAttribute("type", "button");
