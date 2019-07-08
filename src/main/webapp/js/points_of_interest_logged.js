@@ -1,4 +1,3 @@
-var l = 0;
 captureDataGetPointsOfInterest = function (event) {
     var limit = 5;
     var lastName = "";
@@ -27,12 +26,11 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-
+            var l;
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-
 
             for (i = 0; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
