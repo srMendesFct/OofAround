@@ -26,21 +26,21 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            var img_3;
+            var img_3 = document.createElement("img");
             img_3.src = "";
-            var label;
+            var label = document.createElement("label");
             label.innerHTML ="";
-            var p_2;
+            var p_2 = document.createElement("p");
             p_2.innerHTML = "";
-            var p_3;
+            var p_3 = document.createElement("p");
             p_3.innerHTML = "";
-            var p_4;
+            var p_4 = document.createElement("p");
             p_4.innerHTML = "";
-            var p_5;
+            var p_5 = document.createElement("p");
             p_5.innerHTML = "";
-            var p_6;
+            var p_6 = document.createElement("p");
             p_6.innerHTML = "";
-            var p_7;
+            var p_7 = document.createElement("p");
             p_7.innerHTML = "";
 
             var tabcontent = document.getElementsByClassName("tabcontent");
@@ -174,7 +174,6 @@ captureDataGetPointsOfInterest = function (event) {
                 div_8.setAttribute("class", "md-form mb-5");
                 div_7.appendChild(div_8);
 
-                label = document.createElement("label");
                 label.setAttribute("data-error", "wrong");
                 label.setAttribute("data-success", "right");
                 label.innerHTML = Response.locations[i].name;
@@ -183,7 +182,6 @@ captureDataGetPointsOfInterest = function (event) {
                 var br = document.createElement("br");
                 div_8.appendChild(br);
 
-                img_3 = document.createElement("img");
                 img_3.setAttribute("class", "imgXL");
                 img_3.src = 'data:image/jpeg;base64, ' + Response.locations[i].image;
                 div_8.appendChild(img_3);
@@ -201,7 +199,6 @@ captureDataGetPointsOfInterest = function (event) {
                 label_2.innerHTML = "Morada:";
                 div_9.appendChild(label_2);
 
-                p_2 = document.createElement("p");
                 p_2.innerHTML = Response.locations[i].address;
                 div_9.appendChild(p_2);
 
@@ -215,7 +212,6 @@ captureDataGetPointsOfInterest = function (event) {
                 label_3.innerHTML = "Categoria:";
                 div_10.appendChild(label_3);
 
-                p_3 = document.createElement("p");
                 p_3.innerHTML = Response.locations[i].category;
                 div_10.appendChild(p_3);
 
@@ -229,7 +225,6 @@ captureDataGetPointsOfInterest = function (event) {
                 label_4.innerHTML = "Latitude:";
                 div_11.appendChild(label_4);
 
-                p_4 = document.createElement("p");
                 p_4.innerHTML = Response.locations[i].latitude;
                 div_11.appendChild(p_4);
 
@@ -243,7 +238,6 @@ captureDataGetPointsOfInterest = function (event) {
                 label_5.innerHTML = "Longitude:";
                 div_12.appendChild(label_5);
 
-                p_5 = document.createElement("p");
                 p_5.innerHTML = Response.locations[i].longitude;
                 div_12.appendChild(p_5);
 
@@ -257,7 +251,6 @@ captureDataGetPointsOfInterest = function (event) {
                 label_6.innerHTML = "Região:";
                 div_13.appendChild(label_6);
 
-                p_6 = document.createElement("p");
                 p_6.innerHTML = Response.locations[i].region;
                 div_13.appendChild(p_6);
 
@@ -271,7 +264,6 @@ captureDataGetPointsOfInterest = function (event) {
                 label_7.innerHTML = "Descrição:";
                 div_14.appendChild(label_7);
 
-                p_7 = document.createElement("p");
                 p_7.innerHTML = Response.locations[i].description;
                 div_14.appendChild(p_7);
 
