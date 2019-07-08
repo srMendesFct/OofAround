@@ -29,6 +29,7 @@ captureDataGetPointsOfInterest = function (event) {
             
             var tabcontent = document.getElementById("berna");
             while (tabcontent.firstChild != null) {
+                console.log("apaga");
                 tabcontent.removeChild(tabcontent.firstChild);
             }
 
