@@ -458,7 +458,7 @@ public class RouteResource {
 
 							Storage db = storage.getService();
 
-							BlobId blobId = BlobId.of("oofaround.appspot.com", locationsNames.get(i));
+							BlobId blobId = BlobId.of("oofaround.appspot.com", "Aqueduto das Águas Livres");
 
 							Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
@@ -504,7 +504,7 @@ public class RouteResource {
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.put("tokenID", at.tokenID);
 
-				return Response.ok().entity(g.toJson(res)).build();
+				return Response.ok().entity(res.toString()).build();
 			} catch (Exception e) {
 				String s = "";
 				for (StackTraceElement ss : e.getStackTrace()) {
@@ -803,6 +803,13 @@ public class RouteResource {
 				List<String> routes = (List<String>) document.get("doneRoutes");
 				routes.add(data.name + " " + data.creatorUsername);
 				document.getReference().update("score", score, "doneRoutes", routes);
+			}
+
+			querySnapshot = db.collection("flag")
+					.whereEqualTo(com.google.cloud.firestore.FieldPath.documentId(), "ranking").get();
+
+			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				document.getReference().update("flag", true);
 			}
 
 			AuthToken at = new AuthToken(data.usernameR, data.role);
