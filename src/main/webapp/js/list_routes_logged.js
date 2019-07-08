@@ -520,9 +520,10 @@ teste = function () {
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-
+            var counter = 0;
             for (i = 0; i < Response.routes.length; i++) {
                 if (localStorage.getItem('username') == Response.routes[i].creatorUsername) {
+                    counter = counter + 1;
                     var x = [];
                     var y = [];
                     for (j = 0; j < Response.routes[i].categories.length; j++) {
@@ -725,9 +726,10 @@ teste = function () {
                     p_8.innerHTML = Response.routes[i].creatorUsername;
                     div_15.appendChild(p_8);
                 }
-                else {
-                    alert("Este utilizador não tem qualquer percurso.");
-                }
+
+            }
+            if(counter == 0) {
+                alert("O utilizador não tem qualquer percurso.");
             }
         },
         error: function (Response) {
