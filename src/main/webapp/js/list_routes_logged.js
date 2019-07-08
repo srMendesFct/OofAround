@@ -1,7 +1,7 @@
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
- 
+
     // Get all elements with class="dente" and hide them
     tabcontent = document.getElementsByClassName("dente");
     for (i = 0; i < tabcontent.length; i++) {
@@ -736,7 +736,7 @@ teste = function () {
                 }
 
             }
-            if(counter == 0) {
+            if (counter == 0) {
                 alert("O utilizador não tem qualquer percurso.");
             }
         },
@@ -762,6 +762,10 @@ window.onload = function () {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
         teste();
+        tabcontent_2 = document.getElementsByClassName("random");
+        for (i = 0; i < tabcontent_2.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
     }
 };
 
