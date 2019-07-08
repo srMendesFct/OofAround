@@ -767,6 +767,6 @@ setupCallback = function () {
 
     document.getElementById("byUser").addEventListener("click", function () {
         //captureDataGetRoutesByUser();
-        test();
+        teste();
     });
 };
