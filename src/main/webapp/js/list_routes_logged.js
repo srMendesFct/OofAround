@@ -48,16 +48,6 @@ captureDataGetRoutes = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            var label = document.createElement("label");
-            label.innerHTML ="";
-            var p_3 = document.createElement("p");
-            p_3.innerHTML = "";
-            var p_4 = document.createElement("p");
-            p_4.innerHTML = "";
-            var p_5 = document.createElement("p");
-            p_5.innerHTML = "";
-            var p_6 = document.createElement("p");
-            p_6.innerHTML = "";
             
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -199,6 +189,7 @@ captureDataGetRoutes = function (event) {
                 div_8.setAttribute("class", "md-form mb-5");
                 div_7.appendChild(div_8);
 
+                var label = createElement("label");
                 label.setAttribute("data-error", "wrong");
                 label.setAttribute("data-success", "right");
                 label.innerHTML = Response.routes[i].name;
@@ -220,6 +211,7 @@ captureDataGetRoutes = function (event) {
                 label_2.innerHTML = "Categorias:";
                 div_10.appendChild(label_2);
 
+                var p_3 = document.createElement("p");
                 p_3.innerHTML = x;
                 div_10.appendChild(p_3);
 
@@ -233,6 +225,7 @@ captureDataGetRoutes = function (event) {
                 label_6.innerHTML = "Região:";
                 div_13.appendChild(label_6);
 
+                var p_4 = document.createElement("p");
                 p_4.innerHTML = y;
                 div_13.appendChild(p_4);
 
@@ -246,6 +239,7 @@ captureDataGetRoutes = function (event) {
                 label_7.innerHTML = "Descrição:";
                 div_14.appendChild(label_7);
 
+                var p_5 = document.createElement("p");
                 p_5.innerHTML = Response.routes[i].description;
                 div_14.appendChild(p_5);
 
@@ -259,6 +253,7 @@ captureDataGetRoutes = function (event) {
                 label_8.innerHTML = "Criado por:";
                 div_15.appendChild(label_8);
 
+                var p_6 = document.createElement("p");
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
             }
@@ -527,16 +522,6 @@ captureDataGetRoutesByUser = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            var label = document.createElement("label");
-            label.innerHTML ="";
-            var p_3 = document.createElement("p");
-            p_3.innerHTML = "";
-            var p_4 = document.createElement("p");
-            p_4.innerHTML = "";
-            var p_5 = document.createElement("p");
-            p_5.innerHTML = "";
-            var p_6 = document.createElement("p");
-            p_6.innerHTML = "";
 
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -680,6 +665,7 @@ captureDataGetRoutesByUser = function () {
                     div_8.setAttribute("class", "md-form mb-5");
                     div_7.appendChild(div_8);
 
+                    var label = document.createElement("label");
                     label.setAttribute("data-error", "wrong");
                     label.setAttribute("data-success", "right");
                     label.innerHTML = Response.routes[i].name;
@@ -701,6 +687,7 @@ captureDataGetRoutesByUser = function () {
                     label_3.innerHTML = "Categorias:";
                     div_10.appendChild(label_3);
 
+                    var p_3 = document.createElement("p");
                     p_3.innerHTML = x;
                     div_10.appendChild(p_3);
 
@@ -714,6 +701,7 @@ captureDataGetRoutesByUser = function () {
                     label_6.innerHTML = "Região:";
                     div_13.appendChild(label_6);
 
+                    var p_4 = document.createElement("p");
                     p_4.innerHTML = y;
                     div_13.appendChild(p_4);
 
@@ -727,6 +715,7 @@ captureDataGetRoutesByUser = function () {
                     label_7.innerHTML = "Descrição:";
                     div_14.appendChild(label_7);
 
+                    var p_5 = document.createElement("p");
                     p_5.innerHTML = Response.routes[i].description;
                     div_14.appendChild(p_5);
 
@@ -740,6 +729,7 @@ captureDataGetRoutesByUser = function () {
                     label_8.innerHTML = "Criado por:";
                     div_15.appendChild(label_8);
 
+                    var p_6 = document.createElement("p");
                     p_6.innerHTML = Response.routes[i].creatorUsername;
                     div_15.appendChild(p_6);
                 }
