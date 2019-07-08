@@ -107,7 +107,7 @@ captureDataGetRoutes = function (event) {
                 var header_4 = document.createElement("h4");
                 header_4.style.textAlign = "left";
                 header_4.style.fontSize = "16px"
-                header_4.innerHTML = "Região: " + Response.routes[i].region;
+                header_4.innerHTML = "Região: " + Response.routes[i].regions;
                 div_2.appendChild(header_4);
 
                 var p = document.createElement("p");
@@ -214,7 +214,7 @@ captureDataGetRoutes = function (event) {
                 div_13.appendChild(label_6);
 
                 var p_6 = document.createElement("p");
-                p_6.innerHTML = Response.locations[i].region;
+                p_6.innerHTML = Response.routes[i].regions;
                 div_13.appendChild(p_6);
 
                 var div_14 = document.createElement("div");
@@ -268,7 +268,7 @@ captureDataGetRoutesByUser = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-
+            console.log(Response);
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
@@ -333,7 +333,7 @@ captureDataGetRoutesByUser = function (event) {
                 var header_4 = document.createElement("h4");
                 header_4.style.textAlign = "left";
                 header_4.style.fontSize = "16px"
-                header_4.innerHTML = "Região: " + Response.routes[i].region;
+                header_4.innerHTML = "Região: " + Response.routes[i].regions;
                 div_2.appendChild(header_4);
 
                 var p = document.createElement("p");
@@ -445,7 +445,7 @@ captureDataGetRoutesByUser = function (event) {
                 div_13.appendChild(label_6);
 
                 var p_6 = document.createElement("p");
-                p_6.innerHTML = Response.locations[i].region;
+                p_6.innerHTML = Response.routes[i].regions;
                 div_13.appendChild(p_6);
 
                 var div_14 = document.createElement("div");
@@ -483,8 +483,8 @@ captureDataGetRoutesByUser = function (event) {
         },
         data: JSON.stringify(values) // post data || get data
     });
-    event.preventDefault();
 };
+
 window.onload = function () {
     var user = localStorage.getItem('username');
     var image = localStorage.getItem('image');
@@ -512,6 +512,6 @@ setupCallback = function () {
     });
 
     document.getElementById("byUser").addEventListener("click", function () {
-        captureDataGetRoutesByUser("event");
+        captureDataGetRoutesByUser();
     });
 };
