@@ -266,7 +266,7 @@ captureDataGetRoutes = function (event) {
     event.preventDefault();
 };
 
-captureDataGetRoutesByUser = function (event) {
+captureDataGetRoutesByUser_teste = function (event) {
     var values = {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
@@ -504,7 +504,7 @@ captureDataGetRoutesByUser = function (event) {
     });
 };
 
-teste = function () {
+captureDataGetRoutesByUser = function () {
     var res = [""];
 
     var values = {
@@ -761,7 +761,6 @@ window.onload = function () {
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
-        teste();
         tabcontent_2 = document.getElementsByClassName("random");
         for (i = 0; i < tabcontent_2.length; i++) {
             tabcontent_2[i].style.display = "none";
@@ -779,6 +778,6 @@ setupCallback = function () {
     });
 
     document.getElementById("byUser").addEventListener("click", function () {
-        //captureDataGetRoutesByUser();
+        captureDataGetRoutesByUser();
     });
 };
