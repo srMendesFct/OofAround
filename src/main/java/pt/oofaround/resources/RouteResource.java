@@ -748,17 +748,20 @@ public class RouteResource {
 	public Response ratePlace(RouteData data) throws NumberFormatException, InterruptedException, ExecutionException {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "ratePlace")) {
-			CollectionReference locations = db.collection("locations");
+			CollectionReference locations = db.collection("routes");
 
-			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("name", data.name).get();
+			ApiFuture<QuerySnapshot> querySnapshot = locations.whereEqualTo("name", data.name)
+					.whereEqualTo("creatorUsername", data.creatorUsername).get();
 			double rate = 0;
 			long nbrRates = 0;
 			long newRate = 0;
 			DocumentReference docRef = null;
 
+			try {
+			
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				docRef = document.getReference();
-				nbrRates = document.getLong("nbrRates") + 1;
+				nbrRates = document.getLong("numberRates") + 1;
 				newRate = document.getLong(data.rating) + 1;
 				rate = (document.getLong("1") * 1 + document.getLong("2") * 2 + document.getLong("3") * 3
 						+ document.getLong("4") * 4 + document.getLong("5") * 5 + Integer.valueOf(data.rating))
@@ -769,10 +772,17 @@ public class RouteResource {
 
 			docData.put("nbrRates", nbrRates);
 			docData.put(data.rating, newRate);
+			
 
-			ApiFuture<WriteResult> future = docRef.update(docData);
+				ApiFuture<WriteResult> future = docRef.update(docData);
 
-			WriteResult result = future.get();
+			} catch (Exception e) {
+				String s = "";
+				for (StackTraceElement ss : e.getStackTrace()) {
+					s += "\n" + ss.toString();
+				}
+				return Response.status(Status.NOT_FOUND).entity(s).build();
+			}
 
 			JsonObject res = new JsonObject();
 			AuthToken at = new AuthToken(data.usernameR, data.role);

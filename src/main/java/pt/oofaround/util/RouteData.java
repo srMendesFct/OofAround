@@ -28,12 +28,13 @@ public class RouteData {
 		this.usernameR = usernameR;
 	}
 
-	public RouteData(String name, String tokenID, String role, String usernameR, int rating) {
+	public RouteData(String name, String tokenID, String role, String usernameR, int rating, String creatorUsername) {
 		this.name = name;
 		this.tokenID = tokenID;
 		this.role = role;
 		this.usernameR = usernameR;
 		this.rating = String.valueOf(rating);
+		this.creatorUsername = creatorUsername;
 	}
 
 	public RouteData(String name, String tokenID, String role, String usernameR, String creatorUsername) {
