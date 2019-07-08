@@ -106,6 +106,7 @@ captureDataChangePassword = function (event) {
     $.each($('form[name="Alterar Password"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });
+    console.log(JSON.stringify(values));
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/userinfo/alterpassword",
@@ -157,10 +158,8 @@ setupCallback = function () {
 
     password = document.getElementById("new password");
     confirmPassword = document.getElementById("confirmPassword");
-    if(password == confirmPassword) {
-        var frms = $('form[name="Alterar Password"]');
-        frms[0].onsubmit = captureDataChangePassword;
-    }
+    var frms = $('form[name="Alterar Password"]');
+    frms[0].onsubmit = captureDataChangePassword;
     var frmsl = $('form[name="Alterar Dados"]');
     frmsl[0].onsubmit = captureDataChangeUserInfo;
 
