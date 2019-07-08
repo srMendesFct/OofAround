@@ -428,64 +428,85 @@ public class RouteResource {
 				}
 
 				List<String> nameList = new LinkedList<String>();
-				JsonArray jsonArr = new JsonArray();
-				JsonObject res;
+				JSONArray jsonArr = new JSONArray();
+				JSONObject res;
 				List<GeoPoint> locationsCoords;
 				List<String> locationsNames;
 				List<String> placeIDs;
+				String image = "";
 
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-					res = new JsonObject();
-					res.addProperty("name", document.getString("name"));
-					res.addProperty("description", document.getString("description"));
-					res.addProperty("creatorUsername", document.getString("creatorUsername"));
+					res = new JSONObject();
+					res.put("name", document.getString("name"));
+					res.put("description", document.getString("description"));
+					res.put("creatorUsername", document.getString("creatorUsername"));
 
 					locationsNames = (List<String>) document.get("locationsNames");
 					locationsCoords = (List<GeoPoint>) document.get("locationsCoords");
 					placeIDs = (List<String>) document.get("placeIDs");
 
-					JsonArray array = new JsonArray();
-					JsonObject jsObj;
+					JSONArray array = new JSONArray();
+					JSONObject jsObj;
 
 					for (int i = 0; i < locationsNames.size(); i++) {
-						jsObj = new JsonObject();
-						jsObj.addProperty("name", locationsNames.get(i));
-						jsObj.addProperty("latitude", locationsCoords.get(i).getLatitude());
-						jsObj.addProperty("longitude", locationsCoords.get(i).getLongitude());
-						jsObj.addProperty("placeIDs", placeIDs.get(i));
-						array.add(jsObj);
+						jsObj = new JSONObject();
+						jsObj.put("name", locationsNames.get(i));
+
+						if (i == 0) {
+							StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder()
+									.setProjectId("oofaround").build();
+
+							Storage db = storage.getService();
+
+							BlobId blobId;
+
+							Blob blob;
+
+							blobId = BlobId.of("oofaround.appspot.com", locationsNames.get(i));
+
+							blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+							image = Base64.getEncoder().encodeToString(blob.getContent());
+						}
+
+						jsObj.put("latitude", locationsCoords.get(i).getLatitude());
+						jsObj.put("longitude", locationsCoords.get(i).getLongitude());
+						jsObj.put("placeIDs", placeIDs.get(i));
+						array.put(jsObj);
 					}
 
-					res.add("locations", array);
+					res.put("locations", array);
 					Map<String, Integer> map = (Map<String, Integer>) document.get("categories");
-					JsonArray jArr = new JsonArray();
+					JSONArray jArr = new JSONArray();
 					for (String s : map.keySet()) {
-						jsObj = new JsonObject();
-						jsObj.addProperty("category", s);
-						jArr.add(jsObj);
+						jsObj = new JSONObject();
+						jsObj.put("category", s);
+						jArr.put(jsObj);
 					}
-					res.add("categories", jArr);
+					res.put("categories", jArr);
 
 					map = (Map<String, Integer>) document.get("regions");
 
-					jArr = new JsonArray();
+					jArr = new JSONArray();
 
 					for (String s : map.keySet()) {
-						jsObj = new JsonObject();
-						jsObj.addProperty("region", s);
-						jArr.add(jsObj);
+						jsObj = new JSONObject();
+						jsObj.put("region", s);
+						jArr.put(jsObj);
 					}
 
-					res.add("regions", jArr);
-					res.addProperty("rating", document.getDouble("rating"));
-					res.addProperty("status", document.getString("status"));
-					jsonArr.add(res);
+					res.put("regions", jArr);
+					res.put("rating", document.getDouble("rating"));
+					res.put("status", document.getString("status"));
+
+					res.put("image", image);
+					jsonArr.put(res);
 				}
 
-				res = new JsonObject();
-				res.add("routes", jsonArr);
+				res = new JSONObject();
+				res.put("routes", jsonArr);
 				AuthToken at = new AuthToken(data.usernameR, data.role);
-				res.addProperty("tokenID", at.tokenID);
+				res.put("tokenID", at.tokenID);
 
 				return Response.ok().entity(g.toJson(res)).build();
 			} catch (Exception e) {
