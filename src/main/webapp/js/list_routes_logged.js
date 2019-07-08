@@ -2,8 +2,13 @@ function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
-    // Get all elements with class="pure-form" and hide them
+    // Get all elements with class="dente" and hide them
     tabcontent = document.getElementsByClassName("dente");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tabcontent = document.getElementsByClassName("random");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
@@ -261,7 +266,7 @@ captureDataGetRoutes = function (event) {
     event.preventDefault();
 };
 
-captureDataGetRoutesByUser = function (event) {
+captureDataGetRoutesByUser_teste = function (event) {
     var values = {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
@@ -499,7 +504,7 @@ captureDataGetRoutesByUser = function (event) {
     });
 };
 
-teste = function () {
+captureDataGetRoutesByUser = function () {
     var res = [""];
 
     var values = {
@@ -523,6 +528,9 @@ teste = function () {
             var counter = 0;
             for (i = 0; i < Response.routes.length; i++) {
                 if (localStorage.getItem('username') == Response.routes[i].creatorUsername) {
+                    console.log(localStorage.getItem('username'));
+                    console.log(Response.routes[i].creatorUsername);
+
                     counter = counter + 1;
                     var x = [];
                     var y = [];
@@ -728,7 +736,7 @@ teste = function () {
                 }
 
             }
-            if(counter == 0) {
+            if (counter == 0) {
                 alert("O utilizador não tem qualquer percurso.");
             }
         },
@@ -753,6 +761,10 @@ window.onload = function () {
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
+        tabcontent_2 = document.getElementsByClassName("random");
+        for (i = 0; i < tabcontent_2.length; i++) {
+            tabcontent_2[i].style.display = "none";
+        }
     }
 };
 
@@ -766,7 +778,6 @@ setupCallback = function () {
     });
 
     document.getElementById("byUser").addEventListener("click", function () {
-        //captureDataGetRoutesByUser();
-        teste();
+        captureDataGetRoutesByUser();
     });
 };
