@@ -1,7 +1,7 @@
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
-
+ 
     // Get all elements with class="dente" and hide them
     tabcontent = document.getElementsByClassName("dente");
     for (i = 0; i < tabcontent.length; i++) {
