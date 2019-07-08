@@ -108,16 +108,18 @@ captureDataGetPointsOfInterest = function (event) {
                 button.innerHTML = "Saber Mais";
                 p.appendChild(button);
 
-                marosca = marosca + 1;
+                
 
                 var div_3 = document.createElement("div");
                 div_3.setAttribute("class", "modal fade");
-                div_3.setAttribute("id", "loginForm" + i);
+                div_3.setAttribute("id", "loginForm" + marosca);
                 div_3.setAttribute("tabindex", "-1");
                 div_3.setAttribute("role", "dialog");
                 div_3.setAttribute("aria-labelledby", "myModalLabel");
                 div_3.setAttribute("aria-hidden", "true");
                 document.getElementById("body").appendChild(div_3);
+
+                marosca = marosca + 1;
 
                 var div_4 = document.createElement("div");
                 div_4.setAttribute("class", "modal-dialog");
