@@ -1,3 +1,4 @@
+var marosca = 100;
 captureDataGetPointsOfInterest = function (event) {
     var limit = 5;
     var lastName = "";
@@ -102,10 +103,12 @@ captureDataGetPointsOfInterest = function (event) {
 
                 var button = document.createElement("button");
                 button.setAttribute("data-toggle", "modal");
-                button.setAttribute("data-target", "#loginForm" + i);
+                button.setAttribute("data-target", "#loginForm" + marosca);
                 button.style.marginBottom = "3px";
                 button.innerHTML = "Saber Mais";
                 p.appendChild(button);
+
+                marosca = marosca + 1;
 
                 var div_3 = document.createElement("div");
                 div_3.setAttribute("class", "modal fade");
@@ -258,8 +261,6 @@ captureDataGetPointsOfInterest = function (event) {
                 var p_7 = document.createElement("p");
                 p_7.innerHTML = Response.locations[i].description;
                 div_14.appendChild(p_7);
-
-                lastName = Response.locations[i].name;
             }
         },
         error: function (Response) {
