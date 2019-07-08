@@ -764,7 +764,7 @@ window.onload = function () {
         teste();
         tabcontent_2 = document.getElementsByClassName("random");
         for (i = 0; i < tabcontent_2.length; i++) {
-            tabcontent[i].style.display = "none";
+            tabcontent_2[i].style.display = "none";
         }
     }
 };
