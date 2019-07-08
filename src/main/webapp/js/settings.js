@@ -108,7 +108,7 @@ captureDataChangePassword = function (event) {
     });
     $.ajax({
         type: "POST",
-        url: "https://oofaround.appspot.com/rest/userinfo/alterself",
+        url: "https://oofaround.appspot.com/rest/userinfo/alterpassword",
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
@@ -155,9 +155,13 @@ window.onload = function () {
 
 setupCallback = function () {
 
+    password = document.getElementById("new password");
+    confirmPassword = document.getElementById("confirmPassword");
+    if(password == confirmPassword) {
+        var frms = $('form[name="Alterar Password"]');
+        frms[0].onsubmit = captureDataChangePassword;
+    }
     var frmsl = $('form[name="Alterar Dados"]');
-    var frms = $('form[name="Alterar Password"]');
-    frms[0].onsubmit = captureDataChangePassword;
     frmsl[0].onsubmit = captureDataChangeUserInfo;
 
     document.getElementById("delete").addEventListener("click", function () {
