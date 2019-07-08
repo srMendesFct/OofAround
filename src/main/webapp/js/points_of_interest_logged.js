@@ -27,7 +27,7 @@ captureDataGetPointsOfInterest = function (event) {
         crossDomain: true,
         success: function (Response) {
             
-            var tabcontent = document.getElementsById("berna");
+            var tabcontent = document.getElementById("berna");
             while (tabcontent.firstChild != null) {
                 tabcontent.removeChild(tabcontent.firstChild);
             }
