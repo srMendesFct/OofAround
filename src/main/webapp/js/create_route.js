@@ -64,30 +64,6 @@ function initMap() {
 
 }
 
-function getAddress(location) {
-  geocoder.geocode({
-    'location': location
-  }, function (results, status) {
-    if (status == 'OK') {
-      return results[0].formatted_address;
-    } else {
-      alert('Error NO CODE ADDRESS?');
-    }
-  });
-}
-
-function getPlaceId(location) {
-  geocoder.geocode({
-    'location': location
-  }, function (results, status) {
-    if (status == 'OK') {
-      return results[1].place_id;
-    } else {
-      alert('Error NO PLACEID????');
-    }
-  });
-}
-
 function createWaypoints() {
   for (var i = 1; i < routePoints.length - 1; i++) {
     waypts.push({
@@ -119,6 +95,7 @@ captureDataCreateCourse = function () {
   values['role'] = localStorage.getItem('role');
   values['creatorUsername'] = localStorage.getItem('username');
   values['locationNames'] = locationNames;
+  console.log(locationNames);
 
   $.each($('form[name="courseForm"]').serializeArray(), function (i, field) {
     values[field.name] = field.value;
