@@ -126,11 +126,11 @@ captureDataGetPointsOfInterest = function (event) {
         limit: limit,
         lastName: lastName,
         region: document.getElementById("distrito").value,
-        categoriesGet: res
+        categories: res
     };
     $.ajax({
         type: "POST",
-        url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
+        url: "https://oofaround.appspot.com/rest/location/guest/getcategoryregion",
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
