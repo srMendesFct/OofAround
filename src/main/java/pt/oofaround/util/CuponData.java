@@ -34,5 +34,9 @@ public class CuponData {
 		this.role = role;
 		this.region = region;
 	}
+	
+	public CuponData(String region) {
+		this.region = region;
+	}
 
 }
