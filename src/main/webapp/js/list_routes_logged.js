@@ -542,7 +542,6 @@ setupCallback = function () {
     });
 
     document.getElementById("byUser").addEventListener("click", function () {
-        openCity("event", 'random');
         captureDataGetRoutesByUser();
     });
 };
