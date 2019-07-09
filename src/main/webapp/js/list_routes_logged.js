@@ -192,7 +192,7 @@ captureDataGetRoutes = function (event) {
                 div_8.setAttribute("class", "md-form mb-5");
                 div_7.appendChild(div_8);
 
-                var label = createElement("label");
+                var label = document.createElement("label");
                 label.setAttribute("data-error", "wrong");
                 label.setAttribute("data-success", "right");
                 label.innerHTML = Response.routes[i].name;
@@ -530,6 +530,7 @@ captureDataGetRoutesByUser = function () {
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
+
             var counter = 0;
             for (i = 0; i < Response.routes.length; i++) {
                 if (localStorage.getItem('username') == Response.routes[i].creatorUsername) {
@@ -765,10 +766,7 @@ window.onload = function () {
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
-        tabcontent_2 = document.getElementsByClassName("random");
-        for (i = 0; i < tabcontent_2.length; i++) {
-            tabcontent_2[i].style.display = "none";
-        }
+
     }
 };
 

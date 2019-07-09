@@ -1,10 +1,3 @@
-window.onload = function () {
-    var frmsr = $('form[name="register"]');
-    var frmsl = $('form[name="login"]');
-    frmsl[0].onsubmit = captureDataLogin;
-    frmsr[0].onsubmit = captureDataRegister;
-};
-
 captureDataGetUserInfo = function (values) {
     var values = {
         tokenID: localStorage.getItem('token'),
@@ -114,4 +107,11 @@ captureDataLogin = function (event) {
         data: JSON.stringify(values)
     });
     event.preventDefault();
+};
+
+window.onload = function () {
+    var frmsr = $('form[name="register"]');
+    var frmsl = $('form[name="login"]');
+    frmsl[0].onsubmit = captureDataLogin;
+    frmsr[0].onsubmit = captureDataRegister;
 };
