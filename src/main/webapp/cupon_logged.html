@@ -10,13 +10,79 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="./js/cupon_logged.js"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiPZQSt7k2Hhi9YvZnpHl8ibIaL81fb24&callback=initMap"></script>
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
   <link rel="stylesheet" type="text/css" href="css/footer.css">
   <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
   <link rel="stylesheet" type="text/css" href="css/homepage.css">
   <style>
+      .tabcontent {
+          float: left;
+          padding: 0px 12px;
+          border: 1px solid #ccc;
+          width: 99%;
+          height: 100%;
+      }
+
+      .tab button {
+          background-color: darkorange;
+          color: white;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          font-size: 15px;
+          width: 50%;
+      }
+
+      /* Change background color of buttons on hover */
+      .tab button:hover {
+          background-color: darkorange
+      }
+
+      /* Create an active/current "tab button" class */
+      .tab button.active {
+          background-color: rgb(167, 103, 0);;
+      }
+
+
+      .imgXL {
+          max-width: 300px;
+          max-height: 300px;
+      }
+
+      .imgXS {
+          max-width: 25px;
+          max-height: 25px;
+          margin-right: 3px;
+      }
+
+      .letters {
+          margin-left: 3px;
+          color: darkorange;
+          font-size: 15px;
+      }
+
+      .center {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+      .imgL {
+          max-width: 150px;
+          max-height: 120px;
+          margin-top: 7px;
+          margin-right: 5px;
+      }
+
+      .modal-footer button:hover {
+          background-color: darkorange;
+      }
+
+      .modal-footer button.active {
+          background-color: darkorange;
+      }
   </style>
 </head>
 
@@ -70,11 +136,14 @@
           <option value="Lisboa">Lisboa</option>
           <option value="Porto">Porto</option>
         </select>
+        <div class="modal-footer">
+            <button id="searchP" type="submit" class="btn btn-default center">Pesquisar</button>
+        </div>
       </div>
     </div>
   </div>
   <br>
-  
+
   <div id="random" class="row random">
     <div id="berna" class="col-md-12">
 

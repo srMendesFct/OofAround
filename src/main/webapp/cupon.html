@@ -10,17 +10,84 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="./js/cupon.js"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiPZQSt7k2Hhi9YvZnpHl8ibIaL81fb24&callback=initMap"></script>
   <link rel="stylesheet" type="text/css" href="css/navbar.css">
   <link rel="stylesheet" type="text/css" href="css/footer.css">
   <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
   <link rel="stylesheet" type="text/css" href="css/homepage.css">
   <style>
+    .tabcontent {
+      float: left;
+      padding: 0px 12px;
+      border: 1px solid #ccc;
+      width: 99%;
+      height: 100%;
+    }
+
+    .tab button {
+      background-color: darkorange;
+      color: white;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      font-size: 15px;
+      width: 50%;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: darkorange
+    }
+
+    /* Create an active/current "tab button" class */
+    .tab button.active {
+      background-color: rgb(167, 103, 0);
+      ;
+    }
+
+
+    .imgXL {
+      max-width: 300px;
+      max-height: 300px;
+    }
+
+    .imgXS {
+      max-width: 25px;
+      max-height: 25px;
+      margin-right: 3px;
+    }
+
+    .letters {
+      margin-left: 3px;
+      color: darkorange;
+      font-size: 15px;
+    }
+
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .imgL {
+      max-width: 150px;
+      max-height: 120px;
+      margin-top: 7px;
+      margin-right: 5px;
+    }
+
+    .modal-footer button:hover {
+      background-color: darkorange;
+    }
+
+    .modal-footer button.active {
+      background-color: darkorange;
+    }
   </style>
 </head>
 
-<body class="backG">
+<body id="body" class="backG">
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -53,32 +120,54 @@
             <a class="dropdown-item" href="https://oofaround.appspot.com/" role="button" id="logout">Terminar sessão</a>
           </div>
         </li>
-
       </div>
     </div>
   </nav>
+  <br><br><br><br>
 
-  
-    <br>
-    <footer id="ourFooter" class="container-fluid text-center">
-      <div class="row">
-        <div class="col-sm-4">
-          <img class="uh" src="img/equipa.png">
-        </div>
-        <div class="col-sm-4">
-          <h3>Contacta-nos</h3>
-          <br>
-          <h4>oofaround.support@gmail.com</h4>
-        </div>
-        <div class="col-sm-4">
-          <h3>Encontra-nos</h3>
-          <br>
-          <h4>Faculdade de Ciências e Tecnologia - Edifício II
-            2829-516 Caparica
-            Portugal</h4>
+  <div id="all" class="dente" style="text-align: center">
+    <div class="row">
+      <div class="col-md-12">
+        <label>Distrito</label>
+        <select id="distrito">
+          <option>-- Escolha o Distrito--</option>
+          <option value="">Todos</option>
+          <option value="Lisboa">Lisboa</option>
+          <option value="Porto">Porto</option>
+        </select>
+        <div class="modal-footer">
+          <button id="searchP" type="submit" class="btn btn-default center">Pesquisar</button>
         </div>
       </div>
-    </footer>
+    </div>
+  </div>
+  <br>
+
+  <div id="random" class="row random">
+    <div id="berna" class="col-md-12">
+    </div>
+  </div>
+  <br>
+
+  <footer id="ourFooter" class="container-fluid text-center">
+    <div class="row">
+      <div class="col-sm-4">
+        <img class="uh" src="img/equipa.png">
+      </div>
+      <div class="col-sm-4">
+        <h3>Contacta-nos</h3>
+        <br>
+        <h4>oofaround.support@gmail.com</h4>
+      </div>
+      <div class="col-sm-4">
+        <h3>Encontra-nos</h3>
+        <br>
+        <h4>Faculdade de Ciências e Tecnologia - Edifício II
+          2829-516 Caparica
+          Portugal</h4>
+      </div>
+    </div>
+  </footer>
 
 </body>
 
