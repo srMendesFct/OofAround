@@ -180,10 +180,6 @@ captureDataMonuments = function (event) {
 
         presetMarkers.push(marker);
         setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category);
-        
-        document.getElementById("banana" + i).addEventListener('click', function () {
-          add(response.locations[i].name, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category);
-        });
       }
     },
     error: function (response) {},
@@ -216,7 +212,8 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '<div id="bodyContent">' +
     '<p>Morada: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
-    '<p align = "right"> <button id="banana' + markerNumber + '"> Adicionar ao percurso </button> </p>' +
+    '<p align = "right"> <button onClick="add(' + name +', '+ latitude +', '+ longitude +', '+ region +', '+ category +
+    ')"> Adicionar ao percurso </button> </p>' +
     '</div>' +
     '</div>';
 
