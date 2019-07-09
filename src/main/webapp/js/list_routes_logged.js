@@ -66,6 +66,11 @@ captureDataGetRoutes = function (event) {
         crossDomain: true,
         success: function (Response) {
 
+            tabcontent = document.getElementsByClassName("random");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
             for (i = 0; i < Response.routes.length; i++) {
                 var x = [];
                 var y = [];
@@ -283,7 +288,6 @@ captureDataGetRoutes = function (event) {
 
 captureDataGetRoutesByUser = function () {
     var res = [""];
-
     var values = {
         tokenID: localStorage.getItem('token'),
         role: localStorage.getItem('role'),
@@ -298,6 +302,7 @@ captureDataGetRoutesByUser = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
+            console.log(Response);
             var counter = 0;
             for (i = 0; i < Response.routes.length; i++) {
                 if (localStorage.getItem('username') == Response.routes[i].creatorUsername) {
