@@ -1,7 +1,6 @@
 var marosca = 100;
 
 captureDataGetCupon = function () {
-  var res = [""];
   var values = {
     tokenID: localStorage.getItem('token'),
     role: localStorage.getItem('role'),
