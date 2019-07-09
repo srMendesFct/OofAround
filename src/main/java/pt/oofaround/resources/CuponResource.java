@@ -2,6 +2,7 @@ package pt.oofaround.resources;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,11 @@ public class CuponResource {
 			} else {
 				JSONObject res = new JSONObject();
 
+				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+						.build();
+
+				Storage storageDB = storage.getService();
+
 				for (QueryDocumentSnapshot document : cuponList) {
 					res.put("locationName", document.getString("locationName"));
 					res.put("latitude", document.getString("latitude"));
@@ -116,7 +122,13 @@ public class CuponResource {
 					res.put("region", document.getString("region"));
 					res.put("description", document.getString("description"));
 					res.put("value", document.getDouble("value"));
-					res.put("qrlink", data.locationName.trim() + String.valueOf(data.value) + "_qrcode");
+
+					BlobId blobId = BlobId.of("oofaround.appspot.com",
+							data.locationName.trim() + String.valueOf(data.value) + "_qrcode");
+
+					Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+					res.put("qrCode", Base64.getEncoder().encodeToString(blob.getContent()));
 				}
 
 				AuthToken at = new AuthToken(data.usernameR, data.role);
@@ -165,7 +177,7 @@ public class CuponResource {
 						document.getString("locationName").trim() + String.valueOf(document.get("value")) + "_qrcode");
 				blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-				jObj.put("qrCode", blob.getContent().toString());
+				jObj.put("qrCode", Base64.getEncoder().encodeToString(blob.getContent()));
 
 				jArr.put(jObj);
 			}
@@ -176,7 +188,7 @@ public class CuponResource {
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			jObj.put("tokenID", at.tokenID);
 
-			return Response.ok().build();
+			return Response.ok().entity(jObj.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}
@@ -218,7 +230,7 @@ public class CuponResource {
 					document.getString("locationName").trim() + String.valueOf(document.get("value")) + "_qrcode");
 			blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-			jObj.put("qrCode", blob.getContent().toString());
+			jObj.put("qrCode", Base64.getEncoder().encodeToString(blob.getContent()));
 
 			jArr.put(jObj);
 		}
@@ -226,10 +238,7 @@ public class CuponResource {
 		jObj = new JSONObject();
 		jObj.put("cupons", jArr);
 
-		AuthToken at = new AuthToken(data.usernameR, data.role);
-		jObj.put("tokenID", at.tokenID);
-
-		return Response.ok().build();
+		return Response.ok().entity(jObj.toString()).build();
 	}
 
 }
