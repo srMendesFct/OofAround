@@ -311,8 +311,9 @@ captureDataGetCupon = function () {
 };
 
 window.onload = function () {
-    var pesquisa = $('form[name="categorias"]');
-    pesquisa[0].onsubmit = captureDataGetCupon();   
+    document.getElementById("searchP").addEventListener('click', function () {
+        captureDataGetCupon();   
+    });
     var frmsr = $('form[name="register"]');
     var frmsl = $('form[name="login"]');
     frmsl[0].onsubmit = captureDataLogin;

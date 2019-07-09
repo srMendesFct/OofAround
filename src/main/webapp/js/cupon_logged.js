@@ -213,7 +213,8 @@ window.onload = function () {
         window.location.href = "https://oofaround.appspot.com/";
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
-        var pesquisa = $('form[name="categorias"]');
-        pesquisa[0].onsubmit = captureDataGetRoutes();
+        document.getElementById("searchP").addEventListener('click', function () {
+            captureDataGetCupon();   
+        });
     }
 }
