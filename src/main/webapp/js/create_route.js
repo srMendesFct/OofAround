@@ -37,18 +37,17 @@ function initMap() {
   geocoder = new google.maps.Geocoder();
 
   google.maps.event.addListener(map, 'click', function (event) {
-    console.log('FUNCAO PLACEID' + getAddress(event.latLng));
-    console.log('latitude do mambo ' + event.latLng.lat());
     var marker = new google.maps.Marker({
       position: event.latLng,
       map: map,
       icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
     });
     routePoints.push(marker);
+
     var newLoc = {
-      name: "hum",
+      name: "",
       category: "undefined",
-      placeId: "pId",
+      placeId: "",
       region: "Portugal",
       latitude: event.latLng.lat(),
       longitude: event.latLng.lng()
@@ -212,8 +211,7 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '<div id="bodyContent">' +
     '<p>Morada: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
-    '<p align = "right"> <button onClick="add(' + name +', '+ latitude +', '+ longitude +', '+ region +', '+ category +
-    ')"> Adicionar ao percurso </button> </p>' +
+    '<p align = "right"> <button onclick="teste()">Adicionar ao percurso</button> </p>' +
     '</div>' +
     '</div>';
 
@@ -223,6 +221,10 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     });
     infowindow.open(map, m);
   });
+}
+
+function teste() {
+  alert('Deu certo!');
 }
 
 window.onload = function () {
