@@ -770,8 +770,9 @@ public class RouteResource {
 
 			Map<String, Object> docData = new HashMap();
 
-			docData.put("nbrRates", nbrRates);
+			docData.put("numberRates", nbrRates);
 			docData.put(data.rating, newRate);
+			docData.put("rating", rate);
 			
 
 				ApiFuture<WriteResult> future = docRef.update(docData);
@@ -784,12 +785,12 @@ public class RouteResource {
 				return Response.status(Status.NOT_FOUND).entity(s).build();
 			}
 
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.addProperty("tokenID", at.tokenID);
-			res.addProperty("rating", newRate);
+			res.put("tokenID", at.tokenID);
+			res.put("rating", newRate);
 
-			return Response.ok().entity(g.toJson(res)).build();
+			return Response.ok().entity(res.toString()).build();
 		} else {
 			return Response.status(Status.FORBIDDEN).build();
 		}
