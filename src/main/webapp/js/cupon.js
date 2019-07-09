@@ -126,7 +126,7 @@ captureDataGetCupon = function () {
     success: function (Response) {
       console.log(Response);
 
-      for (i = 0; i < Response.routes.length; i++) {
+      /*for (i = 0; i < Response.routes.length; i++) {
 
           var div = document.createElement("div");
           div.style.marginLeft = "3px";
@@ -301,7 +301,7 @@ captureDataGetCupon = function () {
           var p_6 = document.createElement("p");
           p_6.innerHTML = Response.routes[i].creatorUsername;
           div_15.appendChild(p_6);
-        }
+        }*/
     },
     error: function (Response) {
       alert('Falha ao Pesquisar');
@@ -311,7 +311,6 @@ captureDataGetCupon = function () {
 };
 
 window.onload = function () {
-    localStorage.clear();
     captureDataGetCupon();
     var frmsr = $('form[name="register"]');
     var frmsl = $('form[name="login"]');
