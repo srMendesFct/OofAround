@@ -143,36 +143,40 @@ captureDataGetRoutes = function (event) {
                 var y = [];
                 for (j = 0; j < Response.routes[i].categories.length; j++) {
                     var z = Response.routes[i].categories[j].category;
-
-                    if (z == "Sport") {
-                        z = "Desporto";
-                    } else if (z == "Culture") {
-                        z = "Cultura";
-                    } else if (z == "NightLife") {
-                        z = "Vida Noturna";
-                    } else if (z == "Leisure") {
-                        z = "Lazer";
-                    } else if (z == "Animal & Wildlife") {
-                        z = "Animais e Vida Selvagem";
-                    } else if (z == "Outdoor & Pets") {
-                        z = "Ar livre e Animais Domésticos";
-                    } else if (z == "Beach") {
-                        z = "Praias";
-                    } else if (z == "Food & Drink") {
-                        z = "Comes e Bebes";
-                    } else if (z == "Landscaping") {
-                        z = "Paisagens";
-                    } else if (z == "Religion") {
-                        z = "Religião";
+                    
+                    if(z != "não especificada") {
+                        if (z == "Sport") {
+                            z = "Desporto";
+                        } else if (z == "Culture") {
+                            z = "Cultura";
+                        } else if (z == "NightLife") {
+                            z = "Vida Noturna";
+                        } else if (z == "Leisure") {
+                            z = "Lazer";
+                        } else if (z == "Animal & Wildlife") {
+                            z = "Animais e Vida Selvagem";
+                        } else if (z == "Outdoor & Pets") {
+                            z = "Ar livre e Animais Domésticos";
+                        } else if (z == "Beach") {
+                            z = "Praias";
+                        } else if (z == "Food & Drink") {
+                            z = "Comes e Bebes";
+                        } else if (z == "Landscaping") {
+                            z = "Paisagens";
+                        } else if (z == "Religion") {
+                            z = "Religião";
+                        } 
+    
+                        x[j] = z;
                     }
-
-                    x[j] = z;
+                    
                 }
 
                 for (j = 0; j < Response.routes[i].regions.length; j++) {
                     var z = Response.routes[i].regions[j].region;
-
-                    y[j] = z;
+                    if(z != "Portugal") {
+                        y[j] = z;
+                    }
                 }
 
                 var div = document.createElement("div");
