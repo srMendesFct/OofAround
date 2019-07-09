@@ -35,7 +35,6 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.StorageOptions;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.util.AuthToken;
@@ -218,59 +217,62 @@ public class RouteResource {
 			List<GeoPoint> locationsCoords;
 			List<String> locationsNames;
 			List<String> placeIDs;
+			List<Boolean> flags;
 
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.creatorUsername).get();
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				res.addProperty("name", document.getString("name"));
-				res.addProperty("description", document.getString("description"));
-				res.addProperty("creatorUsername", document.getString("creatorUsername"));
+				res.put("name", document.getString("name"));
+				res.put("description", document.getString("description"));
+				res.put("creatorUsername", document.getString("creatorUsername"));
 
 				locationsNames = (List<String>) document.get("locationsNames");
 				locationsCoords = (List<GeoPoint>) document.get("locationsCoords");
 				placeIDs = (List<String>) document.get("placeIDs");
+				flags = (List<Boolean>) document.get("flags");
 
-				JsonArray array = new JsonArray();
-				JsonObject jsObj;
+				JSONArray array = new JSONArray();
+				JSONObject jsObj;
 
 				for (int i = 0; i < locationsNames.size(); i++) {
-					jsObj = new JsonObject();
-					jsObj.addProperty("name", locationsNames.get(i));
-					jsObj.addProperty("latitude", locationsCoords.get(i).getLatitude());
-					jsObj.addProperty("longitude", locationsCoords.get(i).getLongitude());
-					jsObj.addProperty("placeID", placeIDs.get(i));
-					array.add(jsObj);
+					jsObj = new JSONObject();
+					jsObj.put("name", locationsNames.get(i));
+					jsObj.put("latitude", locationsCoords.get(i).getLatitude());
+					jsObj.put("longitude", locationsCoords.get(i).getLongitude());
+					jsObj.put("placeID", placeIDs.get(i));
+					jsObj.put("flag", flags.get(i));
+					array.put(jsObj);
 				}
 
-				res.add("locations", array);
+				res.put("locations", array);
 
 				Map<String, Integer> map = (HashMap<String, Integer>) document.get("categories");
-				JsonArray jArr = new JsonArray();
+				JSONArray jArr = new JSONArray();
 				for (String s : map.keySet()) {
-					jsObj = new JsonObject();
-					jsObj.addProperty("category", s);
-					jArr.add(jsObj);
+					jsObj = new JSONObject();
+					jsObj.put("category", s);
+					jArr.put(jsObj);
 				}
-				res.add("categories", jArr);
+				res.put("categories", jArr);
 
 				map = (HashMap<String, Integer>) document.get("regions");
 
-				jArr = new JsonArray();
+				jArr = new JSONArray();
 				for (String s : map.keySet()) {
-					jsObj = new JsonObject();
-					jsObj.addProperty("region", s);
-					jArr.add(jsObj);
+					jsObj = new JSONObject();
+					jsObj.put("region", s);
+					jArr.put(jsObj);
 				}
 
-				res.add("regions", jArr);
-				res.addProperty("rating", document.getDouble("rating"));
-				res.addProperty("status", document.getString("status"));
+				res.put("regions", jArr);
+				res.put("rating", document.getDouble("rating"));
+				res.put("status", document.getString("status"));
 			}
 			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.addProperty("tokenID", at.tokenID);
+			res.put("tokenID", at.tokenID);
 
-			return Response.ok(g.toJson(res)).build();
+			return Response.ok(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}
@@ -501,7 +503,7 @@ public class RouteResource {
 
 					JSONArray array = new JSONArray();
 					JSONObject jsObj;
-
+					image = "";
 					for (int i = 0; i < locationsNames.size(); i++) {
 						jsObj = new JSONObject();
 						jsObj.put("name", locationsNames.get(i));
