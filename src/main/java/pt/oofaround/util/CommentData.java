@@ -1,5 +1,7 @@
 package pt.oofaround.util;
 
+import java.util.Date;
+
 public class CommentData {
 
 	public String role;
@@ -8,6 +10,7 @@ public class CommentData {
 	public String comment;
 	public String routeName;
 	public String routeCreatorUsername;
+	public Date timestamp;
 
 	public CommentData() {
 	}

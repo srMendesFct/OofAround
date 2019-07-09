@@ -74,7 +74,7 @@ public class CommentResource {
 				jObj.put("comment", document.get("comment"));
 				jObj.put("routeName", document.get("routeName"));
 				jObj.put("routeCreatorUsername", document.get("routeCreatorUsername"));
-				jObj.put("date", document.get("date"));
+				jObj.put("date", ((Timestamp) document.get("date")).toDate());
 				jArr.put(jObj);
 			}
 
@@ -101,9 +101,9 @@ public class CommentResource {
 	@POST
 	@Path("/listcomments")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response listcomments(CommentData data) throws JSONException, InterruptedException, ExecutionException {
+	public Response listComments(CommentData data) throws JSONException, InterruptedException, ExecutionException {
 
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getAllRanks")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "listComments")) {
 			try {
 
 				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
@@ -111,7 +111,8 @@ public class CommentResource {
 
 				Storage storageDB = storage.getService();
 
-				BlobId blobId = BlobId.of("oofaround.appspot.com", data.routeName + data.routeCreatorUsername + ".json");
+				BlobId blobId = BlobId.of("oofaround.appspot.com",
+						data.routeName + data.routeCreatorUsername + ".json");
 
 				Blob blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
@@ -121,6 +122,33 @@ public class CommentResource {
 
 				res.put("comments", jArr);
 
+				AuthToken at = new AuthToken(data.usernameR, data.role);
+				res.put("tokenID", at.tokenID);
+
+				return Response.ok().entity(res.toString()).build();
+			} catch (Exception e) {
+				return Response.status(Status.NOT_FOUND).entity("User doesn't exist.").build();
+			}
+		} else
+			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
+	}
+
+	@POST
+	@Path("/deletecomment")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteComment(CommentData data) throws JSONException, InterruptedException, ExecutionException {
+
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "deleteComment")) {
+			try {
+				ApiFuture<QuerySnapshot> querySnapshot = db.collection("comments")
+						.whereEqualTo("poster", data.usernameR).whereEqualTo("date", Timestamp.of(data.timestamp))
+						.get();
+
+				for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					document.getReference().delete();
+				}
+
+				JSONObject res = new JSONObject();
 				AuthToken at = new AuthToken(data.usernameR, data.role);
 				res.put("tokenID", at.tokenID);
 
