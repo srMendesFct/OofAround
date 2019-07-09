@@ -131,8 +131,7 @@ captureDataCreateCourse = function () {
     contentType: "application/json;charset=utf-8",
     dataType: 'json',
     crossDomain: 'true',
-    success: function (response) {
-    },
+    success: function (response) {},
     error: function (response) {
       alert('Erro!')
     },
@@ -180,17 +179,16 @@ captureDataMonuments = function (event) {
         });
 
         presetMarkers.push(marker);
-        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude);
+        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category);
       }
     },
-    error: function (response) {
-    },
+    error: function (response) {},
     data: JSON.stringify(values)
   });
   event.preventDefault();
 }
 
-function setInfo(markerNumber, name, address, latitude, longitude) {
+function setInfo(markerNumber, name, address, latitude, longitude, region, category) {
   var m = presetMarkers[markerNumber];
 
   //fazer isto mais bonito
@@ -204,6 +202,19 @@ function setInfo(markerNumber, name, address, latitude, longitude) {
     '<p align = "right"> <button id="banana"> Adicionar ao percurso </button> </p>' +
     '</div>' +
     '</div>';
+
+  document.getElementById("banana").addEventListener('click', function () {
+    console.log('latitude do mambo ' + latitude);
+    var newLoc = {
+      name: name,
+      category: category,
+      placeId: "pId",
+      region: region,
+      latitude: latitude,
+      longitude: longitude
+    }
+    locationNames.push(newLoc);
+  });
 
   m.addListener('click', function () {
     var infowindow = new google.maps.InfoWindow({
@@ -230,7 +241,6 @@ window.onload = function () {
     var form_c = $('form[name="courseForm"]');
     form_c[0].onsubmit = captureDataCreateCourse;
     var pesquisa = $('form[name="categorias"]');
-    pesquisa[0].onsubmit = captureDataMonuments;
-    ;
+    pesquisa[0].onsubmit = captureDataMonuments;;
   }
 }
