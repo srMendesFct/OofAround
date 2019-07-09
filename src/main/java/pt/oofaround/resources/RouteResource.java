@@ -552,7 +552,7 @@ public class RouteResource {
 
 					if (image.equals("")) {
 
-						BlobId blobId = BlobId.of("oofaround.appspot.com", "Aqueduto das Águas Livres");
+						BlobId blobId = BlobId.of("oofaround.appspot.com", "defaultroute.jpg");
 
 						Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
