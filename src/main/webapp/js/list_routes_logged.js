@@ -156,7 +156,7 @@ captureDataGetRoutes = function (event) {
                 var span = document.createElement("span");
                 span.setAttribute("aria-hidden", "true");
                 span.innerHTML = "&times";
-                button_2.appendChild(span);
+                button_3.appendChild(span);
 
                 var form = document.createElement("form");
                 form.setAttribute("id", "login");
