@@ -248,7 +248,7 @@ captureDataGetRoutes = function (event) {
 
                 var div_16 = document.createElement("div");
                 div_16.setAttribute("class", "modal fade");
-                div_16.setAttribute("id", "loginForm" + marosca_2);
+                div_16.setAttribute("id", "comment" + marosca_2);
                 div_16.setAttribute("tabindex", "-1");
                 div_16.setAttribute("role", "dialog");
                 div_16.setAttribute("aria-labelledby", "myModalLabel");
