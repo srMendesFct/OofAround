@@ -16,7 +16,7 @@ captureDataGetCupon = function () {
         success: function (Response) {
             console.log(Response);
 
-            /*for (i = 0; i < Response.routes.length; i++) {
+            for (i = 0; i < Response.cupons.length; i++) {
 
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
@@ -28,41 +28,24 @@ captureDataGetCupon = function () {
                 div.appendChild(div_2);
 
                 var header = document.createElement("h4");
-                header.innerHTML = Response.routes[i].name;
+                header.innerHTML = Response.cupons[i].description;
                 div_2.appendChild(header);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
                 header_2.style.fontSize = "16px"
-                header_2.innerHTML = "Rating: " + Response.routes[i].rating;
+                header_2.innerHTML = "Local: " + Response.cupons[i].locationName;
                 div_2.appendChild(header_2);
-
-                var header_3 = document.createElement("h4");
-                header_3.style.textAlign = "left";
-                header_3.style.fontSize = "16px"
-                header_3.innerHTML = "Categorias: " + x;
-                div_2.appendChild(header_3);
 
                 var header_4 = document.createElement("h4");
                 header_4.style.textAlign = "left";
                 header_4.style.fontSize = "16px"
-                header_4.innerHTML = "Região: " + y;
+                header_4.innerHTML = "Região: " + Response.cupons[i].region;
                 div_2.appendChild(header_4);
 
                 var p = document.createElement("p");
                 p.align = "right";
                 div_2.appendChild(p);
-
-                var img = document.createElement("img");
-                img.src = "img/edit-pencil-icon-vector-13483315.jpg";
-                img.setAttribute("class", "imgXS");
-                p.appendChild(img);
-
-                var img_2 = document.createElement("img");
-                img_2.src = "./img/cross.jpg";
-                img_2.setAttribute("class", "imgXS");
-                img_2.setAttribute("id", Response.routes[i].name);
-                p.appendChild(img_2);
 
                 var button = document.createElement("button");
                 button.setAttribute("data-toggle", "modal");
@@ -127,7 +110,7 @@ captureDataGetCupon = function () {
                 var label = document.createElement("label");
                 label.setAttribute("data-error", "wrong");
                 label.setAttribute("data-success", "right");
-                label.innerHTML = Response.routes[i].name;
+                label.innerHTML = Response.cupons[i].description;
                 div_8.appendChild(label);
 
                 var br = document.createElement("br");
@@ -143,11 +126,11 @@ captureDataGetCupon = function () {
                 var label_3 = document.createElement("label");
                 label_3.setAttribute("data-error", "wrong");
                 label_3.setAttribute("data-success", "right");
-                label_3.innerHTML = "Categorias:";
+                label_3.innerHTML = "Local:";
                 div_10.appendChild(label_3);
 
                 var p_3 = document.createElement("p");
-                p_3.innerHTML = x;
+                p_3.innerHTML = Response.cupons[i].locationName;
                 div_10.appendChild(p_3);
 
                 var div_13 = document.createElement("div");
@@ -161,7 +144,7 @@ captureDataGetCupon = function () {
                 div_13.appendChild(label_6);
 
                 var p_4 = document.createElement("p");
-                p_4.innerHTML = y;
+                p_4.innerHTML = Response.cupons[i].region;
                 div_13.appendChild(p_4);
 
                 var div_14 = document.createElement("div");
@@ -171,27 +154,13 @@ captureDataGetCupon = function () {
                 var label_7 = document.createElement("label");
                 label_7.setAttribute("data-error", "wrong");
                 label_7.setAttribute("data-success", "right");
-                label_7.innerHTML = "Descrição:";
+                label_7.innerHTML = "Valor:";
                 div_14.appendChild(label_7);
 
                 var p_5 = document.createElement("p");
-                p_5.innerHTML = Response.routes[i].description;
+                p_5.innerHTML = Response.cupons[i].value;
                 div_14.appendChild(p_5);
-
-                var div_15 = document.createElement("div");
-                div_15.setAttribute("class", "md-form mb-4");
-                div_7.appendChild(div_15);
-
-                var label_8 = document.createElement("label");
-                label_8.setAttribute("data-error", "wrong");
-                label_8.setAttribute("data-success", "right");
-                label_8.innerHTML = "Criado por:";
-                div_15.appendChild(label_8);
-
-                var p_6 = document.createElement("p");
-                p_6.innerHTML = Response.routes[i].creatorUsername;
-                div_15.appendChild(p_6);
-            }*/
+            }
         },
         error: function (Response) {
             alert('Falha ao Pesquisar');
