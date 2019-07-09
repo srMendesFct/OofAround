@@ -106,7 +106,7 @@ public class UserInfoResource {
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				List<String> routes = (List<String>) document.get("routes");
 				if (routes != null)
-					res.put("routes", JsonArraySupport.createOnePropArrayFromFirestoreArray(routes, "routeName"));
+					res.put("routes", JsonArraySupport.createOnePropArrayFromFirestore(routes, "routeName"));
 				else {
 					return Response.status(Status.NO_CONTENT).build();
 				}

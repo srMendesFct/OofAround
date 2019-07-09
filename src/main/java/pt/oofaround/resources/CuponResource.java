@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.api.core.ApiFuture;
@@ -99,7 +100,7 @@ public class CuponResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getCupon(CuponData data) throws InterruptedException, ExecutionException {
 		// alterar createCupon para getCupon
-		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createCupon")) {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getCupon")) {
 			List<QueryDocumentSnapshot> cuponList = db.collection("cupons")
 					.whereEqualTo("locationName", data.locationName).whereEqualTo("value", data.value).get().get()
 					.getDocuments();
@@ -178,6 +179,57 @@ public class CuponResource {
 			return Response.ok().build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/guest/list")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response listGuestByRegionCat(CuponData data)
+			throws JSONException, InterruptedException, ExecutionException {
+
+		ApiFuture<QuerySnapshot> querySnapshot;
+
+		if (data.region.equalsIgnoreCase("")) {
+			querySnapshot = db.collection("cupons").get();
+		} else {
+			querySnapshot = db.collection("cupons").whereEqualTo("region", data.region).get();
+		}
+
+		JSONArray jArr = new JSONArray();
+		JSONObject jObj;
+
+		StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround").build();
+
+		Storage storageDB = storage.getService();
+
+		BlobId blobId;
+		Blob blob;
+
+		for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			jObj = new JSONObject();
+			jObj.put("locationName", document.get("locationName"));
+			jObj.put("value", document.get("value"));
+			jObj.put("latitude", document.get("latitude"));
+			jObj.put("longitude", document.get("longitude"));
+			jObj.put("description", document.get("description"));
+			jObj.put("region", document.get("region"));
+
+			blobId = BlobId.of("oofaround.appspot.com",
+					document.getString("locationName").trim() + String.valueOf(document.get("value")) + "_qrcode");
+			blob = storageDB.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+			jObj.put("qrCode", blob.getContent().toString());
+
+			jArr.put(jObj);
+		}
+
+		jObj = new JSONObject();
+		jObj.put("cupons", jArr);
+
+		AuthToken at = new AuthToken(data.usernameR, data.role);
+		jObj.put("tokenID", at.tokenID);
+
+		return Response.ok().build();
 	}
 
 }
