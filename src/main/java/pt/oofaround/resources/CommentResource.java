@@ -48,7 +48,7 @@ public class CommentResource {
 			docData.put("routeCreatorUsername", data.routeCreatorUsername);
 			docData.put("date", Timestamp.of(new Date()));
 			
-			
+			db.collection("comments").document().set(docData);
 			
 			JSONObject res = new JSONObject();
 			AuthToken at = new AuthToken(data.usernameR, data.role);

@@ -80,11 +80,14 @@ public class RouteResource {
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
 			Map<String, Integer> catMap = new HashMap<String, Integer>();
+			List<Boolean> flags = new LinkedList<Boolean>();
 
 			for (int i = 0; i < data.locationNames.length; i++) {
 				if (!data.locationNames[i].category.equalsIgnoreCase("undefined")) {
 					catMap.putIfAbsent(data.locationNames[i].category, 1);
-				}
+					flags.add(true);
+				}else
+					flags.add(false);
 				regionMap.putIfAbsent(data.locationNames[i].region, 1);
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
