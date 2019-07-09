@@ -188,6 +188,19 @@ captureDataMonuments = function (event) {
   event.preventDefault();
 }
 
+function add(name, latitude, longitude, region, category) {
+  console.log('latitude do mambo ' + latitude);
+  var newLoc = {
+    name: name,
+    category: category,
+    placeId: "pId",
+    region: region,
+    latitude: latitude,
+    longitude: longitude
+  }
+  locationNames.push(newLoc);
+};
+
 function setInfo(markerNumber, name, address, latitude, longitude, region, category) {
   var m = presetMarkers[markerNumber];
 
@@ -197,9 +210,10 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '</div>' +
     '<h2 id="firstHeading" class="firstHeading"><b>' + name + '</b></h2>' +
     '<div id="bodyContent">' +
-    '<p>Endereço: ' + address + '</p>' +
+    '<p>Morada: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
-    '<p align = "right"> <button id="banana"> Adicionar ao percurso </button> </p>' +
+    '<p align = "right"> <button onClick="add('+name+', '+latitude+', '+longitude+', '+region+', '+category+ 
+    + ')"> Adicionar ao percurso </button> </p>' +
     '</div>' +
     '</div>';
 
@@ -209,20 +223,6 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     });
     infowindow.open(map, m);
   });
-
-  document.getElementById("banana").addEventListener('click', function () {
-    console.log('latitude do mambo ' + latitude);
-    var newLoc = {
-      name: name,
-      category: category,
-      placeId: "pId",
-      region: region,
-      latitude: latitude,
-      longitude: longitude
-    }
-    locationNames.push(newLoc);
-  });
-
 }
 
 window.onload = function () {
