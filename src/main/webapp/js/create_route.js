@@ -203,6 +203,13 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '</div>' +
     '</div>';
 
+  m.addListener('click', function () {
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    infowindow.open(map, m);
+  });
+
   document.getElementById("banana").addEventListener('click', function () {
     console.log('latitude do mambo ' + latitude);
     var newLoc = {
@@ -214,13 +221,6 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
       longitude: longitude
     }
     locationNames.push(newLoc);
-  });
-
-  m.addListener('click', function () {
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString
-    });
-    infowindow.open(map, m);
   });
 
 }
