@@ -1,14 +1,12 @@
 var marosca = 100;
 
-captureDeleteRoute = function () {
+captureDeleteRoute = function (event) {
   var values = {};
   values['tokenID'] = localStorage.getItem('token');
   values['usernameR'] = localStorage.getItem('username');
   values['role'] = localStorage.getItem('role');
-
-  $.each($('form[name="deleteCourseForm"]').serializeArray(), function (i, field) {
-    values[field.name] = field.value;
-  });
+  values['creatorUsername'] = localStorage.getItem('username');
+  values['name'] = event;
 
   $.ajax({
     type: "POST",
@@ -124,6 +122,16 @@ captureDataGetRoutesByUser = function () {
           img.setAttribute("class", "imgXS");
           p.appendChild(img);
 
+          var img_2 = document.createElement("img");
+          img_2.src = "./img/cross.jpg";
+          img_2.setAttribute("class", "imgXS");
+          img_2.setAttribute("id", Response.routes[i].name);
+          p.appendChild(img_2);
+
+          document.getElementById(Response.routes[i].name).addEventListener('click', function () {
+            captureDeleteRoute(Response.routes[i].name);
+          });
+
           var button = document.createElement("button");
           button.setAttribute("data-toggle", "modal");
           button.setAttribute("data-target", "#loginForm" + marosca);
@@ -155,9 +163,9 @@ captureDataGetRoutesByUser = function () {
           div_6.setAttribute("class", "modal-header text-center");
           div_5.appendChild(div_6);
 
-          var img_2 = document.createElement("img");
-          img_2.src = "img/logo.png";
-          div_6.appendChild(img_2);
+          var img_3 = document.createElement("img");
+          img_3.src = "img/logo.png";
+          div_6.appendChild(img_3);
 
           var button_2 = document.createElement("button");
           button_2.setAttribute("type", "button");
