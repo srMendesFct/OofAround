@@ -770,7 +770,7 @@ public class RouteResource {
 			res = new JSONObject();
 			res.put("routes", jsonArr);
 
-			return Response.ok().entity(g.toJson(res)).build();
+			return Response.ok().entity(res.toString()).build();
 		} catch (Exception e) {
 			String s = "";
 			for (StackTraceElement ss : e.getStackTrace()) {
