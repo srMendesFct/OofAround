@@ -726,7 +726,7 @@ public class RouteResource {
 
 						Blob blob;
 
-						blobId = BlobId.of("oofaround.appspot.com", locationsNames.get(i));
+						blobId = BlobId.of("oofaround.appspot.com","Aqueduto das Águas Livres");
 
 						blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
