@@ -135,7 +135,7 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            
+            console.log(Response);
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
