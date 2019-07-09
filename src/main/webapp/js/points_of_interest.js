@@ -381,10 +381,10 @@ captureDataGetPointsOfInterest = function (event) {
 };
 
 window.onload = function () {
-    var frmsr = $('form[name="register"]');
-    var frmsl = $('form[name="login"]');
-    frmsl[0].onsubmit = captureDataLogin;
-    frmsr[0].onsubmit = captureDataRegister;
-    var frmsl = $('form[name="categorias"]');
-    frmsl[0].onsubmit = captureDataGetPointsOfInterest;
+    var registo = $('form[name="register"]');
+    var login = $('form[name="login"]');
+    registo[0].onsubmit = captureDataLogin;
+    login[0].onsubmit = captureDataRegister;
+    var pesquisa = $('form[name="categorias"]');
+    pesquisa[0].onsubmit = captureDataGetPointsOfInterest;
 };
