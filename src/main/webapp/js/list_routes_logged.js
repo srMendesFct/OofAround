@@ -9,11 +9,6 @@ function openCity(evt, cityName) {
         tabcontent[i].style.display = "none";
     }
 
-    tabcontent = document.getElementsByClassName("random");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
@@ -70,11 +65,6 @@ captureDataGetRoutes = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            
-            var tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
 
             for (i = 0; i < Response.routes.length; i++) {
                 var x = [];
@@ -308,12 +298,6 @@ captureDataGetRoutesByUser = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-
-            var tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
             var counter = 0;
             for (i = 0; i < Response.routes.length; i++) {
                 if (localStorage.getItem('username') == Response.routes[i].creatorUsername) {
@@ -549,7 +533,6 @@ window.onload = function () {
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         setupCallback();
-
     }
 };
 
