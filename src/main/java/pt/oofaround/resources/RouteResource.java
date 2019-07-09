@@ -66,16 +66,7 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {
 
-			List<QueryDocumentSnapshot> rList = db.collection("users").whereEqualTo("username", data.creatorUsername)
-					.get().get().getDocuments();
-
-			for (QueryDocumentSnapshot document : rList) {
-				List<String> routeList = (List<String>) document.get("routes");
-				routeList.add(data.name);
-				document.getReference().update("routes", routeList);
-
-			}
-
+			
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.usernameR).get();
 
@@ -120,6 +111,17 @@ public class RouteResource {
 			docData.put("5", 0);
 
 			ApiFuture<WriteResult> newUser = db.collection("routes").document().set(docData);
+			
+			List<QueryDocumentSnapshot> rList = db.collection("users").whereEqualTo("username", data.creatorUsername)
+					.get().get().getDocuments();
+
+			for (QueryDocumentSnapshot document : rList) {
+				List<String> routeList = (List<String>) document.get("routes");
+				routeList.add(data.name);
+				document.getReference().update("routes", routeList);
+
+			}
+			
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 
 			res.addProperty("tokenID", at.tokenID);
@@ -758,24 +760,37 @@ public class RouteResource {
 			DocumentReference docRef = null;
 
 			try {
-			
-			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-				docRef = document.getReference();
-				nbrRates = document.getLong("numberRates") + 1;
-				newRate = document.getLong(data.rating) + 1;
-				rate = (document.getLong("1") * 1 + document.getLong("2") * 2 + document.getLong("3") * 3
-						+ document.getLong("4") * 4 + document.getLong("5") * 5 + Integer.valueOf(data.rating))
-						/ nbrRates;
-			}
 
-			Map<String, Object> docData = new HashMap();
+				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					docRef = document.getReference();
+					nbrRates = document.getLong("numberRates") + 1;
+					newRate = document.getLong(data.rating) + 1;
+					rate = (document.getLong("1") * 1 + document.getLong("2") * 2 + document.getLong("3") * 3
+							+ document.getLong("4") * 4 + document.getLong("5") * 5 + Integer.valueOf(data.rating))
+							/ nbrRates;
+				}
 
-			docData.put("numberRates", nbrRates);
-			docData.put(data.rating, newRate);
-			docData.put("rating", rate);
-			
+				Map<String, Object> docData = new HashMap();
 
-				ApiFuture<WriteResult> future = docRef.update(docData);
+				docData.put("numberRates", nbrRates);
+				docData.put(data.rating, newRate);
+				docData.put("rating", rate);
+
+				docRef.update(docData);
+
+				querySnapshot = db.collection("users").whereEqualTo("username", data.usernameR).get();
+
+				for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					nbrRates = document.getLong("score") + 5;
+					document.getReference().update("score", nbrRates);
+				}
+
+				querySnapshot = db.collection("users").whereEqualTo("username", data.creatorUsername).get();
+
+				for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					nbrRates = document.getLong("score") + Long.valueOf(data.rating);
+					document.getReference().update("score", nbrRates);
+				}
 
 			} catch (Exception e) {
 				String s = "";
