@@ -126,7 +126,7 @@ captureDataGetCupon = function () {
     success: function (Response) {
       console.log(Response);
 
-      for (i = 0; i < Response.routes.length; i++) {
+      for (i = 0; i < Response.cupons.length; i++) {
 
            var div = document.createElement("div");
                 div.style.marginLeft = "3px";
