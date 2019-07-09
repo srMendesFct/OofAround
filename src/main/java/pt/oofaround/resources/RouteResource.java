@@ -65,7 +65,6 @@ public class RouteResource {
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {
 
-			
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 					.whereEqualTo("creatorUsername", data.usernameR).get();
 
@@ -86,7 +85,7 @@ public class RouteResource {
 				if (!data.locationNames[i].category.equalsIgnoreCase("undefined")) {
 					catMap.putIfAbsent(data.locationNames[i].category, 1);
 					flags.add(true);
-				}else
+				} else
 					flags.add(false);
 				regionMap.putIfAbsent(data.locationNames[i].region, 1);
 				names.add(data.locationNames[i].name);
@@ -103,6 +102,7 @@ public class RouteResource {
 			docData.put("placeIDs", placeIDs);
 			docData.put("regions", regionMap);
 			docData.put("categories", catMap);
+			docData.put("flags", flags);
 			docData.put("rating", (double) 0);
 			docData.put("numberRates", 0);
 			docData.put("status", "ok");
@@ -113,7 +113,7 @@ public class RouteResource {
 			docData.put("5", 0);
 
 			ApiFuture<WriteResult> newUser = db.collection("routes").document().set(docData);
-			
+
 			List<QueryDocumentSnapshot> rList = db.collection("users").whereEqualTo("username", data.creatorUsername)
 					.get().get().getDocuments();
 
@@ -123,7 +123,7 @@ public class RouteResource {
 				document.getReference().update("routes", routeList);
 
 			}
-			
+
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 
 			res.addProperty("tokenID", at.tokenID);
@@ -284,57 +284,60 @@ public class RouteResource {
 		List<GeoPoint> locationsCoords;
 		List<String> locationsNames;
 		List<String> placeIDs;
+		List<Boolean> flags;
 
 		ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
 				.whereEqualTo("creatorUsername", data.creatorUsername).get();
-		JsonObject res = new JsonObject();
+		JSONObject res = new JSONObject();
 		for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-			res.addProperty("name", document.getString("name"));
-			res.addProperty("description", document.getString("description"));
-			res.addProperty("creatorUsername", document.getString("creatorUsername"));
+			res.put("name", document.getString("name"));
+			res.put("description", document.getString("description"));
+			res.put("creatorUsername", document.getString("creatorUsername"));
 
 			locationsNames = (List<String>) document.get("locationsNames");
 			locationsCoords = (List<GeoPoint>) document.get("locationsCoords");
 			placeIDs = (List<String>) document.get("placeIDs");
+			flags = (List<Boolean>) document.get("flags");
 
-			JsonArray array = new JsonArray();
-			JsonObject jsObj;
+			JSONArray array = new JSONArray();
+			JSONObject jsObj;
 
 			for (int i = 0; i < locationsNames.size(); i++) {
-				jsObj = new JsonObject();
-				jsObj.addProperty("name", locationsNames.get(i));
-				jsObj.addProperty("latitude", locationsCoords.get(i).getLatitude());
-				jsObj.addProperty("longitude", locationsCoords.get(i).getLongitude());
-				jsObj.addProperty("placeID", placeIDs.get(i));
-				array.add(jsObj);
+				jsObj = new JSONObject();
+				jsObj.put("name", locationsNames.get(i));
+				jsObj.put("latitude", locationsCoords.get(i).getLatitude());
+				jsObj.put("longitude", locationsCoords.get(i).getLongitude());
+				jsObj.put("placeID", placeIDs.get(i));
+				jsObj.put("flag", flags.get(i));
+				array.put(jsObj);
 			}
 
-			res.add("locations", array);
+			res.put("locations", array);
 
 			Map<String, Integer> map = (HashMap<String, Integer>) document.get("categories");
-			JsonArray jArr = new JsonArray();
+			JSONArray jArr = new JSONArray();
 			for (String s : map.keySet()) {
-				jsObj = new JsonObject();
-				jsObj.addProperty("category", s);
-				jArr.add(jsObj);
+				jsObj = new JSONObject();
+				jsObj.put("category", s);
+				jArr.put(jsObj);
 			}
-			res.add("categories", jArr);
+			res.put("categories", jArr);
 
 			map = (HashMap<String, Integer>) document.get("regions");
 
-			jArr = new JsonArray();
+			jArr = new JSONArray();
 			for (String s : map.keySet()) {
-				jsObj = new JsonObject();
-				jsObj.addProperty("region", s);
-				jArr.add(jsObj);
+				jsObj = new JSONObject();
+				jsObj.put("region", s);
+				jArr.put(jsObj);
 			}
 
-			res.add("regions", jArr);
-			res.addProperty("rating", document.getDouble("rating"));
-			res.addProperty("status", document.getString("status"));
+			res.put("regions", jArr);
+			res.put("rating", document.getDouble("rating"));
+			res.put("status", document.getString("status"));
 		}
 
-		return Response.ok(g.toJson(res)).build();
+		return Response.ok(res.toString()).build();
 	}
 
 	@SuppressWarnings({ "unused", "unchecked" })
@@ -477,7 +480,13 @@ public class RouteResource {
 				List<GeoPoint> locationsCoords;
 				List<String> locationsNames;
 				List<String> placeIDs;
+				List<Boolean> flags;
 				String image = new String();
+
+				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+						.build();
+
+				Storage db = storage.getService();
 
 				for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 					res = new JSONObject();
@@ -488,6 +497,7 @@ public class RouteResource {
 					locationsNames = (List<String>) document.get("locationsNames");
 					locationsCoords = (List<GeoPoint>) document.get("locationsCoords");
 					placeIDs = (List<String>) document.get("placeIDs");
+					flags = (List<Boolean>) document.get("flags");
 
 					JSONArray array = new JSONArray();
 					JSONObject jsObj;
@@ -496,22 +506,23 @@ public class RouteResource {
 						jsObj = new JSONObject();
 						jsObj.put("name", locationsNames.get(i));
 
-						if (i == 0) {
-							StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder()
-									.setProjectId("oofaround").build();
+						if (image.equals("")) {
+							try {
 
-							Storage db = storage.getService();
+								BlobId blobId = BlobId.of("oofaround.appspot.com", "Aqueduto das Águas Livres");
 
-							BlobId blobId = BlobId.of("oofaround.appspot.com", "Aqueduto das Águas Livres");
+								Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
 
-							Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
-
-							image = Base64.getEncoder().encodeToString(blob.getContent());
+								image = Base64.getEncoder().encodeToString(blob.getContent());
+							} catch (Exception e) {
+							}
 						}
 
 						jsObj.put("latitude", locationsCoords.get(i).getLatitude());
 						jsObj.put("longitude", locationsCoords.get(i).getLongitude());
 						jsObj.put("placeIDs", placeIDs.get(i));
+						jsObj.put("flag", flags.get(i));
+
 						array.put(jsObj);
 					}
 
@@ -538,6 +549,15 @@ public class RouteResource {
 					res.put("regions", jArr);
 					res.put("rating", document.getDouble("rating"));
 					res.put("status", document.getString("status"));
+
+					if (image.equals("")) {
+
+						BlobId blobId = BlobId.of("oofaround.appspot.com", "Aqueduto das Águas Livres");
+
+						Blob blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
+
+						image = Base64.getEncoder().encodeToString(blob.getContent());
+					}
 
 					res.put("image", image);
 					jsonArr.put(res);
