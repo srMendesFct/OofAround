@@ -212,6 +212,15 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
 }
 
 function addPreset(name, address, latitude, longitude, region, category, placeID) {
+  var posi = new google.maps.LatLng(latitude, longitude);
+  var marker = new google.maps.Marker({
+    position: posi,
+    map: map,
+    icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+  });
+
+  routePoints.push(marker);
+
   var newLoc = {
     name: name,
     address: address,
@@ -221,6 +230,7 @@ function addPreset(name, address, latitude, longitude, region, category, placeID
     latitude: latitude,
     longitude: longitude
   }
+  locationNames.push(newLoc);
 }
 
 window.onload = function () {
