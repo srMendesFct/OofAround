@@ -47,7 +47,7 @@ function initMap() {
     routePoints.push(marker);
     var newLoc = {
       name: "hum",
-      category: "não especificada",
+      category: "undefined",
       placeId: "pId",
       region: "Portugal",
       latitude: event.latLng.lat(),
