@@ -32,14 +32,15 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.Storage.BlobGetOption;
+import com.google.cloud.storage.StorageOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
+import pt.oofaround.util.GuestData;
 import pt.oofaround.util.RouteData;
 
 @Path("/route")
@@ -61,8 +62,6 @@ public class RouteResource {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createRouteFromArray(RouteData data) throws InterruptedException, ExecutionException {
-
-		LOG.fine("Creating route named " + data.name);
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "createRouteFromArray")) {
 
@@ -122,6 +121,48 @@ public class RouteResource {
 
 			}
 			
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+
+			res.addProperty("tokenID", at.tokenID);
+			return Response.ok(g.toJson(res)).build();
+		} else
+			return Response.status(Status.FORBIDDEN).build();
+	}
+
+	@POST
+	@Path("/edit")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editRoute(RouteData data) throws InterruptedException, ExecutionException {
+		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "editRoute")) {
+
+			JsonObject res = new JsonObject();
+			Map<String, Object> docData = new HashMap<String, Object>();
+			Map<String, Integer> regionMap = new HashMap<String, Integer>();
+			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
+			List<String> names = new LinkedList<String>();
+			List<String> placeIDs = new LinkedList<String>();
+			Map<String, Integer> catMap = new HashMap<String, Integer>();
+
+			for (int i = 0; i < data.locationNames.length; i++) {
+				if (!data.locationNames[i].category.equalsIgnoreCase("undefined")) {
+					catMap.putIfAbsent(data.locationNames[i].category, 1);
+				}
+				regionMap.putIfAbsent(data.locationNames[i].region, 1);
+				names.add(data.locationNames[i].name);
+				placeIDs.add(data.locationNames[i].placeId);
+				locationsList.add(new GeoPoint(data.locationNames[i].latitude, data.locationNames[i].longitude));
+
+			}
+
+			docData.put("name", data.name);
+			docData.put("description", data.description);
+			docData.put("creatorUsername", data.creatorUsername);
+			docData.put("locationsCoords", locationsList);
+			docData.put("locationsNames", names);
+			docData.put("placeIDs", placeIDs);
+			docData.put("regions", regionMap);
+			docData.put("categories", catMap);
+
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 
 			res.addProperty("tokenID", at.tokenID);
@@ -235,7 +276,7 @@ public class RouteResource {
 	@POST
 	@Path("/guest/get")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getGuestRoute(RouteData data) throws InterruptedException, ExecutionException {
+	public Response getGuestRoute(GuestData data) throws InterruptedException, ExecutionException {
 
 		List<GeoPoint> locationsCoords;
 		List<String> locationsNames;
@@ -289,8 +330,6 @@ public class RouteResource {
 			res.addProperty("rating", document.getDouble("rating"));
 			res.addProperty("status", document.getString("status"));
 		}
-		AuthToken at = new AuthToken(data.usernameR, data.role);
-		res.addProperty("tokenID", at.tokenID);
 
 		return Response.ok(g.toJson(res)).build();
 	}
@@ -523,7 +562,7 @@ public class RouteResource {
 	@POST
 	@Path("/guest/listall")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response listGuestAllRoutes(RouteData data) throws InterruptedException, ExecutionException {
+	public Response listGuestAllRoutes(GuestData data) throws InterruptedException, ExecutionException {
 
 		try {
 			ApiFuture<QuerySnapshot> querySnapshot;
@@ -730,8 +769,6 @@ public class RouteResource {
 
 			res = new JSONObject();
 			res.put("routes", jsonArr);
-			AuthToken at = new AuthToken(data.usernameR, data.role);
-			res.put("tokenID", at.tokenID);
 
 			return Response.ok().entity(g.toJson(res)).build();
 		} catch (Exception e) {
@@ -743,7 +780,7 @@ public class RouteResource {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@POST
 	@Path("/rate")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -36,6 +36,7 @@ import pt.oofaround.support.JsonArraySupport;
 import pt.oofaround.support.MediaSupport;
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
+import pt.oofaround.util.GuestData;
 import pt.oofaround.util.LocationData;
 import pt.oofaround.util.TokenData;
 
@@ -129,7 +130,7 @@ public class LocationResource {
 	@POST
 	@Path("/guest/get")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getGuestLocation(LocationData data) throws InterruptedException, ExecutionException {
+	public Response getGuestLocation(GuestData data) throws InterruptedException, ExecutionException {
 
 		CollectionReference locations = db.collection("locations");
 		Query query = locations.whereEqualTo("name", data.name);
@@ -299,7 +300,7 @@ public class LocationResource {
 	@POST
 	@Path("/guest/getcategoryregion")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getGuestLocationsByCatAndRegion(LocationData data) throws InterruptedException, ExecutionException {
+	public Response getGuestLocationsByCatAndRegion(GuestData data) throws InterruptedException, ExecutionException {
 
 		CollectionReference locations = db.collection("locations");
 		List<QueryDocumentSnapshot> docs;
@@ -309,34 +310,34 @@ public class LocationResource {
 
 			if (data.lastName.equalsIgnoreCase("")) {
 
-				if (data.categoriesGet[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
+				if (data.categories[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
 
 					// .order by ranking quando ranking for implementado
 					docs = locations.get().get().getDocuments();
 
-				} else if (data.categoriesGet[0].equalsIgnoreCase("")) {
+				} else if (data.categories[0].equalsIgnoreCase("")) {
 
 					docs = locations.whereEqualTo("region", data.region).get().get().getDocuments();
 
 				} else if (data.region.equalsIgnoreCase("")) {
 					docs = new LinkedList<QueryDocumentSnapshot>();
-					docs.addAll(locations.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments());
+					docs.addAll(locations.whereEqualTo("category", data.categories[0]).get().get().getDocuments());
 
-					for (int i = 1; i < data.categoriesGet.length; i++) {
+					for (int i = 1; i < data.categories.length; i++) {
 
 						docs.addAll(
-								locations.whereEqualTo("category", data.categoriesGet[i]).get().get().getDocuments());
+								locations.whereEqualTo("category", data.categories[i]).get().get().getDocuments());
 
 					}
 
 				} else {
 					docs = new LinkedList<QueryDocumentSnapshot>();
 					docs.addAll(locations.whereEqualTo("region", data.region)
-							.whereEqualTo("category", data.categoriesGet[0]).get().get().getDocuments());
+							.whereEqualTo("category", data.categories[0]).get().get().getDocuments());
 
-					for (int i = 1; i < data.categoriesGet.length; i++) {
+					for (int i = 1; i < data.categories.length; i++) {
 						docs.addAll(locations.whereEqualTo("region", data.region)
-								.whereEqualTo("category", data.categoriesGet[i]).get().get().getDocuments());
+								.whereEqualTo("category", data.categories[i]).get().get().getDocuments());
 					}
 
 				}
@@ -349,21 +350,21 @@ public class LocationResource {
 				docs = locations.whereEqualTo("name", data.lastName).get().get().getDocuments();
 				QueryDocumentSnapshot lastDoc = docs.get(0);
 
-				if (data.categoriesGet[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
+				if (data.categories[0].equalsIgnoreCase("") && data.region.equalsIgnoreCase("")) {
 
 					docs = locations.orderBy("nbrVisits").get().get().getDocuments();
 
-				} else if (data.categoriesGet[0].equalsIgnoreCase("")) {
+				} else if (data.categories[0].equalsIgnoreCase("")) {
 
 					docs = locations.orderBy("nbrVisits").whereEqualTo("region", data.region).startAfter(lastDoc)
 							.limit(data.limit).get().get().getDocuments();
 
 				} else if (data.region.equalsIgnoreCase("")) {
 					docs = new LinkedList<QueryDocumentSnapshot>();
-					docs.addAll(locations.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc)
+					docs.addAll(locations.whereEqualTo("category", data.categories[0]).startAfter(lastDoc)
 							.limit(data.limit).get().get().getDocuments());
-					for (int i = 1; i < data.categoriesGet.length; i++) {
-						docs.addAll(locations.whereEqualTo("category", data.categoriesGet[i]).startAfter(lastDoc)
+					for (int i = 1; i < data.categories.length; i++) {
+						docs.addAll(locations.whereEqualTo("category", data.categories[i]).startAfter(lastDoc)
 								.limit(data.limit).get().get().getDocuments());
 					}
 
@@ -371,12 +372,12 @@ public class LocationResource {
 					docs = new LinkedList<QueryDocumentSnapshot>();
 
 					docs.addAll(locations.orderBy("nbrVisits").whereEqualTo("region", data.region)
-							.whereEqualTo("category", data.categoriesGet[0]).startAfter(lastDoc).limit(data.limit).get()
+							.whereEqualTo("category", data.categories[0]).startAfter(lastDoc).limit(data.limit).get()
 							.get().getDocuments());
-					for (int i = 1; i < data.categoriesGet.length; i++) {
+					for (int i = 1; i < data.categories.length; i++) {
 
 						docs.addAll(locations.whereEqualTo("region", data.region).orderBy("nbrVisits")
-								.whereEqualTo("region", data.region).whereEqualTo("category", data.categoriesGet[i])
+								.whereEqualTo("region", data.region).whereEqualTo("category", data.categories[i])
 								.startAfter(lastDoc).limit(data.limit).get().get().getDocuments());
 					}
 
@@ -489,7 +490,7 @@ public class LocationResource {
 	@POST
 	@Path("/guest/getall")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getGuestAllLocations(TokenData data) throws InterruptedException, ExecutionException {
+	public Response getGuestAllLocations() throws InterruptedException, ExecutionException {
 
 			CollectionReference locations = db.collection("locations");
 
