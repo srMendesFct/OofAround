@@ -234,7 +234,6 @@ function addPreset(name, address, latitude, longitude, region, category, placeID
     latitude: latitude,
     longitude: longitude
   }
-  locationNames.push(newLoc);
 }
 
 window.onload = function () {
