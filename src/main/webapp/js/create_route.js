@@ -187,20 +187,7 @@ captureDataMonuments = function (event) {
   event.preventDefault();
 }
 
-function add(name, latitude, longitude, region, category) {
-  console.log('latitude do mambo ' + latitude);
-  var newLoc = {
-    name: name,
-    category: category,
-    placeId: "pId",
-    region: region,
-    latitude: latitude,
-    longitude: longitude
-  }
-  locationNames.push(newLoc);
-};
-
-function setInfo(markerNumber, name, address, latitude, longitude) {
+function setInfo(markerNumber, name, address, latitude, longitude, region, category, placeID) {
   var m = presetMarkers[markerNumber];
 
   //fazer isto mais bonito
