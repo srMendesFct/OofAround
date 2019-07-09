@@ -201,6 +201,7 @@ function setInfo(markerNumber, name, address, latitude, longitude) {
     '<div id="bodyContent">' +
     '<p>Endereço: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
+    '<p align = "right"> <button id="banana"> Adicionar ao percurso </button> </p>' +
     '</div>' +
     '</div>';
 
@@ -228,8 +229,8 @@ window.onload = function () {
     localStorage.setItem('expiration', date.getTime() + 300000);
     var form_c = $('form[name="courseForm"]');
     form_c[0].onsubmit = captureDataCreateCourse;
-    var frmsl = $('form[name="categorias"]');
-    frmsl[0].onsubmit = captureDataMonuments;
+    var pesquisa = $('form[name="categorias"]');
+    pesquisa[0].onsubmit = captureDataMonuments;
     ;
   }
 }
