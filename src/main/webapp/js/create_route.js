@@ -178,7 +178,7 @@ captureDataMonuments = function (event) {
         });
 
         presetMarkers.push(marker);
-        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category);
+        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
       }
     },
     error: function (response) {},
@@ -200,7 +200,7 @@ function add(name, latitude, longitude, region, category) {
   locationNames.push(newLoc);
 };
 
-function setInfo(markerNumber, name, address, latitude, longitude, region, category) {
+function setInfo(markerNumber, name, address, latitude, longitude) {
   var m = presetMarkers[markerNumber];
 
   //fazer isto mais bonito
@@ -211,7 +211,7 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '<div id="bodyContent">' +
     '<p>Morada: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
-    '<p align = "right"> <button onclick="teste()">Adicionar ao percurso</button> </p>' +
+    '<p align = "right"> <button onclick="addPreset(\''+name+'\',\''+address+'\',\''+latitude+'\',\''+longitude+'\',\''+region+'\',\''+category+'\',\''+placeID+'\')">Adicionar ao percurso</button></p>' +
     '</div>' +
     '</div>';
 
@@ -220,11 +220,21 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
       content: contentString
     });
     infowindow.open(map, m);
+
   });
 }
 
-function teste() {
-  alert('Deu certo!');
+function addPreset(name, address, latitude, longitude, region, category, placeID) {
+  var newLoc = {
+    name: name,
+    address: address,
+    category: category,
+    placeId: placeID,
+    region: region,
+    latitude: latitude,
+    longitude: longitude
+  }
+  locationNames.push(newLoc);
 }
 
 window.onload = function () {
