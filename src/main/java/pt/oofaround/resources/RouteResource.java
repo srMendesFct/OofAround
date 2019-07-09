@@ -697,7 +697,6 @@ public class RouteResource {
 			List<GeoPoint> locationsCoords;
 			List<String> locationsNames;
 			List<String> placeIDs;
-			String image = "";
 
 			for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				res = new JSONObject();
@@ -715,24 +714,6 @@ public class RouteResource {
 				for (int i = 0; i < locationsNames.size(); i++) {
 					jsObj = new JSONObject();
 					jsObj.put("name", locationsNames.get(i));
-
-					if (i == 0) {
-						StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder()
-								.setProjectId("oofaround").build();
-
-						Storage db = storage.getService();
-
-						BlobId blobId;
-
-						Blob blob;
-
-						blobId = BlobId.of("oofaround.appspot.com","Aqueduto das Águas Livres");
-
-						blob = db.get(blobId, BlobGetOption.fields(Storage.BlobField.MEDIA_LINK));
-
-						image = Base64.getEncoder().encodeToString(blob.getContent());
-					}
-
 					jsObj.put("latitude", locationsCoords.get(i).getLatitude());
 					jsObj.put("longitude", locationsCoords.get(i).getLongitude());
 					jsObj.put("placeIDs", placeIDs.get(i));
@@ -763,7 +744,6 @@ public class RouteResource {
 				res.put("rating", document.getDouble("rating"));
 				res.put("status", document.getString("status"));
 
-				res.put("image", image);
 				jsonArr.put(res);
 			}
 
