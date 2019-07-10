@@ -95,7 +95,6 @@ captureDataCreateCourse = function () {
   values['role'] = localStorage.getItem('role');
   values['creatorUsername'] = localStorage.getItem('username');
   values['locationNames'] = locationNames;
-  console.log(locationNames);
 
   $.each($('form[name="courseForm"]').serializeArray(), function (i, field) {
     values[field.name] = field.value;
@@ -109,6 +108,7 @@ captureDataCreateCourse = function () {
     crossDomain: 'true',
     success: function (response) {},
     error: function (response) {
+      console.log(locationNames);
       alert('Erro!')
     },
     data: JSON.stringify(values)
@@ -190,6 +190,7 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
 
 function addPreset(name, address, latitude, longitude, region, category, placeID) {
   var posi = new google.maps.LatLng(latitude, longitude);
+
   var marker = new google.maps.Marker({
     position: posi,
     map: map,
@@ -207,6 +208,7 @@ function addPreset(name, address, latitude, longitude, region, category, placeID
     latitude: latitude,
     longitude: longitude
   }
+
   locationNames.push(newLoc);
 }
 
