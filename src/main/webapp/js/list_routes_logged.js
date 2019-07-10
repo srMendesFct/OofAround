@@ -388,7 +388,7 @@ captureDataListComments = function (role, token, user, name, creator) {
     };
     $.ajax({
         type: "POST",
-        url: "https://oofaround.appspot.com/rest/route/listall",
+        url: "https://oofaround.appspot.com/rest/comment/listcomments",
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
