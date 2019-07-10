@@ -1,4 +1,4 @@
-captureDataListComments = function () {
+captureDataListComments = function (evt) {
     var values = {};
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
@@ -6,7 +6,7 @@ captureDataListComments = function () {
     $.each($('form[name="listar"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });
-    
+
     localStorage.setItem('criador', values[routeCreatorUsername]);
     localStorage.setItem('nome', values[routeName]);
 
@@ -86,10 +86,9 @@ captureDataListComments = function () {
             button.setAttribute("class", "btn btn-default");
             button.setAttribute("type", "submit");
             div_5.appendChild(button);
-            button.addEventListener('click', function () {
-                captureDataPostComment(Response.comments[0].routeCreatorUsername, Response.comments[0].routeName);
-            });
-
+            
+            var posts = $('form[name="postar"]');
+            posts[0].onsubmit = captureDataPostComment;
         },
         error: function (Response) {
             if (Response.status == 404) {
@@ -135,9 +134,9 @@ captureDataListComments = function () {
                 button.setAttribute("class", "btn btn-default");
                 button.setAttribute("type", "submit");
                 div_5.appendChild(button);
-                button.addEventListener('click', function () {
-                    captureDataPostComment(localStorage.getItem('criador'), localStorage.getItem('nome'));
-                });
+
+                var posts = $('form[name="postar"]');
+                posts[0].onsubmit = captureDataPostComment;
 
             } else {
                 alert('erro');
@@ -145,16 +144,16 @@ captureDataListComments = function () {
         },
         data: JSON.stringify(values) // post data || get data
     });
-    event.preventDefault();
+    evt.preventDefault();
 };
 
-captureDataPostComment = function (criador, nome) {
+captureDataPostComment = function (criador, nome, evt) {
     var values = {};
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
     values['usernameR'] = localStorage.getItem('username');
-    values['routeName'] = nome;
-    values['routeCreatorUsername'] = criador;
+    values['routeName'] = localStorage.getItem('nome');
+    values['routeCreatorUsername'] = localStorage.getItem('criador');
     $.each($('form[name="postar"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });
@@ -172,7 +171,7 @@ captureDataPostComment = function (criador, nome) {
         },
         data: JSON.stringify(values) // post data || get data
     });
-    event.preventDefault();
+    evt.preventDefault();
 };
 
 window.onload = function () {
