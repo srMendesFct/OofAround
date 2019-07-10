@@ -243,9 +243,7 @@ captureDataGetRoutes = function (event) {
                 button_2.setAttribute("data-target", "#comment" + marosca_2);
                 button_2.setAttribute("id", indice);
                 button_2.style.marginBottom = "3px";
-                button_2.addEventListener('click', function () {
-                    captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome[button_2.id], criador[button_2.id]);
-                });
+                captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome[button_2.id], criador[button_2.id]);
                 button_2.innerHTML = "Ver Comentários";
                 p.appendChild(button_2);
 
