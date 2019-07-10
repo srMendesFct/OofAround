@@ -154,7 +154,7 @@ captureDataMonuments = function (event) {
         });
 
         presetMarkers.push(marker);
-        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
+        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeId);
       }
     },
     error: function (response) {},
@@ -163,7 +163,7 @@ captureDataMonuments = function (event) {
   event.preventDefault();
 }
 
-function setInfo(markerNumber, name, address, latitude, longitude, region, category, placeID) {
+function setInfo(markerNumber, name, address, latitude, longitude, region, category, placeId) {
   var m = presetMarkers[markerNumber];
 
   //fazer isto mais bonito
@@ -174,7 +174,7 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '<div id="bodyContent">' +
     '<p>Morada: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
-    '<p align = "right"> <button onclick="addPreset(\''+name+'\',\''+address+'\',\''+latitude+'\',\''+longitude+'\',\''+region+'\',\''+category+'\',\''+placeID+'\')">Adicionar ao percurso</button></p>' +
+    '<p align = "right"> <button onclick="addPreset(\''+name+'\',\''+address+'\',\''+latitude+'\',\''+longitude+'\',\''+region+'\',\''+category+'\',\''+placeId+'\')">Adicionar ao percurso</button></p>' +
     '</div>' +
     '</div>';
 
@@ -187,7 +187,7 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
   });
 }
 
-function addPreset(name, address, latitude, longitude, region, category, placeID) {
+function addPreset(name, address, latitude, longitude, region, category, placeId) {
   var posi = new google.maps.LatLng(latitude, longitude);
 
   var marker = new google.maps.Marker({
@@ -202,7 +202,7 @@ function addPreset(name, address, latitude, longitude, region, category, placeID
     name: name,
     address: address,
     category: category,
-    placeId: placeID,
+    placeId: placeId,
     region: region,
     latitude: latitude,
     longitude: longitude
