@@ -108,8 +108,7 @@ captureDataCreateCourse = function () {
     crossDomain: 'true',
     success: function (response) {},
     error: function (response) {
-      console.log(locationNames);
-      alert('Erro!')
+      alert(locationNames)
     },
     data: JSON.stringify(values)
   });
