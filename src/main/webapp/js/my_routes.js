@@ -1,5 +1,5 @@
 var marosca = 100;
-
+var marosca_2 = 100;
 captureDeleteRoute = function (token, user, role, creator, name) {
   var values = {};
   values['tokenID'] = token;
@@ -327,8 +327,4 @@ window.onload = function () {
     localStorage.setItem('expiration', date.getTime() + 300000);
     captureDataGetRoutesByUser();
   }
-
-  document.getElementById('submitD').addEventListener('click', function () {
-    captureDeleteRoute();
-  });
 }
