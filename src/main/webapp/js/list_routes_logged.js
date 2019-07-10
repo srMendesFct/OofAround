@@ -248,6 +248,7 @@ captureDataGetRoutes = function (event) {
                 });
                 button_2.innerHTML = "Ver Comentários";
                 p.appendChild(button_2);
+                
 
                 var div_16 = document.createElement("div");
                 div_16.setAttribute("class", "modal fade");
