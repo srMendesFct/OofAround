@@ -232,15 +232,19 @@ captureDataGetRoutes = function (event) {
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
 
-                var nome = Response.routes[i].name;
-                var criador = Response.routes[i].creatorUsername;
+                var nome = [];
+                var criador = [];
+                var indice = 0;
+                nome [indice] = Response.routes[i].name;
+                criador [indice] = Response.routes[i].creatorUsername;
 
                 var button_2 = document.createElement("button");
                 button_2.setAttribute("data-toggle", "modal");
                 button_2.setAttribute("data-target", "#comment" + marosca_2);
+                button_2.setAttribute("id", indice);
                 button_2.style.marginBottom = "3px";
                 button_2.addEventListener('click', function () {
-                    captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome, criador);
+                    captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome[button_2.id], criador[button_2.id]);
                 });
                 button_2.innerHTML = "Ver Comentários";
                 p.appendChild(button_2);
@@ -365,6 +369,8 @@ captureDataGetRoutes = function (event) {
                 var p_10 = document.createElement("p");
                 p_10.innerHTML = Response.routes[i].creatorUsername;
                 div_25.appendChild(p_10);
+
+                indice = indice + 1;
             }
         },
         error: function (Response) {
