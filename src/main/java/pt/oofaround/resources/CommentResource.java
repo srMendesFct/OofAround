@@ -22,6 +22,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.Query.Direction;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.storage.Blob;
@@ -73,7 +74,7 @@ public class CommentResource {
 			db.collection("comments").document().set(docData).get();
 
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("comments").whereEqualTo("routeName", data.routeName)
-					.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername).get();
+					.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername).orderBy("timestamp", Direction.ASCENDING).get();
 
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				jObj = new JSONObject();
