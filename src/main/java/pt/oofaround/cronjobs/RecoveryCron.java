@@ -60,9 +60,7 @@ public class RecoveryCron extends HttpServlet {
 			}
 
 			_logger.info("Cron Job has been executed");
-		} catch (
-
-		Exception ex) {
+		} catch (Exception ex) {
 			_logger.info("Cron Job has failed");
 
 		}

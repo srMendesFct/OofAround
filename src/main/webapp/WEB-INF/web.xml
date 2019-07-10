@@ -45,7 +45,7 @@
 		<servlet-class>pt.oofaround.cronjobs.RecoveryCron</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>CronServlet</servlet-name>
+		<servlet-name>RecoveryCronServlet</servlet-name>
 		<url-pattern>/crontasks/recoverycron</url-pattern>
 	</servlet-mapping>
 
