@@ -10,12 +10,17 @@ captureDataGetRecoverCode = function (evt) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            console.log(Response);
-            localStorage.setItem('username', values['usernameR']);
-            console.log(localStorage.getItem('username'));
+
         },
         error: function (Response) {
-            alert("Erro ao enviar código");
+            if (Response.status == 200) {
+                console.log(Response);
+                localStorage.setItem('username', values['usernameR']);
+                console.log(localStorage.getItem('username'));
+            }
+            else {
+                alert("Erro");
+            }
         },
         data: JSON.stringify(values) // post data || get data
     });
