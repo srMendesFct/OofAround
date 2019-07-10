@@ -107,8 +107,6 @@ captureDataGetPointsOfInterest = function (event) {
                 button.innerHTML = "Saber Mais";
                 p.appendChild(button);
 
-                
-
                 var div_3 = document.createElement("div");
                 div_3.setAttribute("class", "modal fade");
                 div_3.setAttribute("id", "loginForm" + marosca);

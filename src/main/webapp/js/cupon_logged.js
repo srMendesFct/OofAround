@@ -78,9 +78,9 @@ captureDataGetCupon = function () {
                 div_6.setAttribute("class", "modal-header text-center");
                 div_5.appendChild(div_6);
 
-                var img_3 = document.createElement("img");
-                img_3.src = "img/logo.png";
-                div_6.appendChild(img_3);
+                var img = document.createElement("img");
+                img.src = "img/logo.png";
+                div_6.appendChild(img);
 
                 var button_2 = document.createElement("button");
                 button_2.setAttribute("type", "button");
@@ -115,6 +115,11 @@ captureDataGetCupon = function () {
 
                 var br = document.createElement("br");
                 div_8.appendChild(br);
+
+                var img_2 = document.createElement("img");
+                img_2.setAttribute("class", "imgXL");
+                img_2.src = 'data:image/jpeg;base64, ' + Response.cupons[i].qrCode;
+                div_8.appendChild(img_2);
 
                 var br_2 = document.createElement("br");
                 div_7.appendChild(br_2);
