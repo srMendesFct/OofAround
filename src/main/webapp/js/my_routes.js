@@ -131,8 +131,9 @@ captureDataGetRoutesByUser = function () {
           img_2.src = "./img/cross.jpg";
           img_2.setAttribute("class", "imgXS");
           img_2.setAttribute("id", Response.routes[i].name);
+          img_2.setAttribute("href", "#");
           img_2.addEventListener('click', function () {
-            captureDeleteRoute(localStorage.getItem('tokenID'), localStorage.getItem('username'), localStorage.getItem('role'), localStorage.getItem('username'), nome);
+            captureDeleteRoute(localStorage.getItem('token'), localStorage.getItem('username'), localStorage.getItem('role'), localStorage.getItem('username'), nome);
           })
           p.appendChild(img_2);
 
