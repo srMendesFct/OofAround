@@ -157,7 +157,7 @@ captureDataGetCupon = function () {
                 var label_7 = document.createElement("label");
                 label_7.setAttribute("data-error", "wrong");
                 label_7.setAttribute("data-success", "right");
-                label_7.innerHTML = "Valor:";
+                label_7.innerHTML = "Valor (%):";
                 div_14.appendChild(label_7);
 
                 var p_5 = document.createElement("p");
