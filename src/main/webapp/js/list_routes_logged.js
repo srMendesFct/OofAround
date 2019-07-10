@@ -245,9 +245,9 @@ captureDataGetRoutes = function (event) {
                 button_2.style.marginBottom = "3px";
                 button_2.innerHTML = "Ver Comentários";
                 p.appendChild(button_2);
-
+                console.log("antes: "+ marosca_2);
                 captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome[button_2.id], criador[button_2.id]);
-
+                console.log("depois: "+ marosca_2);
                 indice = indice + 1;
             }
         },
