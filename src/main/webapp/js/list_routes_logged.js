@@ -248,8 +248,11 @@ captureDataGetRoutes = function (event) {
 
                 console.log("antes: "+ marosca_2);
                 captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome[button_2.id], criador[button_2.id]);
+
+                marosca_2 = marosca_2 + 1;
+
                 console.log("depois: "+ marosca_2);
-                
+
                 indice = indice + 1;
             }
         },
@@ -278,6 +281,8 @@ captureDataListComments = function (role, token, user, name, creator) {
         success: function (Response) {
             console.log(Response);
 
+            console.log("dentro: " + marosca_2);
+            
             var div_16 = document.createElement("div");
             div_16.setAttribute("class", "modal fade");
             div_16.setAttribute("id", "comment" + marosca_2);
@@ -286,8 +291,6 @@ captureDataListComments = function (role, token, user, name, creator) {
             div_16.setAttribute("aria-labelledby", "myModalLabel");
             div_16.setAttribute("aria-hidden", "true");
             document.getElementById("body").appendChild(div_16);
-
-            marosca_2 = marosca_2 + 1;
 
             var div_17 = document.createElement("div");
             div_17.setAttribute("class", "modal-dialog");
@@ -355,6 +358,8 @@ captureDataListComments = function (role, token, user, name, creator) {
         },
         error: function (Response) {
 
+            console.log("dentro: " + marosca_2);
+
             var div_16 = document.createElement("div");
             div_16.setAttribute("class", "modal fade");
             div_16.setAttribute("id", "comment" + marosca_2);
@@ -363,8 +368,6 @@ captureDataListComments = function (role, token, user, name, creator) {
             div_16.setAttribute("aria-labelledby", "myModalLabel");
             div_16.setAttribute("aria-hidden", "true");
             document.getElementById("body").appendChild(div_16);
-
-            marosca_2 = marosca_2 + 1;
 
             var div_17 = document.createElement("div");
             div_17.setAttribute("class", "modal-dialog");
