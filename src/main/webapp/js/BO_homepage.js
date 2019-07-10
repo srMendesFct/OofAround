@@ -62,7 +62,7 @@ captureDataCreatePointOfInterest = function (event) {
         window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
-        alert('Falha ao criar ponto');
+        alert('erro');
         window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       data: JSON.stringify(values) // post data || get data
@@ -90,7 +90,7 @@ captureDataCreateCupon = function (event) {
         window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
-        alert('Falha ao criar ponto');
+        alert('erro');
         window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       data: JSON.stringify(values) // post data || get data
@@ -117,7 +117,34 @@ captureDataAlterRole = function (event) {
       window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
     },
     error: function (Response) {
-      alert('Falha ao criar ponto');
+      alert('erro');
+      window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+    },
+    data: JSON.stringify(values) // post data || get data
+  });
+event.preventDefault();
+};
+
+captureDataDeleteUser = function (event) {
+  var values = {}
+  values['usernameR'] = localStorage.getItem('username');
+  values['tokenID'] = localStorage.getItem('token');
+  values['role'] = localStorage.getItem('role');
+  $.each($('form[name="Eliminar user"]').serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+  });
+  console.log(JSON.stringify(values));
+  $.ajax({
+    type: "POST",
+    url: "https://oofaround.appspot.com/rest/delete/user",
+    contentType: "application/json;charset=utf-8",
+    dataType: 'json', // data type        
+    crossDomain: true,
+    success: function (Response) {
+      window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+    },
+    error: function (Response) {
+      alert('erro');
       window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
     },
     data: JSON.stringify(values) // post data || get data
@@ -146,5 +173,7 @@ window.onload = function () {
     cupao[0].onsubmit = captureDataCreateCupon;
     var role = $('form[name="Alterar role"]');
     role[0].onsubmit = captureDataAlterRole;
+    var del = $('form[name="Eliminar user"]');
+    del[0].onsubmit = captureDataDeleteUser;
   }
 };
