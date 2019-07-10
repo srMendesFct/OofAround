@@ -1,12 +1,12 @@
 var marosca = 100;
 
-captureDeleteRoute = function (event) {
+captureDeleteRoute = function (token, user, role, creator, name) {
   var values = {};
-  values['tokenID'] = localStorage.getItem('token');
-  values['usernameR'] = localStorage.getItem('username');
-  values['role'] = localStorage.getItem('role');
-  values['creatorUsername'] = localStorage.getItem('username');
-  values['name'] = event;
+  values['tokenID'] = token;
+  values['usernameR'] = user;
+  values['role'] = role;
+  values['creatorUsername'] = creator;
+  values['name'] = name;
 
   $.ajax({
     type: "POST",
@@ -125,15 +125,16 @@ captureDataGetRoutesByUser = function () {
           img.setAttribute("class", "imgXS");
           p.appendChild(img);
 
+          var nome = Response.routes[i].name;
+          
           var img_2 = document.createElement("img");
           img_2.src = "./img/cross.jpg";
           img_2.setAttribute("class", "imgXS");
           img_2.setAttribute("id", Response.routes[i].name);
+          img_2.addEventListener('click', function () {
+            captureDeleteRoute(localStorage.getItem('tokenID'), localStorage.getItem('username'), localStorage.getItem('role'), localStorage.getItem('username'), nome);
+          })
           p.appendChild(img_2);
-
-          document.getElementById(Response.routes[i].name).addEventListener('click', function () {
-            captureDeleteRoute(Response.routes[i].name);
-          });
 
           var button = document.createElement("button");
           button.setAttribute("data-toggle", "modal");
