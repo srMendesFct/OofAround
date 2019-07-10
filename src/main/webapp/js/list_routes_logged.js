@@ -1,5 +1,6 @@
 marosca = 100;
 marosca_2 = 100;
+var p;
 
 captureDataGetRoutes = function (event) {
     var x = document.getElementsByClassName("ed");
@@ -100,7 +101,7 @@ captureDataGetRoutes = function (event) {
                 header_4.innerHTML = "Região: " + y;
                 div_2.appendChild(header_4);
 
-                var p = document.createElement("p");
+                p = document.createElement("p");
                 p.align = "right";
                 div_2.appendChild(p);
 
@@ -232,28 +233,7 @@ captureDataGetRoutes = function (event) {
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
 
-                var nome = [];
-                var criador = [];
-                var indice = 0;
-                nome[indice] = Response.routes[i].name;
-                criador[indice] = Response.routes[i].creatorUsername;
-
-                var button_2 = document.createElement("button");
-                button_2.setAttribute("data-toggle", "modal");
-                button_2.setAttribute("data-target", "#comment" + marosca_2);
-                button_2.setAttribute("id", indice);
-                button_2.style.marginBottom = "3px";
-                button_2.innerHTML = "Ver Comentários";
-                p.appendChild(button_2);
-
-                console.log("antes: "+ marosca_2);
-                captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome[button_2.id], criador[button_2.id]);
-
-                marosca_2 = marosca_2 + 1;
-
-                console.log("depois: "+ marosca_2);
-
-                indice = indice + 1;
+                captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), Response.routes[i].name, Response.routes[i].creatorUsername);
             }
         },
         error: function (Response) {
@@ -282,7 +262,15 @@ captureDataListComments = function (role, token, user, name, creator) {
             console.log(Response);
 
             console.log("dentro: " + marosca_2);
-            
+
+            var button_2 = document.createElement("button");
+            button_2.setAttribute("data-toggle", "modal");
+            button_2.setAttribute("data-target", "#comment" + marosca_2);
+            button_2.setAttribute("id", indice);
+            button_2.style.marginBottom = "3px";
+            button_2.innerHTML = "Ver Comentários";
+            p.appendChild(button_2);
+
             var div_16 = document.createElement("div");
             div_16.setAttribute("class", "modal fade");
             div_16.setAttribute("id", "comment" + marosca_2);
@@ -291,6 +279,8 @@ captureDataListComments = function (role, token, user, name, creator) {
             div_16.setAttribute("aria-labelledby", "myModalLabel");
             div_16.setAttribute("aria-hidden", "true");
             document.getElementById("body").appendChild(div_16);
+
+            marosca_2 = marosca_2 + 1;
 
             var div_17 = document.createElement("div");
             div_17.setAttribute("class", "modal-dialog");
@@ -360,6 +350,14 @@ captureDataListComments = function (role, token, user, name, creator) {
 
             console.log("dentro: " + marosca_2);
 
+            var button_2 = document.createElement("button");
+            button_2.setAttribute("data-toggle", "modal");
+            button_2.setAttribute("data-target", "#comment" + marosca_2);
+            button_2.setAttribute("id", indice);
+            button_2.style.marginBottom = "3px";
+            button_2.innerHTML = "Ver Comentários";
+            p.appendChild(button_2);
+
             var div_16 = document.createElement("div");
             div_16.setAttribute("class", "modal fade");
             div_16.setAttribute("id", "comment" + marosca_2);
@@ -368,6 +366,8 @@ captureDataListComments = function (role, token, user, name, creator) {
             div_16.setAttribute("aria-labelledby", "myModalLabel");
             div_16.setAttribute("aria-hidden", "true");
             document.getElementById("body").appendChild(div_16);
+
+            marosca_2 = marosca_2 + 1;
 
             var div_17 = document.createElement("div");
             div_17.setAttribute("class", "modal-dialog");
