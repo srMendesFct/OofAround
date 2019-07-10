@@ -69,8 +69,12 @@
       </div>
       <div class="col-xs-3">
         <div class="dente" style="text-align: center">
-          <h2>Pontos de Interesse</h1>
-            <br>
+          <p>Pode selecionar pontos de interesse para os adicionar ao seu percurso: caso o queira fazer,
+            escolha de acordo com região e categoria e carregue em "Pesquisar": vão aparecer marcados no mapa
+            a vermelho os pontos de interesse. Para adicionar um ao seu percurso, carregue no marcador a vermelho
+            e no botão que permite adicionar ao percurso".
+          </p>
+            <br><br>
             <label>Distrito</label>
             <select id="distrito">
               <option>-- Escolha o Distrito--</option>
@@ -78,7 +82,7 @@
               <option value="Lisboa">Lisboa</option>
               <option value="Porto">Porto</option>
             </select>
-            <br><br><br>
+            <br>
             <label>Categorias</label>
             <form name="categorias">
               <input class="ed" type="checkbox" name="Nenhuma" value=""> Nenhuma
@@ -102,6 +106,14 @@
               </div>
             </form>
             <br>
+
+            <p>Pode selecionar qualquer ponto ao seu percurso, seja um ponto de interesse marcado a vermelho ou não. No final de
+              marcar todos os pontos, carregue no botão para traçar a rota.</p>
+            <input type="submit" id="submitF"></input>
+
+            <br>
+
+            <p>Dê um nome e uma descrição ao seu percurso.</p>
             <form id="courseForm" name="courseForm">
               <div class="md-form mb-5">
                 <label>Nome do percurso:</label>
@@ -115,7 +127,6 @@
               </div>
               <button type="submit" class="btn btn-default">Criar</button>
             </form>
-            <input type="submit" id="submitF">Confirmar pontos selecionados</input>
         </div>
       </div>
     </div>
