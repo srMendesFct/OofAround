@@ -243,6 +243,7 @@ captureDataGetRoutes = function (event) {
                 button_2.setAttribute("data-toggle", "modal");
                 button_2.setAttribute("data-target", "#comment" + marosca_2);
                 button_2.style.marginBottom = "3px";
+                button_2.onclick = captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), Response.routes[i].name, Response.routes[i].creatorUsername)
                 button_2.innerHTML = "Ver Comentários";
                 p.appendChild(button_2);
 
@@ -368,6 +369,31 @@ captureDataGetRoutes = function (event) {
                 div_25.appendChild(p_10);
             }
 
+        },
+        error: function (Response) {
+            alert('Falha ao Pesquisar');
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
+    event.preventDefault();
+};
+
+captureDataListComments = function (role, token, user, name, creator) {
+    var values = {
+        tokenID: token,
+        role: role,
+        usernameR: user,
+        routeName: name,
+        routeCreatorUsername: creator
+    };
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/route/listall",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+            console.log(Response);
         },
         error: function (Response) {
             alert('Falha ao Pesquisar');
