@@ -233,8 +233,9 @@ public class UserInfoResource {
 		db.collection("recovery").document().set(map);
 
 		db.collection("flag").document("recovery").update("flag", true);
-		
-		EmailSupport.sendRecoverCode(db.collection("users").document(data.usernameR).get().get().getString("email"), recoverCode);
+
+		EmailSupport.sendRecoverCode(db.collection("users").document(data.usernameR).get().get().getString("email"),
+				recoverCode);
 
 		return Response.ok().build();
 	}
@@ -245,20 +246,18 @@ public class UserInfoResource {
 	public Response recoverPassword(RecoverPasswordData data) throws InterruptedException, ExecutionException {
 
 		ApiFuture<QuerySnapshot> querySnapshot = db.collection("recovery").whereEqualTo("id", data.recoverCode).get();
-		
+
 		String username = "";
-		
-		for(QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
-			if(document.getLong("expires") < System.currentTimeMillis()) {
+
+		for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+			if (document.getLong("expires") < System.currentTimeMillis()) {
 				document.getReference().delete();
 				return Response.status(403).build();
-			}
-			else {
+			} else {
 				username = document.getString("username");
 			}
 		}
-				
-		
+
 		if (data.password.equals(data.confirmPassword) && !username.equals("")) {
 			Map<String, Object> docData = new HashMap<String, Object>();
 			String passEnc = Hashing.sha512().hashString(data.password, StandardCharsets.UTF_8).toString();
@@ -285,16 +284,14 @@ public class UserInfoResource {
 
 			docData.put("role", data.newRole);
 
-			ApiFuture<WriteResult> alterInfo = db.collection("users").document(data.username).set(docData,
-					SetOptions.merge());
-			alterInfo.get();
+			db.collection("users").document(data.username).set(docData, SetOptions.merge());
 
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 
-			// AuthToken at = new AuthToken(data.usernameR, data.role);
-			// res.addProperty("tokenID", at.tokenID);
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.put("tokenID", at.tokenID);
 
-			return Response.ok().entity(g.toJson(res)).build();
+			return Response.ok().entity(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}
