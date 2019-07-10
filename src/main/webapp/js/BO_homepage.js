@@ -98,6 +98,33 @@ captureDataCreateCupon = function (event) {
   event.preventDefault();
 };
 
+captureDataAlterRole = function (event) {
+  var values = {}
+  values['usernameR'] = localStorage.getItem('username');
+  values['tokenID'] = localStorage.getItem('token');
+  values['role'] = localStorage.getItem('role');
+  $.each($('form[name="Alterar role"]').serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+  });
+  console.log(JSON.stringify(values));
+  $.ajax({
+    type: "POST",
+    url: "https://oofaround.appspot.com/rest/cupon/create",
+    contentType: "application/json;charset=utf-8",
+    dataType: 'json', // data type        
+    crossDomain: true,
+    success: function (Response) {
+      window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+    },
+    error: function (Response) {
+      alert('Falha ao criar ponto');
+      window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+    },
+    data: JSON.stringify(values) // post data || get data
+  });
+event.preventDefault();
+};
+
 function logout() {
   localStorage.clear();
   window.location.href = "https://oofaround.appspot.com/";
@@ -117,5 +144,7 @@ window.onload = function () {
     ponto[0].onsubmit = captureDataCreatePointOfInterest;
     var cupao = $('form[name="Criar cupao"]');
     cupao[0].onsubmit = captureDataCreateCupon;
+    var role = $('form[name="Alterar role"]');
+    role[0].onsubmit = captureDataAlterRole;
   }
 };
