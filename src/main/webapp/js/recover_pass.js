@@ -14,9 +14,7 @@ captureDataGetRecoverCode = function (evt) {
         },
         error: function (Response) {
             if (Response.status == 200) {
-                console.log(Response);
                 localStorage.setItem('username', values['usernameR']);
-                console.log(localStorage.getItem('username'));
             }
             else {
                 alert("Erro");
@@ -29,6 +27,7 @@ captureDataGetRecoverCode = function (evt) {
 
 captureDataChangePassword = function (evt) {
     var values = {};
+    values ['usernameR'] = localStorage.getItem('username');
     $.each($('form[name="pass"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });
@@ -38,7 +37,9 @@ captureDataChangePassword = function (evt) {
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
-        success: function (Response) {},
+        success: function (Response) {
+            window.location.href = "https://oofaround.appspot.com";
+        },
         error: function (Response) {
             alert("Falha ao alterar a password");
         },
