@@ -106,11 +106,6 @@ captureDataGetRoutes = function (event) {
                 p.align = "right";
                 div_2.appendChild(p);
 
-                var img = document.createElement("img");
-                img.src = "img/edit-pencil-icon-vector-13483315.jpg";
-                img.setAttribute("class", "imgXS");
-                p.appendChild(img);
-
                 var button = document.createElement("button");
                 button.setAttribute("data-toggle", "modal");
                 button.setAttribute("data-target", "#loginForm" + marosca);
@@ -239,16 +234,18 @@ captureDataGetRoutes = function (event) {
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
 
+                var nome = Response.routes[i].name;
+                var criador = Response.routes[i].creatorUsername;
+
                 var button_2 = document.createElement("button");
                 button_2.setAttribute("data-toggle", "modal");
                 button_2.setAttribute("data-target", "#comment" + marosca_2);
                 button_2.style.marginBottom = "3px";
                 button_2.addEventListener('click', function() {
-                    captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), Response.routes[i].name, Response.routes[i].creatorUsername);
+                    captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome, criador);
                 });
                 button_2.innerHTML = "Ver Comentários";
                 p.appendChild(button_2);
-                
 
                 var div_16 = document.createElement("div");
                 div_16.setAttribute("class", "modal fade");
