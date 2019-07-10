@@ -266,7 +266,6 @@ captureDataListComments = function (role, token, user, name, creator) {
             var button_2 = document.createElement("button");
             button_2.setAttribute("data-toggle", "modal");
             button_2.setAttribute("data-target", "#comment" + marosca_2);
-            button_2.setAttribute("id", indice);
             button_2.style.marginBottom = "3px";
             button_2.innerHTML = "Ver Comentários";
             p.appendChild(button_2);
@@ -353,7 +352,6 @@ captureDataListComments = function (role, token, user, name, creator) {
             var button_2 = document.createElement("button");
             button_2.setAttribute("data-toggle", "modal");
             button_2.setAttribute("data-target", "#comment" + marosca_2);
-            button_2.setAttribute("id", indice);
             button_2.style.marginBottom = "3px";
             button_2.innerHTML = "Ver Comentários";
             p.appendChild(button_2);
