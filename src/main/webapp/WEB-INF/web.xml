@@ -39,5 +39,14 @@
 		<servlet-name>CronServlet</servlet-name>
 		<url-pattern>/crontasks/rankingcron</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>RecoveryCronServlet</servlet-name>
+		<servlet-class>pt.oofaround.cronjobs.RecoveryCron</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CronServlet</servlet-name>
+		<url-pattern>/crontasks/recoverycron</url-pattern>
+	</servlet-mapping>
 
 </web-app>
