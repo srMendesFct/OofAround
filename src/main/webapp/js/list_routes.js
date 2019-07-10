@@ -339,6 +339,14 @@ captureDataGetRoutes = function (event) {
                 var p_6 = document.createElement("p");
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
+
+                var button_3 = document.createElement("button");
+                button_3.style.marginBottom = "3px";
+                button_3.addEventListener('click', function () {
+                    window.location.href = "https://oofaround.appspot.com/comments.html";
+                });
+                button_3.innerHTML = "Ver Comentários";
+                p.appendChild(button_3);
             }
         },
         error: function (Response) {

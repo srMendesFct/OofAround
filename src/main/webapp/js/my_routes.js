@@ -259,15 +259,13 @@ captureDataGetRoutesByUser = function () {
           p_6.innerHTML = Response.routes[i].creatorUsername;
           div_15.appendChild(p_6);
 
-          var button_2 = document.createElement("button");
-          button_2.setAttribute("data-toggle", "modal");
-          button_2.setAttribute("data-target", "#comment" + marosca_2);
-          button_2.style.marginBottom = "3px";
-          button_2.addEventListener('click', function () {
-            captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome, localStorage.getItem('username'));
+          var button_3 = document.createElement("button");
+          button_3.style.marginBottom = "3px";
+          button_3.addEventListener('click', function () {
+            window.location.href = "https://oofaround.appspot.com/comments.html";
           });
-          button_2.innerHTML = "Ver Comentários";
-          p.appendChild(button_2);
+          button_3.innerHTML = "Ver Comentários";
+          p.appendChild(button_3);
         }
       }
       if (counter == 0) {

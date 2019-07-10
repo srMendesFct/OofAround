@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+    <title>OofAround</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/modals.css">
+    <link rel="stylesheet" type="text/css" href="css/homepagelogged.css">
+    <link rel="stylesheet" type="text/css" href="css/homepage.css">
+    <script src="./js/comments.js"></script>
+    <style>
+        .tabcontent {
+            float: left;
+            padding: 0px 12px;
+            border: 1px solid #ccc;
+            width: 99%;
+            height: 100%;
+        }
+
+        .tab button {
+            background-color: darkorange;
+            color: white;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            font-size: 15px;
+            width: 50%;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: darkorange
+        }
+
+        /* Create an active/current "tab button" class */
+        .tab button.active {
+            background-color: rgb(167, 103, 0);
+            ;
+        }
+
+        .imgXL {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+        .imgXS {
+            max-width: 25px;
+            max-height: 25px;
+            margin-right: 3px;
+        }
+
+        .letters {
+            margin-left: 3px;
+            color: darkorange;
+            font-size: 15px;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .imgL {
+            max-width: 150px;
+            max-height: 120px;
+            margin-top: 7px;
+            margin-right: 5px;
+        }
+
+        .modal-footer button:hover {
+            background-color: darkorange;
+        }
+
+        .modal-footer button.active {
+            background-color: darkorange;
+        }
+    </style>
+
+</head>
+
+<body id="body" class="backG">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="homepage_logged.html"><img src="img/logo.png"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active"><a href="homepage_logged.html">Home</a></li>
+                    <li><a href="route.html">Percursos</a></li>
+                    <li><a href="ranking.html">Ranking</a></li>
+                    <li><a href="cupon_logged.html">Cupões</a></li>
+                    <li><a href="#ourFooter">Sobre Nós</a></li>
+                </ul>
+                <li class="nav navbar-nav navbar-right nav-item dropdown dropleft">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="loginPainel" role="button"
+                        href="#"><img class="img" id="profilePic"></a>
+                    <div class="dropdown-menu dropdownB" aria-labelledby="loginPainel">
+                        <a id="user" class="dropdown-item" style="text-decoration: none" style="color: black"></a>
+                        <div></div>
+                        <a class="dropdown-item letters" style="text-decoration: none" href="profile.html"
+                            role="button">Perfil</a>
+                        <div></div>
+                        <a class="dropdown-item letters" style="text-decoration: none" href="settings.html"
+                            role="button">Definições</a>
+                        <div></div>
+                        <a class="dropdown-item letters" style="text-decoration: none" href="homepage_logged.html"
+                            role="button" id="logout">Terminar sessão</a>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </nav>
+    <br><br><br><br>
+
+    <div id="all" class="dente" style="text-align: center">
+        <h3 style="text-align: center">Comentários</h3>
+        <div class="row">
+            <div class="col-md-10">
+                <form id="listar" name="listar" class="pure-form pure-form-stacked block" accept-charset="utf-8">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nome do Percurso</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="routeName" class="form-control validate" id="username">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Criador do Percurso</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="routeCreatorUsername" class="form-control validate" id="username">
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button id="CriarP" type="submit" class="btn btn-default">Pesquisar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="random" class="row random">
+            <div id="berna" class="col-md-12">
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <footer id="ourFooter" class="container-fluid text-center" style="height: 75%">
+        <div class="row">
+            <div class="col-md-4">
+                <img class="uh" src="img/equipa.png">
+            </div>
+            <div class="col-md-4">
+                <h3>SIGAM-NOS NAS REDES</h3>
+                <br>
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-instagram"></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
