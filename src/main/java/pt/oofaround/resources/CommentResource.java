@@ -53,20 +53,27 @@ public class CommentResource {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "postComment")) {
 
 			Map<String, Object> docData = new HashMap<String, Object>();
+			JSONArray jArr = new JSONArray();
+			JSONObject jObj = new JSONObject();
 
 			docData.put("poster", data.usernameR);
 			docData.put("comment", data.comment);
 			docData.put("routeName", data.routeName);
 			docData.put("routeCreatorUsername", data.routeCreatorUsername);
-			docData.put("date", Timestamp.of(new Date()));
+			Date date = new Date();
+			docData.put("date", Timestamp.of(date));
+			
+			jObj.put("poster",  data.usernameR);
+			jObj.put("comment",  data.comment);
+			jObj.put("routeName",  data.routeName);
+			jObj.put("routeCreatorUsername", data.routeCreatorUsername);
+			jObj.put("date", date);
+			jArr.put(jObj);
 
 			db.collection("comments").document().set(docData);
 
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("comments").whereEqualTo("routeName", data.routeName)
 					.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername).get();
-
-			JSONArray jArr = new JSONArray();
-			JSONObject jObj;
 
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				jObj = new JSONObject();
