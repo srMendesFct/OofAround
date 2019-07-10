@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -28,6 +27,7 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.GeoPoint;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
@@ -45,8 +45,6 @@ import pt.oofaround.util.RouteData;
 @Path("/route")
 @Produces(MediaType.APPLICATION_JSON)
 public class RouteResource {
-
-	private static final Logger LOG = Logger.getLogger(RegisterResource.class.getName());
 
 	private final Gson g = new Gson();
 
@@ -137,18 +135,21 @@ public class RouteResource {
 	public Response editRoute(RouteData data) throws InterruptedException, ExecutionException {
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "editRoute")) {
 
-			JsonObject res = new JsonObject();
+			JSONObject res = new JSONObject();
 			Map<String, Object> docData = new HashMap<String, Object>();
 			Map<String, Integer> regionMap = new HashMap<String, Integer>();
 			List<GeoPoint> locationsList = new LinkedList<GeoPoint>();
 			List<String> names = new LinkedList<String>();
 			List<String> placeIDs = new LinkedList<String>();
 			Map<String, Integer> catMap = new HashMap<String, Integer>();
+			List<Boolean> flags = new LinkedList<Boolean>();
 
 			for (int i = 0; i < data.locationNames.length; i++) {
 				if (!data.locationNames[i].category.equalsIgnoreCase("undefined")) {
 					catMap.putIfAbsent(data.locationNames[i].category, 1);
-				}
+					flags.add(true);
+				} else
+					flags.add(false);
 				regionMap.putIfAbsent(data.locationNames[i].region, 1);
 				names.add(data.locationNames[i].name);
 				placeIDs.add(data.locationNames[i].placeId);
@@ -156,19 +157,25 @@ public class RouteResource {
 
 			}
 
-			docData.put("name", data.name);
+			docData.put("flags", flags);
 			docData.put("description", data.description);
-			docData.put("creatorUsername", data.creatorUsername);
 			docData.put("locationsCoords", locationsList);
 			docData.put("locationsNames", names);
 			docData.put("placeIDs", placeIDs);
 			docData.put("regions", regionMap);
 			docData.put("categories", catMap);
 
-			AuthToken at = new AuthToken(data.usernameR, data.role);
+			ApiFuture<QuerySnapshot> querySnapshot = db.collection("routes").whereEqualTo("name", data.name)
+					.whereEqualTo("creatorUsername", data.creatorUsername).get();
 
-			res.addProperty("tokenID", at.tokenID);
-			return Response.ok(g.toJson(res)).build();
+			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+				document.getReference().set(docData, SetOptions.merge());
+			}
+
+			AuthToken at = new AuthToken(data.usernameR, data.role);
+			res.put("tokenID", at.tokenID);
+			
+			return Response.ok(res.toString()).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}
@@ -208,8 +215,6 @@ public class RouteResource {
 	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getRoute(RouteData data) throws InterruptedException, ExecutionException {
-
-		LOG.fine("Getting location" + data.name);
 
 		if (AuthenticationTool.authenticate(data.tokenID, data.usernameR, data.role, "getRoute")) {
 			// CollectionReference routes = db.collection("routes");
