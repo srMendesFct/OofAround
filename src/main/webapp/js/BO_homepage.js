@@ -10,7 +10,7 @@ function openCity(evt, cityName) {
 
   // Get all elements with class="tablinks" and remove the class "active"
   tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) { 
+  for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
 
@@ -45,7 +45,7 @@ captureDataCreatePointOfInterest = function (event) {
     var send = window.btoa(s);
     var values = {}
     values['image'] = send,
-    values['usernameR'] = localStorage.getItem('username');
+      values['usernameR'] = localStorage.getItem('username');
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
     $.each($('form[name="Criar ponto"]').serializeArray(), function (i, field) {
@@ -71,6 +71,33 @@ captureDataCreatePointOfInterest = function (event) {
   event.preventDefault();
 };
 
+captureDataCreateCupon = function (event) {
+    var values = {}
+    values['usernameR'] = localStorage.getItem('username');
+    values['tokenID'] = localStorage.getItem('token');
+    values['role'] = localStorage.getItem('role');
+    $.each($('form[name="Criar cupao"]').serializeArray(), function (i, field) {
+      values[field.name] = field.value;
+    });
+    console.log(JSON.stringify(values));
+    $.ajax({
+      type: "POST",
+      url: "https://oofaround.appspot.com/rest/cupon/create",
+      contentType: "application/json;charset=utf-8",
+      dataType: 'json', // data type        
+      crossDomain: true,
+      success: function (Response) {
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+      },
+      error: function (Response) {
+        alert('Falha ao criar ponto');
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+      },
+      data: JSON.stringify(values) // post data || get data
+    });
+  event.preventDefault();
+};
+
 function logout() {
   localStorage.clear();
   window.location.href = "https://oofaround.appspot.com/";
@@ -84,10 +111,12 @@ window.onload = function () {
   if (longday > token) {
     localStorage.clear();
     window.location.href = "https://oofaround.appspot.com/";
-  } 
-  else {
+  } else {
     localStorage.setItem('expiration', date.getTime() + 300000);
-    var s = $('form[name="Criar ponto"]');
-    s[0].onsubmit = captureDataCreatePointOfInterest;
+    var ponto = $('form[name="Criar ponto"]');
+    ponto[0].onsubmit = captureDataCreatePointOfInterest;
+    var cupao = $('form[name="Criar cupao"]');
+    ponto[0].onsubmit = captureDataCreateCupon;
+
   }
-}
+};

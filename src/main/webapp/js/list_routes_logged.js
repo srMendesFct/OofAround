@@ -37,7 +37,7 @@ captureDataGetRoutes = function (event) {
                 for (j = 0; j < Response.routes[i].categories.length; j++) {
                     var z = Response.routes[i].categories[j].category;
 
-                    if(z != "não especificada") {
+                    if (z != "não especificada") {
                         if (z == "Sport") {
                             z = "Desporto";
                         } else if (z == "Culture") {
@@ -58,15 +58,13 @@ captureDataGetRoutes = function (event) {
                             z = "Paisagens";
                         } else if (z == "Religion") {
                             z = "Religião";
-                        } 
-    
+                        }
                         x[j] = z;
                     }
                 }
-
                 for (j = 0; j < Response.routes[i].regions.length; j++) {
                     var z = Response.routes[i].regions[j].region;
-                    if(z != "Portugal") {
+                    if (z != "Portugal") {
                         y[j] = z;
                     }
                 }
@@ -241,7 +239,7 @@ captureDataGetRoutes = function (event) {
                 button_2.setAttribute("data-toggle", "modal");
                 button_2.setAttribute("data-target", "#comment" + marosca_2);
                 button_2.style.marginBottom = "3px";
-                button_2.addEventListener('click', function() {
+                button_2.addEventListener('click', function () {
                     captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome, criador);
                 });
                 button_2.innerHTML = "Ver Comentários";
@@ -368,7 +366,6 @@ captureDataGetRoutes = function (event) {
                 p_10.innerHTML = Response.routes[i].creatorUsername;
                 div_25.appendChild(p_10);
             }
-
         },
         error: function (Response) {
             alert('Falha ao Pesquisar');

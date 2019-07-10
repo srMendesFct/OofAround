@@ -42,8 +42,7 @@ captureDataGetImage = function () {
             localStorage.setItem('image', Response.image);
             window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
         },
-        error: function (Response) {
-        },
+        error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
     });
 };
@@ -53,8 +52,6 @@ captureDataRegister = function (event) {
     $.each($('form[name="register"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });
-
-
     $.ajax({
         type: "POST",
         url: "https://oofaround.appspot.com/rest/register/user",
@@ -85,7 +82,7 @@ captureDataLogin = function (event) {
         type: "POST",
         url: "https://oofaround.appspot.com/rest/login/",
         contentType: "application/json;charset=utf-8",
-        dataType: 'json',     
+        dataType: 'json',
         crossDomain: true,
         success: function (Response) {
             var date = new Date();
@@ -93,14 +90,13 @@ captureDataLogin = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            if(localStorage.getItem('role') == "user") {
+            if (localStorage.getItem('role') == "user") {
                 captureDataGetImage();
                 captureDataGetUserInfo();
-            }
-            else {
+            } else {
                 window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
             }
-            
+
         },
         error: function () {
             alert("Falha ao iniciar sessão.");
@@ -114,21 +110,20 @@ captureDataLogin = function (event) {
 var marosca = 100;
 
 captureDataGetCupon = function () {
-  var values = {
-    region: document.getElementById("distrito").value,
-  };
-  $.ajax({
-    type: "POST",
-    url: "https://oofaround.appspot.com/rest/cupon/guest/list",
-    contentType: "application/json;charset=utf-8",
-    dataType: 'json', // data type        
-    crossDomain: true,
-    success: function (Response) {
-      console.log(Response);
+    var values = {
+        region: document.getElementById("distrito").value,
+    };
+    $.ajax({
+        type: "POST",
+        url: "https://oofaround.appspot.com/rest/cupon/guest/list",
+        contentType: "application/json;charset=utf-8",
+        dataType: 'json', // data type        
+        crossDomain: true,
+        success: function (Response) {
+            console.log(Response);
 
-      for (i = 0; i < Response.cupons.length; i++) {
-
-           var div = document.createElement("div");
+            for (i = 0; i < Response.cupons.length; i++) {
+                var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
                 document.getElementById("berna").appendChild(div);
@@ -275,18 +270,18 @@ captureDataGetCupon = function () {
                 var p_5 = document.createElement("p");
                 p_5.innerHTML = Response.cupons[i].value;
                 div_14.appendChild(p_5);
-        }
-    },
-    error: function (Response) {
-      alert('Falha ao Pesquisar');
-    },
-    data: JSON.stringify(values) // post data || get data
-  });
+            }
+        },
+        error: function (Response) {
+            alert('Falha ao Pesquisar');
+        },
+        data: JSON.stringify(values) // post data || get data
+    });
 };
 
 window.onload = function () {
     document.getElementById("searchP").addEventListener('click', function () {
-        captureDataGetCupon();   
+        captureDataGetCupon();
     });
     var frmsr = $('form[name="register"]');
     var frmsl = $('form[name="login"]');

@@ -14,8 +14,6 @@ captureDataGetCupon = function () {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            console.log(Response);
-
             for (i = 0; i < Response.cupons.length; i++) {
 
                 var div = document.createElement("div");
@@ -188,7 +186,7 @@ window.onload = function () {
     } else {
         localStorage.setItem('expiration', date.getTime() + 300000);
         document.getElementById("searchP").addEventListener('click', function () {
-            captureDataGetCupon();   
+            captureDataGetCupon();
         });
     }
 }

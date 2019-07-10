@@ -61,7 +61,6 @@ function initMap() {
     createWaypoints();
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
-
 }
 
 function createWaypoints() {
@@ -95,11 +94,9 @@ captureDataCreateCourse = function () {
   values['role'] = localStorage.getItem('role');
   values['creatorUsername'] = localStorage.getItem('username');
   values['locationNames'] = locationNames;
-
   $.each($('form[name="courseForm"]').serializeArray(), function (i, field) {
     values[field.name] = field.value;
   });
-
   $.ajax({
     type: "POST",
     url: "https://oofaround.appspot.com/rest/route/create",
@@ -112,7 +109,6 @@ captureDataCreateCourse = function () {
     },
     data: JSON.stringify(values)
   });
-
 }
 
 captureDataMonuments = function (event) {
@@ -136,7 +132,6 @@ captureDataMonuments = function (event) {
     region: document.getElementById("distrito").value,
     categoriesGet: res
   };
-
   $.ajax({
     type: "POST",
     url: "https://oofaround.appspot.com/rest/location/getcategoryregion",
@@ -147,12 +142,10 @@ captureDataMonuments = function (event) {
 
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
-
         var marker = new google.maps.Marker({
           position: pos,
           map: map
         });
-
         presetMarkers.push(marker);
         setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeId);
       }
@@ -174,7 +167,7 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
     '<div id="bodyContent">' +
     '<p>Morada: ' + address + '</p>' +
     '<p>Coordenadas: ' + latitude + ' , ' + longitude + '</p>' +
-    '<p align = "right"> <button onclick="addPreset(\''+name+'\',\''+address+'\',\''+latitude+'\',\''+longitude+'\',\''+region+'\',\''+category+'\',\''+placeId+'\')">Adicionar ao percurso</button></p>' +
+    '<p align = "right"> <button onclick="addPreset(\'' + name + '\',\'' + address + '\',\'' + latitude + '\',\'' + longitude + '\',\'' + region + '\',\'' + category + '\',\'' + placeId + '\')">Adicionar ao percurso</button></p>' +
     '</div>' +
     '</div>';
 
@@ -183,13 +176,11 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
       content: contentString
     });
     infowindow.open(map, m);
-
   });
 }
 
 function addPreset(name, address, latitude, longitude, region, category, placeId) {
   var posi = new google.maps.LatLng(latitude, longitude);
-
   var marker = new google.maps.Marker({
     position: posi,
     map: map,
@@ -206,7 +197,6 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
     latitude: latitude,
     longitude: longitude
   }
-
   locationNames.push(newLoc);
 }
 
@@ -228,4 +218,4 @@ window.onload = function () {
     var pesquisa = $('form[name="categorias"]');
     pesquisa[0].onsubmit = captureDataMonuments;;
   }
-}
+};

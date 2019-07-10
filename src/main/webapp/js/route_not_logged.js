@@ -49,8 +49,7 @@ captureDataGetImage = function () {
             localStorage.setItem('image', Response.image);
             window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
         },
-        error: function (Response) {
-        },
+        error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
     });
 };
@@ -74,7 +73,6 @@ captureDataRegister = function (event) {
                 alert("Registo falhado.");
                 window.location.href = "https://oofaround.appspot.com/";
             }
-
         },
         data: JSON.stringify(values) // post data || get data
     });
@@ -90,7 +88,7 @@ captureDataLogin = function (event) {
         type: "POST",
         url: "https://oofaround.appspot.com/rest/login/",
         contentType: "application/json;charset=utf-8",
-        dataType: 'json',     
+        dataType: 'json',
         crossDomain: true,
         success: function (Response) {
             var date = new Date();
@@ -98,14 +96,12 @@ captureDataLogin = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            if(localStorage.getItem('role') == "user") {
+            if (localStorage.getItem('role') == "user") {
                 captureDataGetImage();
                 captureDataGetUserInfo();
-            }
-            else {
+            } else {
                 window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
             }
-            
         },
         error: function () {
             alert("Falha ao iniciar sessão.");

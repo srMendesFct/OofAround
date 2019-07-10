@@ -7,7 +7,6 @@ captureDeleteRoute = function (token, user, role, creator, name) {
   values['role'] = role;
   values['creatorUsername'] = creator;
   values['name'] = name;
-
   $.ajax({
     type: "POST",
     url: "https://oofaround.appspot.com/rest/route/delete",
@@ -20,7 +19,6 @@ captureDeleteRoute = function (token, user, role, creator, name) {
     },
     data: JSON.stringify(values)
   });
-
 };
 
 captureDataGetRoutesByUser = function () {
@@ -39,8 +37,6 @@ captureDataGetRoutesByUser = function () {
     dataType: 'json', // data type        
     crossDomain: true,
     success: function (Response) {
-      console.log(Response);
-
       var counter = 0;
 
       for (i = 0; i < Response.routes.length; i++) {
@@ -73,11 +69,9 @@ captureDataGetRoutesByUser = function () {
               } else if (z == "Religion") {
                 z = "Religião";
               }
-
               x[j] = z;
             }
           }
-
           for (j = 0; j < Response.routes[i].regions.length; j++) {
             var z = Response.routes[i].regions[j].region;
             if (z != "Portugal") {
@@ -275,7 +269,6 @@ captureDataGetRoutesByUser = function () {
           button_2.innerHTML = "Ver Comentários";
           p.appendChild(button_2);
         }
-
       }
       if (counter == 0) {
         alert("O utilizador não tem qualquer percurso.");
@@ -290,25 +283,25 @@ captureDataGetRoutesByUser = function () {
 
 captureDataListComments = function (role, token, user, name, creator) {
   var values = {
-      tokenID: token,
-      role: role,
-      usernameR: user,
-      routeName: name,
-      routeCreatorUsername: creator
+    tokenID: token,
+    role: role,
+    usernameR: user,
+    routeName: name,
+    routeCreatorUsername: creator
   };
   $.ajax({
-      type: "POST",
-      url: "https://oofaround.appspot.com/rest/comment/listcomments",
-      contentType: "application/json;charset=utf-8",
-      dataType: 'json', // data type        
-      crossDomain: true,
-      success: function (Response) {
-          console.log(Response);
-      },
-      error: function (Response) {
-          alert('Falha ao Pesquisar');
-      },
-      data: JSON.stringify(values) // post data || get data
+    type: "POST",
+    url: "https://oofaround.appspot.com/rest/comment/listcomments",
+    contentType: "application/json;charset=utf-8",
+    dataType: 'json', // data type        
+    crossDomain: true,
+    success: function (Response) {
+      console.log(Response);
+    },
+    error: function (Response) {
+      alert('Falha ao Pesquisar');
+    },
+    data: JSON.stringify(values) // post data || get data
   });
   event.preventDefault();
 };

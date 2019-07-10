@@ -37,7 +37,6 @@ captureDataRanking = function () {
                 header_3.innerHTML = "Pontos: " + Response.ranks[i].score;
                 div_2.appendChild(header_3);
             }
-
         },
         error: function (response) {},
         data: JSON.stringify(values) // post data || get data

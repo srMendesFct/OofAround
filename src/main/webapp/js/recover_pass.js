@@ -9,14 +9,11 @@ captureDataGetRecoverCode = function (evt) {
         contentType: "application/json;charset=utf-8",
         dataType: 'json', // data type        
         crossDomain: true,
-        success: function (Response) {
-
-        },
+        success: function (Response) {},
         error: function (Response) {
             if (Response.status == 200) {
                 localStorage.setItem('username', values['usernameR']);
-            }
-            else {
+            } else {
                 alert("Erro");
             }
         },
@@ -27,7 +24,7 @@ captureDataGetRecoverCode = function (evt) {
 
 captureDataChangePassword = function (evt) {
     var values = {};
-    values ['usernameR'] = localStorage.getItem('username');
+    values['usernameR'] = localStorage.getItem('username');
     $.each($('form[name="pass"]').serializeArray(), function (i, field) {
         values[field.name] = field.value;
     });

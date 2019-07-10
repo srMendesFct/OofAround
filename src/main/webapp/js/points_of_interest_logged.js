@@ -27,12 +27,11 @@ captureDataGetPointsOfInterest = function (event) {
         dataType: 'json', // data type        
         crossDomain: true,
         success: function (Response) {
-            
+
             var tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-
             for (i = 0; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
                 var z = Response.locations[i].category;
@@ -55,7 +54,7 @@ captureDataGetPointsOfInterest = function (event) {
                     z = "Comes e Bebes";
                 } else if (z == "Landscaping") {
                     z = "Paisagens";
-                }else if (z == "Religion") {
+                } else if (z == "Religion") {
                     z = "Religião"
                 }
 

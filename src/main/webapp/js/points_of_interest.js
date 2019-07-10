@@ -42,8 +42,7 @@ captureDataGetImage = function () {
             localStorage.setItem('image', Response.image);
             window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
         },
-        error: function (Response) {
-        },
+        error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
     });
 };
@@ -67,7 +66,6 @@ captureDataRegister = function (event) {
                 alert("Registo falhado.");
                 window.location.href = "https://oofaround.appspot.com/";
             }
-
         },
         data: JSON.stringify(values) // post data || get data
     });
@@ -83,7 +81,7 @@ captureDataLogin = function (event) {
         type: "POST",
         url: "https://oofaround.appspot.com/rest/login/",
         contentType: "application/json;charset=utf-8",
-        dataType: 'json',     
+        dataType: 'json',
         crossDomain: true,
         success: function (Response) {
             var date = new Date();
@@ -91,14 +89,12 @@ captureDataLogin = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            if(localStorage.getItem('role') == "user") {
+            if (localStorage.getItem('role') == "user") {
                 captureDataGetImage();
                 captureDataGetUserInfo();
-            }
-            else {
+            } else {
                 window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
             }
-            
         },
         error: function () {
             alert("Falha ao iniciar sessão.");
@@ -140,7 +136,6 @@ captureDataGetPointsOfInterest = function (event) {
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-
             for (i = 0; i < Response.locations.length; i++) {
                 localStorage.setItem('location', Response.locations[i].name);
                 var z = Response.locations[i].category;
@@ -163,7 +158,7 @@ captureDataGetPointsOfInterest = function (event) {
                     z = "Comes e Bebes";
                 } else if (z == "Landscaping") {
                     z = "Paisagens";
-                }else if (z == "Religion") {
+                } else if (z == "Religion") {
                     z = "Religião"
                 }
 
@@ -214,8 +209,6 @@ captureDataGetPointsOfInterest = function (event) {
                 button.style.marginBottom = "3px";
                 button.innerHTML = "Saber Mais";
                 p.appendChild(button);
-
-                
 
                 var div_3 = document.createElement("div");
                 div_3.setAttribute("class", "modal fade");

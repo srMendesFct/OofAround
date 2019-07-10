@@ -42,8 +42,7 @@ captureDataGetImage = function () {
             localStorage.setItem('image', Response.image);
             window.location.href = "https://oofaround.appspot.com/homepage_logged.html";
         },
-        error: function (Response) {
-        },
+        error: function (Response) {},
         data: JSON.stringify(values) // post data || get data
     });
 };
@@ -67,7 +66,6 @@ captureDataRegister = function (event) {
                 alert("Registo falhado.");
                 window.location.href = "https://oofaround.appspot.com/";
             }
-
         },
         data: JSON.stringify(values) // post data || get data
     });
@@ -83,7 +81,7 @@ captureDataLogin = function (event) {
         type: "POST",
         url: "https://oofaround.appspot.com/rest/login/",
         contentType: "application/json;charset=utf-8",
-        dataType: 'json',     
+        dataType: 'json',
         crossDomain: true,
         success: function (Response) {
             var date = new Date();
@@ -91,14 +89,12 @@ captureDataLogin = function (event) {
             localStorage.setItem('token', Response.tokenID);
             localStorage.setItem('role', Response.role);
             localStorage.setItem('expiration', date.getTime() + 300000);
-            if(localStorage.getItem('role') == "user") {
+            if (localStorage.getItem('role') == "user") {
                 captureDataGetImage();
                 captureDataGetUserInfo();
-            }
-            else {
+            } else {
                 window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
             }
-            
         },
         error: function () {
             alert("Falha ao iniciar sessão.");
@@ -143,8 +139,8 @@ captureDataGetRoutes = function (event) {
                 var y = [];
                 for (j = 0; j < Response.routes[i].categories.length; j++) {
                     var z = Response.routes[i].categories[j].category;
-                    
-                    if(z != "não especificada") {
+
+                    if (z != "não especificada") {
                         if (z == "Sport") {
                             z = "Desporto";
                         } else if (z == "Culture") {
@@ -165,16 +161,13 @@ captureDataGetRoutes = function (event) {
                             z = "Paisagens";
                         } else if (z == "Religion") {
                             z = "Religião";
-                        } 
-    
+                        }
                         x[j] = z;
                     }
-                    
                 }
-
                 for (j = 0; j < Response.routes[i].regions.length; j++) {
                     var z = Response.routes[i].regions[j].region;
-                    if(z != "Portugal") {
+                    if (z != "Portugal") {
                         y[j] = z;
                     }
                 }
@@ -347,7 +340,6 @@ captureDataGetRoutes = function (event) {
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
             }
-
         },
         error: function (Response) {
             alert('Falha ao Pesquisar');
