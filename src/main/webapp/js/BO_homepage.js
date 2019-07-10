@@ -109,7 +109,7 @@ captureDataAlterRole = function (event) {
   console.log(JSON.stringify(values));
   $.ajax({
     type: "POST",
-    url: "https://oofaround.appspot.com/rest/cupon/create",
+    url: "https://oofaround.appspot.com/rest/userinfo/alterotherrole",
     contentType: "application/json;charset=utf-8",
     dataType: 'json', // data type        
     crossDomain: true,
