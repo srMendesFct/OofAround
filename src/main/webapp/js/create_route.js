@@ -200,7 +200,6 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
 
   var newLoc = {
     name: name,
-    address: address,
     category: category,
     placeId: placeId,
     region: region,
