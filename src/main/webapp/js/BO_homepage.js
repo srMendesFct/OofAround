@@ -87,7 +87,7 @@ captureDataCreateCupon = function (event) {
       dataType: 'json', // data type        
       crossDomain: true,
       success: function (Response) {
-        //window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
+        window.location.href = "https://oofaround.appspot.com/BO_homepage.html";
       },
       error: function (Response) {
         alert('Falha ao criar ponto');
@@ -117,6 +117,5 @@ window.onload = function () {
     ponto[0].onsubmit = captureDataCreatePointOfInterest;
     var cupao = $('form[name="Criar cupao"]');
     cupao[0].onsubmit = captureDataCreateCupon;
-
   }
 };
