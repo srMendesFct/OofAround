@@ -233,7 +233,14 @@ captureDataGetRoutes = function (event) {
                 p_6.innerHTML = Response.routes[i].creatorUsername;
                 div_15.appendChild(p_6);
 
-                captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), Response.routes[i].name, Response.routes[i].creatorUsername);
+                var button_2 = document.createElement("button");
+                button_2.style.marginBottom = "3px";
+                button_2.innerHTML = "Ver Comentários";
+                button_2.addEventListener('click', function () {
+                    window.location.href="https://oofaround.appspot.com/comments.html";
+                });
+                p.appendChild(button_2);
+
             }
         },
         error: function (Response) {
@@ -260,160 +267,9 @@ captureDataListComments = function (role, token, user, name, creator) {
         crossDomain: true,
         success: function (Response) {
             console.log(Response);
-
-            console.log("dentro: " + marosca_2);
-
-            var button_2 = document.createElement("button");
-            button_2.setAttribute("data-toggle", "modal");
-            button_2.setAttribute("data-target", "#comment" + marosca_2);
-            button_2.style.marginBottom = "3px";
-            button_2.innerHTML = "Ver Comentários";
-            p.appendChild(button_2);
-
-            var div_16 = document.createElement("div");
-            div_16.setAttribute("class", "modal fade");
-            div_16.setAttribute("id", "comment" + marosca_2);
-            div_16.setAttribute("tabindex", "-1");
-            div_16.setAttribute("role", "dialog");
-            div_16.setAttribute("aria-labelledby", "myModalLabel");
-            div_16.setAttribute("aria-hidden", "true");
-            document.getElementById("body").appendChild(div_16);
-
-            marosca_2 = marosca_2 + 1;
-
-            var div_17 = document.createElement("div");
-            div_17.setAttribute("class", "modal-dialog");
-            div_17.setAttribute("role", "document");
-            div_16.appendChild(div_17);
-
-            var div_18 = document.createElement("div");
-            div_18.setAttribute("class", "modal-content");
-            div_17.appendChild(div_18);
-
-            var div_19 = document.createElement("div");
-            div_19.setAttribute("class", "modal-header text-center");
-            div_18.appendChild(div_19);
-
-            var img_3 = document.createElement("img");
-            img_3.src = "img/logo.png";
-            div_19.appendChild(img_3);
-
-            var button_4 = document.createElement("button");
-            button_4.setAttribute("type", "button");
-            button_4.setAttribute("class", "close");
-            button_4.setAttribute("data-dismiss", "modal");
-            button_4.setAttribute("aria-label", "Close");
-            div_19.appendChild(button_4);
-
-            var span_2 = document.createElement("span");
-            span_2.setAttribute("aria-hidden", "true");
-            span_2.innerHTML = "&times";
-            button_4.appendChild(span_2);
-
-            var form_2 = document.createElement("form");
-            form_2.setAttribute("id", "login");
-            form_2.setAttribute("name", "login");
-            div_18.appendChild(form_2);
-
-            var div_20 = document.createElement("div");
-            div_20.setAttribute("class", "modal-body mx-3");
-            form_2.appendChild(div_20);
-
-            var div_21 = document.createElement("div");
-            div_21.setAttribute("class", "md-form mb-5");
-            div_20.appendChild(div_21);
-
-            for (i = 0; i < Response.comments[i].length; i++) {
-
-                var label_8 = document.createElement("label");
-                label_8.setAttribute("data-error", "wrong");
-                label_8.setAttribute("data-success", "right");
-                label_8.innerHTML = Response.comments[i].comment;
-                div_21.appendChild(label_8);
-
-                var br_3 = document.createElement("br");
-                div_21.appendChild(br_3);
-
-                var div_22 = document.createElement("div");
-                div_22.setAttribute("class", "md-form mb-4");
-                div_20.appendChild(div_22);
-
-                var label_9 = document.createElement("label");
-                label_9.setAttribute("data-error", "wrong");
-                label_9.setAttribute("data-success", "right");
-                label_9.innerHTML = Response.comments[i].poster + ": " + Response.comments[i].date;
-                div_22.appendChild(label_9);
-            }
         },
         error: function (Response) {
 
-            console.log("dentro: " + marosca_2);
-
-            var button_2 = document.createElement("button");
-            button_2.setAttribute("data-toggle", "modal");
-            button_2.setAttribute("data-target", "#comment" + marosca_2);
-            button_2.style.marginBottom = "3px";
-            button_2.innerHTML = "Ver Comentários";
-            p.appendChild(button_2);
-
-            var div_16 = document.createElement("div");
-            div_16.setAttribute("class", "modal fade");
-            div_16.setAttribute("id", "comment" + marosca_2);
-            div_16.setAttribute("tabindex", "-1");
-            div_16.setAttribute("role", "dialog");
-            div_16.setAttribute("aria-labelledby", "myModalLabel");
-            div_16.setAttribute("aria-hidden", "true");
-            document.getElementById("body").appendChild(div_16);
-
-            marosca_2 = marosca_2 + 1;
-
-            var div_17 = document.createElement("div");
-            div_17.setAttribute("class", "modal-dialog");
-            div_17.setAttribute("role", "document");
-            div_16.appendChild(div_17);
-
-            var div_18 = document.createElement("div");
-            div_18.setAttribute("class", "modal-content");
-            div_17.appendChild(div_18);
-
-            var div_19 = document.createElement("div");
-            div_19.setAttribute("class", "modal-header text-center");
-            div_18.appendChild(div_19);
-
-            var img_3 = document.createElement("img");
-            img_3.src = "img/logo.png";
-            div_19.appendChild(img_3);
-
-            var button_4 = document.createElement("button");
-            button_4.setAttribute("type", "button");
-            button_4.setAttribute("class", "close");
-            button_4.setAttribute("data-dismiss", "modal");
-            button_4.setAttribute("aria-label", "Close");
-            div_19.appendChild(button_4);
-
-            var span_2 = document.createElement("span");
-            span_2.setAttribute("aria-hidden", "true");
-            span_2.innerHTML = "&times";
-            button_4.appendChild(span_2);
-
-            var form_2 = document.createElement("form");
-            form_2.setAttribute("id", "login");
-            form_2.setAttribute("name", "login");
-            div_18.appendChild(form_2);
-
-            var div_20 = document.createElement("div");
-            div_20.setAttribute("class", "modal-body mx-3");
-            form_2.appendChild(div_20);
-
-            var div_21 = document.createElement("div");
-            div_21.setAttribute("class", "md-form mb-5");
-            div_20.appendChild(div_21);
-
-            var label_8 = document.createElement("label");
-            label_8.setAttribute("data-error", "wrong");
-            label_8.setAttribute("data-success", "right");
-            label_8.innerHTML = "Percurso sem comentários.";
-            div_21.appendChild(label_8);
         },
         data: JSON.stringify(values) // post data || get data
     });
