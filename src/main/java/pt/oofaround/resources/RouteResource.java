@@ -272,7 +272,7 @@ public class RouteResource {
 			AuthToken at = new AuthToken(data.usernameR, data.role);
 			res.put("tokenID", at.tokenID);
 
-			return Response.ok(res.toString()).build();
+			return Response.ok(g.toJson(res)).build();
 		} else
 			return Response.status(Status.FORBIDDEN).build();
 	}

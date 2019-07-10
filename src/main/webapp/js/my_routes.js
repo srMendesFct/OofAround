@@ -126,7 +126,7 @@ captureDataGetRoutesByUser = function () {
           p.appendChild(img);
 
           var nome = Response.routes[i].name;
-          
+
           var img_2 = document.createElement("img");
           img_2.src = "./img/cross.jpg";
           img_2.setAttribute("class", "imgXS");
@@ -263,6 +263,16 @@ captureDataGetRoutesByUser = function () {
           var p_6 = document.createElement("p");
           p_6.innerHTML = Response.routes[i].creatorUsername;
           div_15.appendChild(p_6);
+
+          var button_2 = document.createElement("button");
+          button_2.setAttribute("data-toggle", "modal");
+          button_2.setAttribute("data-target", "#comment" + marosca_2);
+          button_2.style.marginBottom = "3px";
+          button_2.addEventListener('click', function () {
+            captureDataListComments(localStorage.getItem('role'), localStorage.getItem('token'), localStorage.getItem('username'), nome, localStorage.getItem('username'));
+          });
+          button_2.innerHTML = "Ver Comentários";
+          p.appendChild(button_2);
         }
 
       }
@@ -275,6 +285,31 @@ captureDataGetRoutesByUser = function () {
     },
     data: JSON.stringify(values) // post data || get data
   });
+};
+
+captureDataListComments = function (role, token, user, name, creator) {
+  var values = {
+      tokenID: token,
+      role: role,
+      usernameR: user,
+      routeName: name,
+      routeCreatorUsername: creator
+  };
+  $.ajax({
+      type: "POST",
+      url: "https://oofaround.appspot.com/rest/comment/listcomments",
+      contentType: "application/json;charset=utf-8",
+      dataType: 'json', // data type        
+      crossDomain: true,
+      success: function (Response) {
+          console.log(Response);
+      },
+      error: function (Response) {
+          alert('Falha ao Pesquisar');
+      },
+      data: JSON.stringify(values) // post data || get data
+  });
+  event.preventDefault();
 };
 
 window.onload = function () {
