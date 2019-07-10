@@ -86,7 +86,7 @@ captureDataListComments = function (evt) {
             button.setAttribute("class", "btn btn-default");
             button.setAttribute("type", "submit");
             div_5.appendChild(button);
-            
+
             var posts = $('form[name="postar"]');
             posts[0].onsubmit = captureDataPostComment;
         },
@@ -147,7 +147,7 @@ captureDataListComments = function (evt) {
     evt.preventDefault();
 };
 
-captureDataPostComment = function (criador, nome, evt) {
+captureDataPostComment = function (evt) {
     var values = {};
     values['tokenID'] = localStorage.getItem('token');
     values['role'] = localStorage.getItem('role');
