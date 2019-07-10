@@ -63,14 +63,14 @@ public class CommentResource {
 			Date date = new Date();
 			docData.put("date", Timestamp.of(date));
 			
-			jObj.put("poster",  data.usernameR);
+			/*jObj.put("poster",  data.usernameR);
 			jObj.put("comment",  data.comment);
 			jObj.put("routeName",  data.routeName);
 			jObj.put("routeCreatorUsername", data.routeCreatorUsername);
 			jObj.put("date", date);
-			jArr.put(jObj);
+			jArr.put(jObj);*/
 
-			db.collection("comments").document().set(docData);
+			db.collection("comments").document().set(docData).get();
 
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("comments").whereEqualTo("routeName", data.routeName)
 					.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername).get();
