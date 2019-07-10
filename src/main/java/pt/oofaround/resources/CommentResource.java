@@ -29,8 +29,8 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.Storage.BlobGetOption;
+import com.google.cloud.storage.StorageOptions;
 
 import pt.oofaround.util.AuthToken;
 import pt.oofaround.util.AuthenticationTool;
@@ -61,20 +61,19 @@ public class CommentResource {
 			docData.put("comment", data.comment);
 			docData.put("routeName", data.routeName);
 			docData.put("routeCreatorUsername", data.routeCreatorUsername);
-			Date date = new Date();
-			docData.put("date", Timestamp.of(date));
-			
-			/*jObj.put("poster",  data.usernameR);
-			jObj.put("comment",  data.comment);
-			jObj.put("routeName",  data.routeName);
-			jObj.put("routeCreatorUsername", data.routeCreatorUsername);
-			jObj.put("date", date);
-			jArr.put(jObj);*/
+			docData.put("date", Timestamp.of(new Date()));
+
+			/*
+			 * jObj.put("poster", data.usernameR); jObj.put("comment", data.comment);
+			 * jObj.put("routeName", data.routeName); jObj.put("routeCreatorUsername",
+			 * data.routeCreatorUsername); jObj.put("date", date); jArr.put(jObj);
+			 */
 
 			db.collection("comments").document().set(docData).get();
 
 			ApiFuture<QuerySnapshot> querySnapshot = db.collection("comments").whereEqualTo("routeName", data.routeName)
-					.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername).orderBy("timestamp", Direction.ASCENDING).get();
+					.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername)
+					.orderBy("timestamp", Direction.ASCENDING).get();
 
 			for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 				jObj = new JSONObject();
@@ -141,6 +140,7 @@ public class CommentResource {
 			return Response.status(Status.FORBIDDEN).entity("Invalid permissions.").build();
 	}
 
+	@SuppressWarnings("unused")
 	@POST
 	@Path("/deletecomment")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -150,11 +150,40 @@ public class CommentResource {
 			try {
 				ApiFuture<QuerySnapshot> querySnapshot = db.collection("comments")
 						.whereEqualTo("poster", data.usernameR).whereEqualTo("date", Timestamp.of(data.timestamp))
-						.get();
+						.whereArrayContains("routeName", data.routeName)
+						.whereArrayContains("routeCreatorUsername", data.routeCreatorUsername).get();
 
 				for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
 					document.getReference().delete();
 				}
+
+				querySnapshot = db.collection("comments").whereEqualTo("routeName", data.routeName)
+						.whereEqualTo("routeCreatorUsername", data.routeCreatorUsername)
+						.orderBy("timestamp", Direction.ASCENDING).get();
+
+				JSONArray jArr = new JSONArray();
+				JSONObject jObj = new JSONObject();
+
+				for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+					jObj = new JSONObject();
+					jObj.put("poster", document.get("poster"));
+					jObj.put("comment", document.get("comment"));
+					jObj.put("routeName", document.get("routeName"));
+					jObj.put("routeCreatorUsername", document.get("routeCreatorUsername"));
+					jObj.put("date", ((Timestamp) document.get("date")).toDate());
+					jArr.put(jObj);
+				}
+
+				StorageOptions storage = StorageOptions.getDefaultInstance().toBuilder().setProjectId("oofaround")
+						.build();
+
+				Storage storageDB = storage.getService();
+
+				BlobId blobId = BlobId.of("oofaround.appspot.com",
+						data.routeName + data.routeCreatorUsername + ".json");
+				BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+
+				Blob blob = storageDB.create(blobInfo, jArr.toString().getBytes(StandardCharsets.UTF_8));
 
 				JSONObject res = new JSONObject();
 				AuthToken at = new AuthToken(data.usernameR, data.role);

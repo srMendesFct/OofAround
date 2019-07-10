@@ -33,4 +33,14 @@ public class CommentData {
 		this.routeCreatorUsername = routeCreatorUsername;
 	}
 
+	public CommentData(String role, String tokenID, String usernameR, String routeName, String routeCreatorUsername,
+			Date timestamp) {
+		this.role = role;
+		this.tokenID = tokenID;
+		this.usernameR = usernameR;
+		this.routeName = routeName;
+		this.routeCreatorUsername = routeCreatorUsername;
+		this.timestamp = timestamp;
+	}
+
 }
