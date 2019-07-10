@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>OofAround</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/4d8a4a8139.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/carousel.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/modals.css">
+    <link rel="stylesheet" type="text/css" href="css/homepage.css">
+    <script src="./js/recover_pass.js"></script>
+</head>
+
+<body class="backG">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="homepage.html"><img src="img/logo.png"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br><br>
+
+    <div class="row">
+        <div style="text-align: center">
+            <h1>Recuperação de Palavra-Passe</h1>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div style="align-self: center" class="col-md-8">
+            <form id="login" name="user">
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="username">Nome de utilizador:</label>
+                        <input type="text" id="usernameL" name="usernameR" class="form-control validate"
+                            placeholder="Insira o seu nome de utilizador." required>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-default">Enviar código por E-mail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="berna" class="row berna">
+        <div class="col-md-2">
+        </div>
+        <div style="align-self: center" class="col-md-8">
+            <form id="login" name="pass">
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="username">Nova Palavra-Passe:</label>
+                        <input type="text" id="usernameL" name="password" class="form-control validate"
+                            placeholder="Insira a sua nova palavra-passe." required>
+                    </div>
+                    <br>
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="username">Confirme Nova
+                            Palavra-Passe:</label>
+                        <input type="text" id="usernameL" name="confirmPassword" class="form-control validate"
+                            placeholder="Confirme a sua nova palavra-passe." required>
+                    </div>
+                    <br>
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="username">Código de Confirmação:</label>
+                        <input type="text" id="usernameL" name="recoverCode" class="form-control validate"
+                            placeholder="Insira o código de confirmação." required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-default">Alterar Palavra-Passe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <br>
+
+    <footer id="ourFooter" class="container-fluid text-center">
+        <div class="row">
+            <div class="col-sm-4">
+                <img class="uh" src="img/equipa.png">
+            </div>
+            <div class="col-sm-4">
+                <h3>Contacta-nos</h3>
+                <br>
+                <h4>oofaround.support@gmail.com</h4>
+            </div>
+            <div class="col-sm-4">
+                <h3>Encontra-nos</h3>
+                <br>
+                <h4>Faculdade de Ciências e Tecnologia - Edifício II
+                    2829-516 Caparica
+                    Portugal</h4>
+            </div>
+        </div>
+    </footer>
+
+</body>
