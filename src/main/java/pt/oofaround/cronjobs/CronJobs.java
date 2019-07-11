@@ -81,7 +81,7 @@ public class CronJobs extends HttpServlet {
 					JSONArray storageArray = new JSONArray();
 					JSONObject storageObj;
 
-					for (int i = 0; i < 100 && i < userDocs.size(); i++) {
+					for (int i = 0; i < 10 && i < userDocs.size(); i++) {
 						userStorage = userDocs.get(i);
 						storageObj = new JSONObject();
 						storageObj.put("username", userStorage.getString("username"));
