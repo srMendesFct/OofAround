@@ -122,6 +122,12 @@ captureDataGetCupon = function () {
         success: function (Response) {
             console.log(Response);
 
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (var i = 0; i < tabcontent.length; i++) {
+                console.log("i: " + i);
+                tabcontent[i].style.display = "none";
+            }
+            
             for (i = 0; i < Response.cupons.length; i++) {
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
