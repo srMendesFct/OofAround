@@ -7,8 +7,8 @@ captureDataListComments = function (evt) {
         values[field.name] = field.value;
     });
 
-    localStorage.setItem('criador', values[routeCreatorUsername]);
-    localStorage.setItem('nome', values[routeName]);
+    localStorage.setItem('criador', values['routeCreatorUsername']);
+    localStorage.setItem('nome', values['routeName']);
 
     $.ajax({
         type: "POST",
@@ -18,13 +18,15 @@ captureDataListComments = function (evt) {
         crossDomain: true,
         success: function (Response) {
             console.log(Response);
+
             tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
+            for (var i = 0; i < tabcontent.length; i++) {
+                console.log("i: " + i);
                 tabcontent[i].style.display = "none";
             }
-
-            for (i = 0; i < Response.comments[i].length; i++) {
-
+            console.log("antes");
+            for (var j = 0; j < Response.comments.length; j++) {
+                console.log(j);
                 var div = document.createElement("div");
                 div.style.marginLeft = "3px";
                 div.setAttribute("class", "tabcontent");
@@ -35,13 +37,13 @@ captureDataListComments = function (evt) {
                 div.appendChild(div_2);
 
                 var header = document.createElement("h4");
-                header.innerHTML = Response.comments[i].comment;
+                header.innerHTML = Response.comments[j].comment;
                 div_2.appendChild(header);
 
                 var header_2 = document.createElement("h4");
                 header_2.style.textAlign = "left";
                 header_2.style.fontSize = "16px"
-                header_2.innerHTML = Response.comments[i].poster + ": " + Response.comments[i].date;
+                header_2.innerHTML = Response.comments[j].poster + ": " + Response.comments[j].date;
                 div_2.appendChild(header_2);
             }
 
@@ -86,6 +88,7 @@ captureDataListComments = function (evt) {
             button.setAttribute("class", "btn btn-default");
             button.setAttribute("type", "submit");
             div_5.appendChild(button);
+            button.innerHTML = "Enviar";
 
             var posts = $('form[name="postar"]');
             posts[0].onsubmit = captureDataPostComment;
@@ -134,6 +137,7 @@ captureDataListComments = function (evt) {
                 button.setAttribute("class", "btn btn-default");
                 button.setAttribute("type", "submit");
                 div_5.appendChild(button);
+                button.innerHTML = "Enviar";
 
                 var posts = $('form[name="postar"]');
                 posts[0].onsubmit = captureDataPostComment;
@@ -165,6 +169,7 @@ captureDataPostComment = function (evt) {
         crossDomain: true,
         success: function (Response) {
             console.log(Response);
+            window.location.href = "https://oofaround.appspot.com/comments.html";
         },
         error: function (Response) {
             alert('erro');

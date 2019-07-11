@@ -114,11 +114,6 @@ captureDataGetRoutesByUser = function () {
           p.align = "right";
           div_2.appendChild(p);
 
-          var img = document.createElement("img");
-          img.src = "img/edit-pencil-icon-vector-13483315.jpg";
-          img.setAttribute("class", "imgXS");
-          p.appendChild(img);
-
           var nome = Response.routes[i].name;
 
           var img_2 = document.createElement("img");
