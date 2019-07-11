@@ -147,7 +147,7 @@ captureDataMonuments = function (event) {
           map: map
         });
         presetMarkers.push(marker);
-        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeId);
+        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
       }
     },
     error: function (response) {},
