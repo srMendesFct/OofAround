@@ -5,6 +5,7 @@ var presetMarkers = [];
 var routePoints = [];
 var waypts = [];
 var locationNames = [];
+var flag = false;
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -141,14 +142,16 @@ captureDataMonuments = function (event) {
     success: function (response) {
 
       presetMarkers = [];
-
+      
+      console.log(presetMarkers);
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
         var marker = new google.maps.Marker({
           position: pos,
           map: map
         });
-        var flag = false;
+        flag = false;
+
         for(j = 0; j < presetMarkers.length; j++) {
           if(presetMarkers[j] == marker) {
             flag = true;
