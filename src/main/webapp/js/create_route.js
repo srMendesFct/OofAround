@@ -193,7 +193,9 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
     map: map,
     icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
   });
-
+  
+  flag = false;
+  
   for (j = 0; j < routePoints.length; j++) {
     if (routePoints[j].position.equals(marker.position)) {
       flag = true;
