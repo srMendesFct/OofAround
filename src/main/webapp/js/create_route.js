@@ -142,13 +142,9 @@ captureDataMonuments = function (event) {
     crossDomain: 'true',
     success: function (response) {
 
-      presetMarkers = [];
-      for (var i = 0; i < presetMarkers.length; i++) {
-        console.log("teste");
+      for (i = 0; i < presetMarkers.length; i++) {
         presetMarkers[i].setMap(null);
       };
-
-      console.log(presetMarkers);
 
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
@@ -199,11 +195,8 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
     icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
   });
 
-  if(tab.length == 0) {
-    tab[0] = pos;
-  }
-
-  for (j = 1; j < tab.length; j++) {
+  console.log(tab);
+  for (j = 0; j < tab.length; j++) {
     console.log(tab[j]);
     console.log(pos);
     if (tab[j] == pos) {
