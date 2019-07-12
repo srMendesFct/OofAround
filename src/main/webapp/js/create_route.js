@@ -141,6 +141,7 @@ captureDataMonuments = function (event) {
     crossDomain: 'true',
     success: function (response) {
 
+      setMapOnAll(null);
       presetMarkers = [];
 
       console.log(presetMarkers);
@@ -151,7 +152,7 @@ captureDataMonuments = function (event) {
           position: pos,
           map: map
         });
-        
+
         presetMarkers.push(marker);
         setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
       }
@@ -196,6 +197,8 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
   flag = false;
 
   for (j = 0; j < routePoints.length; j++) {
+    console.log(routePoints[j]);
+    console.log(marker);
     if (routePoints[j] == marker) {
       flag = true;
     }
