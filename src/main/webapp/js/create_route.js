@@ -140,14 +140,24 @@ captureDataMonuments = function (event) {
     crossDomain: 'true',
     success: function (response) {
 
+      presetMarkers = [];
+
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
         var marker = new google.maps.Marker({
           position: pos,
           map: map
         });
-        presetMarkers.push(marker);
-        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
+        var flag = false;
+        for(j = 0; j < presetMarkers.length; j++) {
+          if(presetMarkers[j] == marker) {
+            flag = true;
+          }
+        }
+        if(flag == false) {
+          presetMarkers.push(marker);
+          setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
+        }
       }
     },
     error: function (response) {},
