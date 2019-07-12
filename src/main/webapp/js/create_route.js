@@ -188,24 +188,18 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
 
 function addPreset(name, address, latitude, longitude, region, category, placeId) {
   var posi = new google.maps.LatLng(latitude, longitude);
-  var pos = latitude + " " + longitude;
   var marker = new google.maps.Marker({
     position: posi,
     map: map,
     icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
   });
 
-  console.log(tab);
-  for (j = 0; j < tab.length; j++) {
-    console.log(tab[j]);
-    console.log(pos);
-    if (tab[j] == pos) {
+  for (j = 0; j < routePoints.length; j++) {
+    console.log(routePoints[j].position);
+    console.log(marker.position);
+    if (routePoints[j].position == marker.position) {
       flag = true;
       break;
-    }
-    else {
-      flag = false;
-      tab[j] = pos;
     }
   }
 
