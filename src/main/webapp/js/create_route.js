@@ -142,25 +142,18 @@ captureDataMonuments = function (event) {
     success: function (response) {
 
       presetMarkers = [];
-      
+
       console.log(presetMarkers);
+
       for (i = 0; i < response.locations.length; i++) {
         var pos = new google.maps.LatLng(response.locations[i].latitude, response.locations[i].longitude);
         var marker = new google.maps.Marker({
           position: pos,
           map: map
         });
-        flag = false;
-
-        for(j = 0; j < presetMarkers.length; j++) {
-          if(presetMarkers[j] == marker) {
-            flag = true;
-          }
-        }
-        if(flag == false) {
-          presetMarkers.push(marker);
-          setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
-        }
+        
+        presetMarkers.push(marker);
+        setInfo(i, response.locations[i].name, response.locations[i].address, response.locations[i].latitude, response.locations[i].longitude, response.locations[i].region, response.locations[i].category, response.locations[i].placeID);
       }
     },
     error: function (response) {},
@@ -200,17 +193,26 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
     icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
   });
 
-  routePoints.push(marker);
+  flag = false;
 
-  var newLoc = {
-    name: name,
-    category: category,
-    placeId: placeId,
-    region: region,
-    latitude: latitude,
-    longitude: longitude
+  for (j = 0; j < routePoints.length; j++) {
+    if (routePoints[j] == marker) {
+      flag = true;
+    }
   }
-  locationNames.push(newLoc);
+
+  if (flag == false) {
+    routePoints.push(marker);
+    var newLoc = {
+      name: name,
+      category: category,
+      placeId: placeId,
+      region: region,
+      latitude: latitude,
+      longitude: longitude
+    }
+    locationNames.push(newLoc);
+  }
 }
 
 window.onload = function () {
