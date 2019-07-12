@@ -196,7 +196,7 @@ function addPreset(name, address, latitude, longitude, region, category, placeId
 
   for (j = 0; j < routePoints.length; j++) {
     console.log(routePoints[j].position.lat.Scopes[0].a);
-    console.log(routePoints[j].position.lat.Scopes[0].a);
+    console.log(routePoints[j].position.lat.Scopes[0].b);
     console.log(marker.position.lat.Scopes[0].a);
     console.log(marker.position.lat.Scopes[0].b);
     if (routePoints[j].position == marker.position) {
