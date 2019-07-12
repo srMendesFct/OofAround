@@ -6,6 +6,7 @@ var routePoints = [];
 var waypts = [];
 var locationNames = [];
 var flag = false;
+var tab = [];
 
 //qd for necessario criar marker pelo nome
 function codeAddress(addr) {
@@ -143,6 +144,7 @@ captureDataMonuments = function (event) {
 
       presetMarkers = [];
       for (var i = 0; i < presetMarkers.length; i++) {
+        console.log("teste");
         presetMarkers[i].setMap(null);
       };
 
@@ -190,19 +192,27 @@ function setInfo(markerNumber, name, address, latitude, longitude, region, categ
 
 function addPreset(name, address, latitude, longitude, region, category, placeId) {
   var posi = new google.maps.LatLng(latitude, longitude);
+  var pos = latitude + " " + longitude;
   var marker = new google.maps.Marker({
     position: posi,
     map: map,
     icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
   });
 
-  flag = false;
+  if(tab.length == 0) {
+    tab[0] = pos;
+  }
 
-  for (j = 0; j < routePoints.length; j++) {
-    console.log(routePoints[j]);
-    console.log(marker);
-    if (routePoints[j] == marker) {
+  for (j = 1; j < tab.length; j++) {
+    console.log(tab[j]);
+    console.log(pos);
+    if (tab[j] == pos) {
       flag = true;
+      break;
+    }
+    else {
+      flag = false;
+      tab[j] = pos;
     }
   }
 
