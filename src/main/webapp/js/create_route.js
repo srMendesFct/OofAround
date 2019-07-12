@@ -141,8 +141,10 @@ captureDataMonuments = function (event) {
     crossDomain: 'true',
     success: function (response) {
 
-      setMapOnAll(null);
       presetMarkers = [];
+      for (var i = 0; i < presetMarkers.length; i++) {
+        presetMarkers[i].setMap(null);
+      };
 
       console.log(presetMarkers);
 
